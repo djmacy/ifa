@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class HomeController {
     @GetMapping("/")
-    public String index(@RequestParam(value="name", required=false, defaultValue="Student")String name, Model model) {
-        model.addAttribute("name", name);
+    public String index() {
         return "index";
     }
 }

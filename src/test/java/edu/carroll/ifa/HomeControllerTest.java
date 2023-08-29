@@ -1,5 +1,6 @@
 package edu.carroll.ifa;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -21,8 +22,9 @@ public class HomeControllerTest {
 
     @Test
     public void indexTest() throws Exception {
-        mockMvc.perform(get("/home")).andDo(print())
+        mockMvc.perform(get("/")).andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("Welcome to IFA!")));
+                .andExpect(content().string(containsString("Welcome to the application!")))
+                .andExpect(content().string(containsString("login")));
     }
 }
