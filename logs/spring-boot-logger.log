@@ -1,0 +1,171 @@
+2023-08-30 11:02:08,561 - [INFO] - from org.hibernate.validator.internal.util.Version in background-preinit 
+HV000001: Hibernate Validator 8.0.1.Final
+
+2023-08-30 11:02:08,632 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+Starting IfaApplication using Java 18.0.2.1 with PID 15952 (C:\Users\djmac\IdeaProjects\ifa\build\classes\java\main started by djmac in C:\Users\djmac\IdeaProjects\ifa)
+
+2023-08-30 11:02:08,633 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+No active profile set, falling back to 1 default profile: "default"
+
+2023-08-30 11:02:08,726 - [INFO] - from org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor in restartedMain 
+Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+
+2023-08-30 11:02:08,727 - [INFO] - from org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor in restartedMain 
+For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+
+2023-08-30 11:02:12,272 - [INFO] - from org.springframework.boot.web.embedded.tomcat.TomcatWebServer in restartedMain 
+Tomcat initialized with port(s): 8080 (http)
+
+2023-08-30 11:02:12,290 - [INFO] - from org.apache.coyote.http11.Http11NioProtocol in restartedMain 
+Initializing ProtocolHandler ["http-nio-8080"]
+
+2023-08-30 11:02:12,295 - [INFO] - from org.apache.catalina.core.StandardService in restartedMain 
+Starting service [Tomcat]
+
+2023-08-30 11:02:12,295 - [INFO] - from org.apache.catalina.core.StandardEngine in restartedMain 
+Starting Servlet engine: [Apache Tomcat/10.1.12]
+
+2023-08-30 11:02:12,436 - [INFO] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] in restartedMain 
+Initializing Spring embedded WebApplicationContext
+
+2023-08-30 11:02:12,437 - [INFO] - from org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext in restartedMain 
+Root WebApplicationContext: initialization completed in 3708 ms
+
+2023-08-30 11:02:12,961 - [INFO] - from org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping in restartedMain 
+Adding welcome page template: index
+
+2023-08-30 11:02:13,364 - [INFO] - from org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer in restartedMain 
+LiveReload server is running on port 35729
+
+2023-08-30 11:02:13,390 - [INFO] - from org.apache.coyote.http11.Http11NioProtocol in restartedMain 
+Starting ProtocolHandler ["http-nio-8080"]
+
+2023-08-30 11:02:13,435 - [INFO] - from org.springframework.boot.web.embedded.tomcat.TomcatWebServer in restartedMain 
+Tomcat started on port(s): 8080 (http) with context path ''
+
+2023-08-30 11:02:13,457 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+Started IfaApplication in 5.814 seconds (process running for 7.182)
+
+2023-08-30 11:02:18,514 - [INFO] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] in http-nio-8080-exec-1 
+Initializing Spring DispatcherServlet 'dispatcherServlet'
+
+2023-08-30 11:02:18,514 - [INFO] - from org.springframework.web.servlet.DispatcherServlet in http-nio-8080-exec-1 
+Initializing Servlet 'dispatcherServlet'
+
+2023-08-30 11:02:18,517 - [INFO] - from org.springframework.web.servlet.DispatcherServlet in http-nio-8080-exec-1 
+Completed initialization in 2 ms
+
+2023-08-30 12:03:05,784 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+Starting IfaApplication using Java 18.0.2.1 with PID 17016 (C:\Users\djmac\IdeaProjects\ifa\build\classes\java\main started by djmac in C:\Users\djmac\IdeaProjects\ifa)
+
+2023-08-30 12:03:05,786 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+No active profile set, falling back to 1 default profile: "default"
+
+2023-08-30 12:03:05,800 - [INFO] - from org.hibernate.validator.internal.util.Version in background-preinit 
+HV000001: Hibernate Validator 8.0.1.Final
+
+2023-08-30 12:03:05,857 - [INFO] - from org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor in restartedMain 
+Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+
+2023-08-30 12:03:05,857 - [INFO] - from org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor in restartedMain 
+For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+
+2023-08-30 12:03:07,271 - [INFO] - from org.springframework.boot.web.embedded.tomcat.TomcatWebServer in restartedMain 
+Tomcat initialized with port(s): 8080 (http)
+
+2023-08-30 12:03:07,289 - [INFO] - from org.apache.coyote.http11.Http11NioProtocol in restartedMain 
+Initializing ProtocolHandler ["http-nio-8080"]
+
+2023-08-30 12:03:07,295 - [INFO] - from org.apache.catalina.core.StandardService in restartedMain 
+Starting service [Tomcat]
+
+2023-08-30 12:03:07,296 - [INFO] - from org.apache.catalina.core.StandardEngine in restartedMain 
+Starting Servlet engine: [Apache Tomcat/10.1.12]
+
+2023-08-30 12:03:07,430 - [INFO] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] in restartedMain 
+Initializing Spring embedded WebApplicationContext
+
+2023-08-30 12:03:07,431 - [INFO] - from org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext in restartedMain 
+Root WebApplicationContext: initialization completed in 1573 ms
+
+2023-08-30 12:03:07,923 - [INFO] - from org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping in restartedMain 
+Adding welcome page template: index
+
+2023-08-30 12:03:08,238 - [INFO] - from org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer in restartedMain 
+LiveReload server is running on port 35729
+
+2023-08-30 12:03:08,265 - [INFO] - from org.apache.coyote.http11.Http11NioProtocol in restartedMain 
+Starting ProtocolHandler ["http-nio-8080"]
+
+2023-08-30 12:03:08,306 - [INFO] - from org.springframework.boot.web.embedded.tomcat.TomcatWebServer in restartedMain 
+Tomcat started on port(s): 8080 (http) with context path ''
+
+2023-08-30 12:03:08,328 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+Started IfaApplication in 3.139 seconds (process running for 4.343)
+
+2023-08-30 12:03:09,138 - [INFO] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] in http-nio-8080-exec-1 
+Initializing Spring DispatcherServlet 'dispatcherServlet'
+
+2023-08-30 12:03:09,138 - [INFO] - from org.springframework.web.servlet.DispatcherServlet in http-nio-8080-exec-1 
+Initializing Servlet 'dispatcherServlet'
+
+2023-08-30 12:03:09,139 - [INFO] - from org.springframework.web.servlet.DispatcherServlet in http-nio-8080-exec-1 
+Completed initialization in 0 ms
+
+2023-08-30 12:18:47,167 - [INFO] - from org.hibernate.validator.internal.util.Version in background-preinit 
+HV000001: Hibernate Validator 8.0.1.Final
+
+2023-08-30 12:18:47,215 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+Starting IfaApplication using Java 18.0.2.1 with PID 20468 (C:\Users\djmac\IdeaProjects\ifa\build\classes\java\main started by djmac in C:\Users\djmac\IdeaProjects\ifa)
+
+2023-08-30 12:18:47,216 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+No active profile set, falling back to 1 default profile: "default"
+
+2023-08-30 12:18:47,272 - [INFO] - from org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor in restartedMain 
+Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+
+2023-08-30 12:18:47,272 - [INFO] - from org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor in restartedMain 
+For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+
+2023-08-30 12:18:48,299 - [INFO] - from org.springframework.boot.web.embedded.tomcat.TomcatWebServer in restartedMain 
+Tomcat initialized with port(s): 8080 (http)
+
+2023-08-30 12:18:48,309 - [INFO] - from org.apache.coyote.http11.Http11NioProtocol in restartedMain 
+Initializing ProtocolHandler ["http-nio-8080"]
+
+2023-08-30 12:18:48,311 - [INFO] - from org.apache.catalina.core.StandardService in restartedMain 
+Starting service [Tomcat]
+
+2023-08-30 12:18:48,311 - [INFO] - from org.apache.catalina.core.StandardEngine in restartedMain 
+Starting Servlet engine: [Apache Tomcat/10.1.12]
+
+2023-08-30 12:18:48,384 - [INFO] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] in restartedMain 
+Initializing Spring embedded WebApplicationContext
+
+2023-08-30 12:18:48,384 - [INFO] - from org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext in restartedMain 
+Root WebApplicationContext: initialization completed in 1112 ms
+
+2023-08-30 12:18:48,628 - [INFO] - from org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping in restartedMain 
+Adding welcome page template: index
+
+2023-08-30 12:18:48,796 - [INFO] - from org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer in restartedMain 
+LiveReload server is running on port 35729
+
+2023-08-30 12:18:48,811 - [INFO] - from org.apache.coyote.http11.Http11NioProtocol in restartedMain 
+Starting ProtocolHandler ["http-nio-8080"]
+
+2023-08-30 12:18:48,837 - [INFO] - from org.springframework.boot.web.embedded.tomcat.TomcatWebServer in restartedMain 
+Tomcat started on port(s): 8080 (http) with context path ''
+
+2023-08-30 12:18:48,847 - [INFO] - from edu.carroll.ifa.IfaApplication in restartedMain 
+Started IfaApplication in 2.189 seconds (process running for 2.914)
+
+2023-08-30 12:18:52,092 - [INFO] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] in http-nio-8080-exec-1 
+Initializing Spring DispatcherServlet 'dispatcherServlet'
+
+2023-08-30 12:18:52,092 - [INFO] - from org.springframework.web.servlet.DispatcherServlet in http-nio-8080-exec-1 
+Initializing Servlet 'dispatcherServlet'
+
+2023-08-30 12:18:52,093 - [INFO] - from org.springframework.web.servlet.DispatcherServlet in http-nio-8080-exec-1 
+Completed initialization in 1 ms
+

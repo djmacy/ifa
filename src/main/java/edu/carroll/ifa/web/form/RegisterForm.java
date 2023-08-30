@@ -2,14 +2,22 @@ package edu.carroll.ifa.web.form;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.boot.util.LambdaSafe;
 
-public class LoginForm {
+public class RegisterForm {
     @NotNull
     @Size(min = 6, message = "Username must be at least 6 characters long")
     private String username;
     @NotNull
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
+    @NotNull
+    private String firstName;
+    @NotNull
+    private String lastName;
+    @NotNull
+    private int age;
+
 
     public String getUsername() {
         return username;
@@ -25,5 +33,29 @@ public class LoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName() {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName() {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge() {
+        this.age = age;
     }
 }
