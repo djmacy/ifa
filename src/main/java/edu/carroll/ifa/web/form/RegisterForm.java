@@ -11,11 +11,11 @@ public class RegisterForm {
     @NotNull
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
-    @NotNull
+    @NotNull(message = "Please enter a valid name")
     private String firstName;
-    @NotNull
+    @NotNull(message = "Please enter a valid name")
     private String lastName;
-    @NotNull
+    @NotNull(message = "Please enter a valid name")
     private int age;
 
 
