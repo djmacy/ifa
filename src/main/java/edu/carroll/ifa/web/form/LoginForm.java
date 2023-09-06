@@ -8,7 +8,7 @@ public class LoginForm {
     @Size(min = 6, message = "Username must be at least 6 characters long")
     private String username;
     @NotNull
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Size(min = 4, message = "Password must be at least 4 characters long")
     private String password;
 
     public String getUsername() {
