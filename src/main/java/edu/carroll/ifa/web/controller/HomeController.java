@@ -1,4 +1,4 @@
-package edu.carroll.ifa;
+package edu.carroll.ifa.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
