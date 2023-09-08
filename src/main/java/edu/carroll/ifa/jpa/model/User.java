@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Login {
+public class User {
     @Id
     @GeneratedValue
     private Integer id;
@@ -78,8 +78,8 @@ public class Login {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        final Login login = (Login)o;
-        return username.equals(login.username) && hashedPassword.equals(login.hashedPassword);
+        final User user = (User)o;
+        return username.equals(user.username) && hashedPassword.equals(user.hashedPassword);
     }
 
     @Override
