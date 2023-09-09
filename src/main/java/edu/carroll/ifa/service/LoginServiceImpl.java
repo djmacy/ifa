@@ -3,12 +3,16 @@ package edu.carroll.ifa.service;
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
 import edu.carroll.ifa.web.form.LoginForm;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class LoginServiceImpl implements LoginService {
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     private final UserRepository userRepo;
 
     public LoginServiceImpl(UserRepository userRepo) {
@@ -30,10 +34,8 @@ public class LoginServiceImpl implements LoginService {
         if (users.size() != 1)
             return false;
         User u = users.get(0);
-        // XXX - Using Java's hashCode is wrong on SO many levels, but is good enough for demonstration purposes.
-        // NEVER EVER do this in production code! -Nate
-        final String userProvidedHash = Integer.toString(loginForm.getPassword().hashCode());
-        if (!u.getHashedPassword().equals(userProvidedHash))
+
+        if (!passwordEncoder.matches(loginForm.getPassword(), u.getHashedPassword()))
             return false;
 
         // User exists, and the provided password matches the hashed password in the database. -Nate
