@@ -7,8 +7,10 @@ public class Pass {
         final String hash = Integer.toString("1234".hashCode());
         final String hash1 = Integer.toString("password".hashCode());
         final String bCryptHash = passwordEncoder.encode("1234");
+        final String bCryptHash2 = passwordEncoder.encode("1234");
         System.out.println(hash1);
         System.out.println(bCryptHash);
+        System.out.println(bCryptHash2);
         //prints 1509442
         //hash2 prints 1216985755
         //bCrypt prints $2a$10$yDUVjkzKub7h4/WYxNIgNOQho6/6MfPPimfg23TrNebLykGckQAoa
