@@ -36,9 +36,9 @@ public class LoginController {
             result.addError(new ObjectError("globalError", "Username and password do not match known users"));
             return "login";
         }
-
-        session.setAttribute("username", loginForm.getUsername());
         attrs.addAttribute("username", loginForm.getUsername());
+        session.setAttribute("username", loginForm.getUsername());
+
         return "redirect:/loginSuccess";
     }
 
