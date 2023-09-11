@@ -2,6 +2,7 @@ package edu.carroll.ifa.web.controller;
 
 import edu.carroll.ifa.service.LoginService;
 import edu.carroll.ifa.web.form.LoginForm;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Controller
 public class LoginController {
-    // XXX - If anything like this is used in a real application, I will hunt you down and embarrass you to all your peers. -Nate
    private final LoginService loginService;
 
    public LoginController(LoginService loginService) {
@@ -29,7 +28,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, RedirectAttributes attrs) {
+    public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs) {
         if (result.hasErrors()) {
             return "login";
         }
@@ -37,14 +36,22 @@ public class LoginController {
             result.addError(new ObjectError("globalError", "Username and password do not match known users"));
             return "login";
         }
+
+        session.setAttribute("username", loginForm.getUsername());
         attrs.addAttribute("username", loginForm.getUsername());
         return "redirect:/loginSuccess";
     }
 
     @GetMapping("/loginSuccess")
-    public String loginSuccess(String username, Model model) {
-        model.addAttribute("username", username);
-        return "loginSuccess";
+    public String loginSuccess(HttpSession session, Model model, @ModelAttribute LoginForm loginForm) {
+       String sessionUsername = (String) session.getAttribute("username");
+
+       if (sessionUsername != null && sessionUsername.equals(loginForm.getUsername())) {
+           model.addAttribute("username", sessionUsername);
+           return "loginSuccess";
+       } else {
+           return "redirect:/login";
+       }
     }
 
     @GetMapping("/loginFailure")
