@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Soccer Drills</title>
+</head>
+<body>
+<h1>Personalized Drills</h1>
+
+<h2 th:if="${userAge >= 5 and userAge <= 8}">Ages 5-8</h2>
+<table th:if="${userAge >= 5 and userAge <= 8}">
+    <tr>
+        <th>Juggles</th>
+        <td>Juggles for at least 10 minutes</td>
+    </tr>
+    <tr>
+        <th>Dribbling Drills</th>
+        <td>At least 8 dribbling drills</td>
+    </tr>
+    <tr>
+        <th>Shooting Drills</th>
+        <td>Hit side cones</td>
+    </tr>
+    <tr>
+        <th>Passing Drills</th>
+        <td>Wall passes</td>
+    </tr>
+</table>
+
+<h2 th:if="${userAge >= 9 and userAge <= 11}">Ages 9-11</h2>
+<table th:if="${userAge >= 9 and userAge <= 11}">
+    <tr>
+        <th>Juggles</th>
+        <td>At least 20 minutes</td>
+    </tr>
+    <tr>
+        <th>Dribbling Drills</th>
+        <td>At least 14 dribbling drills</td>
+    </tr>
+    <tr>
+        <th>Shooting Drills</th>
+        <td>Hit side of big goal</td>
+    </tr>
+    <tr>
+        <th>Passing Drills</th>
+        <td>Wall passes inside</td>
+    </tr>
+</table>
+
+<h2 th:if="${userAge >= 12 and userAge <= 14}">Ages 12-14</h2>
+<table th:if="${userAge >= 12 and userAge <= 14}">
+    <tr>
+        <th>Juggles</th>
+        <td>At least 30 minutes or 100 juggles</td>
+    </tr>
+    <tr>
+        <th>Dribbling Drills</th>
+        <td>At least 8 dribbling drills or ladder</td>
+    </tr>
+    <tr>
+        <th>Shooting Drills</th>
+        <td>Shoot 10 times</td>
+    </tr>
+    <tr>
+        <th>Passing Drills</th>
+        <td>bounce pass inside</td>
+    </tr>
+</table>
+
+<h2 th:if="${userAge >= 15}">Age 15+</h2>
+<table th:if="${userAge >= 15}">
+    <tr>
+        <th>Juggles</th>
+        <td>At least 30 minutes or 500 juggles</td>
+    </tr>
+    <tr>
+        <th>Dribbling Drills</th>
+        <td>At least 8 dribbling drills</td>
+    </tr>
+    <tr>
+        <th>Shooting Drills</th>
+        <td>Dribble then shoot left or right</td>
+    </tr>
+    <tr>
+        <th>Passing Drills</th>
+        <td>all passes</td>
+    </tr>
+</table>
+<p th:if="${userAge < 5 }">No Drills available for your age group</p>
+<p><a href="/">Click</a> to go back home</p>
+
+</body>
+</html>

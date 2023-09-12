@@ -3,6 +3,7 @@ package edu.carroll.ifa.service;
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
 import edu.carroll.ifa.web.form.LoginForm;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,16 @@ public class UserServiceImpl implements UserService {
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
         userRepo.save(user);
         return false;
+    }
+
+    @Override
+    public int getUserAge(String username) {
+        List<User> users = userRepo.findByUsernameIgnoreCase(username);
+        if (!users.isEmpty()) {
+            //There should only be one so get first index
+            return users.get(0).getAge();
+        }
+        //change this later to handle not finding the username later
+        return -1;
     }
 }

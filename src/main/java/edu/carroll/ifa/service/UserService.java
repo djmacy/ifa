@@ -12,4 +12,5 @@ public interface UserService {
     boolean validateUser(LoginForm form);
 
     boolean saveUser(User user);
+    int getUserAge(String username);
 }

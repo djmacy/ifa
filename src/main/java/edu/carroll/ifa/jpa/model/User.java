@@ -67,6 +67,7 @@ public class User {
         this.hashedPassword = hashedPassword;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
