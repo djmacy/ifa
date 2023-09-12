@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
         userRepo.save(user);
-        return false;
+        return true;
     }
 
     @Override
