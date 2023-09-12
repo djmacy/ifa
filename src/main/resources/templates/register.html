@@ -2,19 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Login page</title>
+    <title>Register</title>
 </head>
 <body>
-<center><h1>Login</h1></center>
+<center><h1>Register Account</h1></center>
 <form action="#" th:action="@{/register}" th:object="${registerForm}" method="post">
     <span th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global error</span><br/>
     <input type="text" th:field="*{username}" placeholder="Username"/>
     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</span><br/>
     <input type="password" th:field="*{password}" placeholder="Password"/>
     <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span><br/>
-    <input type="firstName" th:field="*{firstName}" placeholder="First Name"/>
+    <input type="text" th:field="*{firstName}" placeholder="First Name"/>
     <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</span><br/>
-    <input type="lastName" th:field="*{lastName}" placeholder="Last Name"/>
+    <input type="text" th:field="*{lastName}" placeholder="Last Name"/>
     <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</span><br/>
     <input type="age" th:field="*{age}" placeholder="Age"/>
     <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</span><br/>

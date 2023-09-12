@@ -1,6 +1,6 @@
 package edu.carroll.ifa.web.controller;
 
-import edu.carroll.ifa.service.LoginService;
+import edu.carroll.ifa.service.UserService;
 import edu.carroll.ifa.web.form.LoginForm;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -16,10 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoginController {
-   private final LoginService loginService;
+   private final UserService userService;
 
-   public LoginController(LoginService loginService) {
-       this.loginService = loginService;
+   public LoginController(UserService userService) {
+       this.userService = userService;
    }
     @GetMapping("/login")
     public String loginGet(Model model) {
@@ -32,7 +32,7 @@ public class LoginController {
         if (result.hasErrors()) {
             return "login";
         }
-        if (!loginService.validateUser(loginForm)) {
+        if (!userService.validateUser(loginForm)) {
             result.addError(new ObjectError("globalError", "Username and password do not match known users"));
             return "login";
         }

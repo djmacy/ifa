@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final UserRepository userRepo;
 
-    public LoginServiceImpl(UserRepository userRepo) {
+    public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
     }
 
@@ -40,5 +40,18 @@ public class LoginServiceImpl implements LoginService {
 
         // User exists, and the provided password matches the hashed password in the database. -Nate
         return true;
+    }
+
+    @Override
+    public boolean saveUser(User user) {
+        List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
+        //if the username list is empty then the username exists
+        if (!existingUser.isEmpty()) {
+             return false;
+         }
+
+        user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
+        userRepo.save(user);
+        return false;
     }
 }

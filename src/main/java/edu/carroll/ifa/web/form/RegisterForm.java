@@ -15,7 +15,7 @@ public class RegisterForm {
     private String firstName;
     @NotNull(message = "Please enter a valid name")
     private String lastName;
-    @NotNull(message = "Please enter a valid name")
+    @NotNull(message = "Please enter a valid age")
     private int age;
 
 
@@ -39,7 +39,7 @@ public class RegisterForm {
         return firstName;
     }
 
-    public void setFirstName() {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -47,7 +47,7 @@ public class RegisterForm {
         return lastName;
     }
 
-    public void setLastName() {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -55,7 +55,7 @@ public class RegisterForm {
         return age;
     }
 
-    public void setAge() {
+    public void setAge(int age) {
         this.age = age;
     }
 }
