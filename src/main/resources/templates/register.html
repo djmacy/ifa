@@ -16,7 +16,7 @@
     <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</span><br/>
     <input type="text" th:field="*{lastName}" placeholder="Last Name"/>
     <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</span><br/>
-    <input type="age" th:field="*{age}" placeholder="Age"/>
+    <input type="number" th:field="*{age}" placeholder="Age"/>
     <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</span><br/>
     <button type="submit">Login</button>
 </form>
