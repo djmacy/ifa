@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Account</title>
+</head>
+<body>
+    <h1>Update Account</h1>
+    <a href="/loginSuccess">Back</a>
+    <form th:action="@{/updateAccount}" th:object="${user}" method="post">
+<!--        Username:<br>-->
+<!--        <input type="text" th:field="*{username}" placeholder="Username"/>-->
+<!--        <button type="submit">Submit</button>-->
+<!--        <br>-->
+<!--       Password:<br>-->
+<!--       <input type="password" th:field="*{password}" placeholder="Password"/>&ndash;&gt;-->
+<!--       <button type="submit">Submit</button>&ndash;&gt;-->
+<!--       <br>-->
+<!--        First name:<br>-->
+<!--        <input type="text" th:field="*{firstName}" placeholder="First Name"/>-->
+<!--        <button type="submit">Submit</button>-->
+<!--        <br>-->
+<!--        Last name:<br>-->
+<!--        <input type="text" th:field="*{lastName}" placeholder="Last Name"/>-->
+<!--        <button type="submit">Submit</button>-->
+<!--        <br>-->
+        Age:<br>
+        <input type="number" th:field="*{age}" placeholder="Age"/>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

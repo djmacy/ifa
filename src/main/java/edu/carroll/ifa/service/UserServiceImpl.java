@@ -56,6 +56,35 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+//    @Override
+//    public boolean saveUser(User user, User updatedUser){
+//        user.setFirstName(updatedUser.getFirstName());
+//        user.setLastName(updatedUser.getLastName());
+//        user.setHashedPassword(updatedUser.getHashedPassword());
+//        user.setAge(updatedUser.getAge());
+//        user.setUsername(updatedUser.getUsername());
+//        userRepo.save(user, updatedUser);
+//        return true;
+//    }
+
+    @Override
+    public boolean saveUserAge(User user, Integer age){
+        user.setAge(age);
+        userRepo.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean deleteUser(String username){
+        List<User> userList = userRepo.findByUsernameIgnoreCase(username);
+        if(userList.size() != 1){
+            return false;
+        }
+        User user = userList.get(0);
+        userRepo.delete(user);
+        return true;
+    }
+
     @Override
     public int getUserAge(String username) {
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
@@ -66,4 +95,15 @@ public class UserServiceImpl implements UserService {
         //change this later to handle not finding the username later
         return -1;
     }
+
+    @Override
+    public User getUserByUserName(String username){
+        List<User> users = userRepo.findByUsernameIgnoreCase(username);
+        if(users.size() != 1){
+            return null;
+        }
+        User user = users.get(0);
+        return user;
+    }
+
 }

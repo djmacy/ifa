@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ public class User {
     @Id
     @GeneratedValue
     private Integer id;
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "fname", nullable = false)

@@ -43,10 +43,10 @@ public class LoginController {
     }
 
     @GetMapping("/loginSuccess")
-    public String loginSuccess(HttpSession session, Model model, @ModelAttribute LoginForm loginForm) {
+    public String loginSuccess(HttpSession session, Model model) {
        String sessionUsername = (String) session.getAttribute("username");
 
-       if (sessionUsername != null && sessionUsername.equals(loginForm.getUsername())) {
+       if (sessionUsername != null) {
            model.addAttribute("username", sessionUsername);
            return "loginSuccess";
        } else {

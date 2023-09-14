@@ -2,6 +2,9 @@ package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.web.form.LoginForm;
+
+import javax.swing.*;
+
 public interface UserService {
     /**
      * Given a loginForm, determine if the information provided is valid, and the user exists in the system.
@@ -12,5 +15,13 @@ public interface UserService {
     boolean validateUser(LoginForm form);
 
     boolean saveUser(User user);
+
+    boolean deleteUser(String username);
     int getUserAge(String username);
+
+    User getUserByUserName(String username);
+
+    boolean saveUserAge(User user, Integer age);
+
+    //boolean saveUser(User user, User updatedUser);
 }
