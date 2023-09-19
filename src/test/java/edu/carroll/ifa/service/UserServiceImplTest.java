@@ -12,13 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 
 @SpringBootTest
 public class UserServiceImplTest {
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private static final String username = "bob_johnson";
     private static final String password = "1234";
