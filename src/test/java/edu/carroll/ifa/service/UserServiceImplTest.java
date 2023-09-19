@@ -21,7 +21,7 @@ public class UserServiceImplTest {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private static final String username = "bob_johnson";
-    private static final String password = passwordEncoder.encode("1234");
+    private static final String password = "1234";
     private static final String fname = "Bob";
     private static final String lname = "Johnson";
     private static final Integer age = 17;
@@ -43,10 +43,10 @@ public class UserServiceImplTest {
         if (users.isEmpty())
             userRepo.save(fakeUser);
     }
-/*
+
     @Test
     public void validateUserSuccessTest() {
-        assertTrue("validateUserSuccessTest: should succeed using th same user/pass info", userService.validateUser(username, password));
+        assertTrue("validateUserSuccessTest: should succeed using the same user/pass info", userService.validateUser(username, password));
     }
- */
+
 }
