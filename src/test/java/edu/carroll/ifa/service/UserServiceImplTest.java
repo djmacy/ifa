@@ -49,4 +49,14 @@ public class UserServiceImplTest {
         assertTrue("validateUserSuccessTest: should succeed using the same user/pass info", userService.validateUser(username, password));
     }
 
+    @Test
+    public void validateUserExistingUserInvalidPasswordTest() {
+        assertFalse("validateUserInvalidUserValidPasswordTest: should fail using an invalid user, but a valid password", userService.validateUser(username + "not", password));
+    }
+
+    @Test
+    public void validateUserInvalidUserInvalidPasswordTest() {
+        assertFalse("validateUserInvalidUserInvalidPasswordTest: should fail using an invalid user, valid pass", userService.validateUser(username + "not", password + "extra"));
+    }
+
 }
