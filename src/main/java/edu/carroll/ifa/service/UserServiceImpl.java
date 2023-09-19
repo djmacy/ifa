@@ -23,20 +23,21 @@ public class UserServiceImpl implements UserService {
     /**
      * Given a loginForm, determine if the information provided is valid, and the user exists in the system.
      *
-     * @param loginForm - Data containing user login information, such as username and password.
+     * @param username - Username of the person attempting to login
+     *                      * @param password - Raw password provided by the user logging in
      * @return true if data exists and matches what's on record, false otherwise
      */
     @Override
-    public boolean validateUser(LoginForm loginForm) {
+    public boolean validateUser(String username, String password) {
         // Always do the lookup in a case-insensitive manner (lower-casing the data). -Nate
-        List<User> users = userRepo.findByUsernameIgnoreCase(loginForm.getUsername());
+        List<User> users = userRepo.findByUsernameIgnoreCase(username);
 
         // We expect 0 or 1, so if we get more than 1, bail out as this is an error we don't deal with properly. -Nate
         if (users.size() != 1)
             return false;
         User u = users.get(0);
 
-        if (!passwordEncoder.matches(loginForm.getPassword(), u.getHashedPassword()))
+        if (!passwordEncoder.matches(password, u.getHashedPassword()))
             return false;
 
         // User exists, and the provided password matches the hashed password in the database. -Nate
