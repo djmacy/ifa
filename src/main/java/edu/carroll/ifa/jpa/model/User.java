@@ -25,6 +25,16 @@ public class User {
     @Column(name = "password", nullable = false)
     private String hashedPassword;
 
+    public User() {
+    }
+    public User(String username, String hashedPassword, String firstName, String lastName, Integer age) {
+        this.username = username;
+        this.hashedPassword = hashedPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
     public Integer getId() {
         return id;
     }

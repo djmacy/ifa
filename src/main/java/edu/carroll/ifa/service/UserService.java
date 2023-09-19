@@ -3,7 +3,6 @@ package edu.carroll.ifa.service;
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.web.form.LoginForm;
 
-import javax.swing.*;
 
 public interface UserService {
     /**
