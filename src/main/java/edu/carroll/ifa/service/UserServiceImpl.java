@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
      * Given a loginForm, determine if the information provided is valid, and the user exists in the system.
      *
      * @param username - Username of the person attempting to login
-     *                      * @param password - Raw password provided by the user logging in
+     * @param password - Raw password provided by the user logging in
      * @return true if data exists and matches what's on record, false otherwise
      */
     @Override
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean saveUser(User user) {
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
-        //if the username list is empty then the username exists
+        //if the username list is empty then the username does not exist
         if (!existingUser.isEmpty()) {
              return false;
          }
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public boolean saveUserAge(User user, Integer age){
+    public boolean saveUserAge(User user, Integer age) {
         user.setAge(age);
         userRepo.save(user);
         return true;
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(String username){
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
-        if(userList.size() != 1){
+        if (userList.size() != 1) {
             return false;
         }
         User user = userList.get(0);
@@ -106,5 +106,4 @@ public class UserServiceImpl implements UserService {
         User user = users.get(0);
         return user;
     }
-
 }
