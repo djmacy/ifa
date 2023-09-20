@@ -4,8 +4,7 @@ import static org.hamcrest.Matchers.containsString;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +28,19 @@ public class HomeControllerTest {
                 .andExpect(content().string(containsString("login")))
                 .andExpect(content().string(containsString("register")));
     }
+
+    @Test
+    public void testLoginLink() throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk());
+    }
+    /* This is not working for some reason it is returning a 404 which makes no sense
+    @WithMockUser
+    @Test
+    public void testRegisterLink() throws Exception {
+        mockMvc.perform(get("/register"))
+                .andExpect(status().isOk());
+    }
+
+     */
 }
