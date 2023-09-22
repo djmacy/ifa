@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class UserController {
     @Autowired
     private UserService service;
-    private Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
     @GetMapping("/deleteAccount")
     public String deleteAccount(){
         logger.info("visited delete account page ");

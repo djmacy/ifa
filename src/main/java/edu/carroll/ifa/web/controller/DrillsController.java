@@ -16,7 +16,7 @@ public class DrillsController {
 
     @Autowired
     private UserService userService;
-    private Logger logger = LoggerFactory.getLogger(RegisterController.class);
+    private Logger logger = LoggerFactory.getLogger(DrillsController.class);
 
     @Autowired
     public DrillsController(UserService userService) {

@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Update Account</h1>
-    <a href="/loginSuccess">Back</a>
+    <a href="/loginSuccess"> click to go back</a>
     <form th:action="@{/updateAccount}" th:object="${user}" method="post">
         Username:<br>
         <input type="text" th:field="*{username}" placeholder="Username"/>

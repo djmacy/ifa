@@ -26,7 +26,7 @@ public class LoginController {
     @GetMapping("/login")
     public String loginGet(Model model) {
         model.addAttribute("loginForm", new LoginForm());
-        logger.info("Visited login page");
+        logger.info("Visited the login page");
         return "login";
     }
 
@@ -38,7 +38,7 @@ public class LoginController {
         }
         if (!userService.validateUser(loginForm.getUsername(), loginForm.getPassword())) {
             result.addError(new ObjectError("globalError", "Username and password do not match known users"));
-            logger.warn("Username and password do not match known users");
+            logger.warn("login failed username or password do not match known users");
             return "login";
         }
         attrs.addAttribute("username", loginForm.getUsername());
@@ -61,7 +61,7 @@ public class LoginController {
 
     @GetMapping("/loginFailure")
     public String loginFailure() {
-       logger.warn("failed log in");
+       logger.warn("failed to log in");
        return "loginFailure";
     }
 

@@ -2,11 +2,14 @@ package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
+import edu.carroll.ifa.web.controller.LoginController;
 import edu.carroll.ifa.web.form.LoginForm;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final UserRepository userRepo;
+
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
@@ -41,6 +46,7 @@ public class UserServiceImpl implements UserService {
             return false;
 
         // User exists, and the provided password matches the hashed password in the database. -Nate
+        logger.info("There is a user in the database and password matches hashed password");
         return true;
     }
 
@@ -54,6 +60,7 @@ public class UserServiceImpl implements UserService {
 
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
         userRepo.save(user);
+        logger.info("Saved the user");
         return true;
     }
 
@@ -65,6 +72,7 @@ public class UserServiceImpl implements UserService {
         user.setAge(updatedUser.getAge());
         user.setUsername(updatedUser.getUsername());
         userRepo.save(user);
+        logger.info("Saved the new user");
         return true;
     }
 
@@ -78,6 +86,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userList.get(0);
         userRepo.delete(user);
+        logger.info("Delete the user");
         return true;
     }
 
@@ -86,6 +95,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
         if (!users.isEmpty()) {
             //There should only be one so get first index
+            logger.info("Get the user's age");
             return users.get(0).getAge();
         }
         //change this later to handle not finding the username later
@@ -99,6 +109,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         User user = users.get(0);
+        logger.info("Get the user by username");
         return user;
     }
 }
