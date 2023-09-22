@@ -57,23 +57,18 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-//    @Override
-//    public boolean saveUser(User user, User updatedUser){
-//        user.setFirstName(updatedUser.getFirstName());
-//        user.setLastName(updatedUser.getLastName());
-//        user.setHashedPassword(updatedUser.getHashedPassword());
-//        user.setAge(updatedUser.getAge());
-//        user.setUsername(updatedUser.getUsername());
-//        userRepo.save(user, updatedUser);
-//        return true;
-//    }
-
     @Override
-    public boolean saveUserAge(User user, Integer age) {
-        user.setAge(age);
+    public boolean saveUser(User user, User updatedUser){
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
+        user.setHashedPassword(passwordEncoder.encode(updatedUser.getHashedPassword()));
+        user.setAge(updatedUser.getAge());
+        user.setUsername(updatedUser.getUsername());
         userRepo.save(user);
         return true;
     }
+
+
 
     @Override
     public boolean deleteUser(String username){

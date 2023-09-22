@@ -10,13 +10,17 @@ import edu.carroll.ifa.jpa.model.User;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class UserController {
     @Autowired
     private UserService service;
+    private Logger logger = LoggerFactory.getLogger(LoginController.class);
     @GetMapping("/deleteAccount")
     public String deleteAccount(){
+        logger.info("visited delete account page ");
         return "deleteAccount";
     }
 
@@ -26,6 +30,7 @@ public class UserController {
         boolean deleteStatus = service.deleteUser(sessionUsername);
         if(deleteStatus){
             session.removeAttribute("username");
+            logger.info(sessionUsername + " successfully deleted their account ");
             return "redirect:/";
         }else{
             return "redirect:/loginSuccess";
@@ -37,6 +42,7 @@ public class UserController {
         String sessionUsername = (String) session.getAttribute("username");
         User user = service.getUserByUserName(sessionUsername);
         model.addAttribute("user", user);
+        logger.info("visited update account page ");
         return "updateAccount";
     }
 
@@ -44,8 +50,8 @@ public class UserController {
     public String updateAccount(@ModelAttribute("user") User updatedUser, HttpSession session){
         String sessionUsername = (String) session.getAttribute("username");
         User user = service.getUserByUserName(sessionUsername);
-        service.saveUserAge(user, updatedUser.getAge());
-        //service.saveUser(user, updatedUser);
+        service.saveUser(user, updatedUser);
+        logger.info(sessionUsername + " successfully updated their account");
         return "redirect:/loginSuccess";
     }
 

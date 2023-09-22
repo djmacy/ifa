@@ -21,7 +21,5 @@ public interface UserService {
 
     User getUserByUserName(String username);
 
-    boolean saveUserAge(User user, Integer age);
-
-    //boolean saveUser(User user, User updatedUser);
+    boolean saveUser(User user, User updatedUser);
 }

@@ -8,24 +8,27 @@
     <h1>Update Account</h1>
     <a href="/loginSuccess">Back</a>
     <form th:action="@{/updateAccount}" th:object="${user}" method="post">
-<!--        Username:<br>-->
-<!--        <input type="text" th:field="*{username}" placeholder="Username"/>-->
-<!--        <button type="submit">Submit</button>-->
-<!--        <br>-->
-<!--       Password:<br>-->
-<!--       <input type="password" th:field="*{password}" placeholder="Password"/>&ndash;&gt;-->
-<!--       <button type="submit">Submit</button>&ndash;&gt;-->
-<!--       <br>-->
-<!--        First name:<br>-->
-<!--        <input type="text" th:field="*{firstName}" placeholder="First Name"/>-->
-<!--        <button type="submit">Submit</button>-->
-<!--        <br>-->
-<!--        Last name:<br>-->
-<!--        <input type="text" th:field="*{lastName}" placeholder="Last Name"/>-->
-<!--        <button type="submit">Submit</button>-->
-<!--        <br>-->
+        Username:<br>
+        <input type="text" th:field="*{username}" placeholder="Username"/>
+
+        <br>
+       Password:<br>
+       <input type="password" th:field="*{hashedPassword}" placeholder="Password"/>
+
+       <br>
+        First name:<br>
+        <input type="text" th:field="*{firstName}" placeholder="First Name"/>
+
+        <br>
+        Last name:<br>
+        <input type="text" th:field="*{lastName}" placeholder="Last Name"/>
+
+        <br>
         Age:<br>
         <input type="number" th:field="*{age}" placeholder="Age"/>
+        <br>
+        <br>
+        <br>
         <button type="submit">Submit</button>
     </form>
 </body>
