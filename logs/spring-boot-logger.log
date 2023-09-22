@@ -631,3 +631,12 @@ Trey_lance successfully logged in
 2023-09-22 10:34:57,595 - [INFO] - from edu.carroll.ifa.web.controller.UserController in http-nio-8080-exec-3 
 visited update account page 
 
+2023-09-22 10:48:21,560 - [INFO] - from edu.carroll.ifa.web.controller.LoginController in http-nio-8080-exec-6 
+Trey_lance successfully logged in
+
+2023-09-22 10:48:23,491 - [INFO] - from edu.carroll.ifa.web.controller.LoginController in http-nio-8080-exec-7 
+successfully logged out
+
+2023-09-22 10:48:24,569 - [INFO] - from edu.carroll.ifa.web.controller.LoginController in http-nio-8080-exec-8 
+Visited the login page
+
