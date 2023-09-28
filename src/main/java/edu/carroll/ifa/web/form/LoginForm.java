@@ -2,6 +2,10 @@ package edu.carroll.ifa.web.form;
 
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * This class outlines the loginForm criteria. Here we only check to make sure that username and password is not empty
+ * when logging in.
+ */
 public class LoginForm {
     @NotNull
     private String username;

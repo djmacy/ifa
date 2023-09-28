@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * Controller class for the page that displays the drills for an associated user based on their age.
+ */
 @Controller
 public class DrillsController {
 

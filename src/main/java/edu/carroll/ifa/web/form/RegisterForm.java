@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * This class outlines the criteria for registering with the RegisterForm. It also allows to interact with the data that
+ * has been given to us by the user.
+ */
 public class RegisterForm {
     @NotNull
     @Size(min = 6, message = "Username must be at least 6 characters long")

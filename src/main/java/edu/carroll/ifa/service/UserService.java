@@ -3,6 +3,9 @@ package edu.carroll.ifa.service;
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.web.form.LoginForm;
 
+/**
+ * Interface which has methods that are used in the UserServiceImpl class to help manage the information in the database
+ */
 
 public interface UserService {
     /**

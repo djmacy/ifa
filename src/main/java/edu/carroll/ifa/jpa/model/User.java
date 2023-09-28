@@ -7,6 +7,9 @@ import jakarta.persistence.Id;
 
 import java.util.Objects;
 
+/**
+ * This is the User entity class that helps persist data related to a user into a MySQL database.
+ */
 @Entity
 public class User {
     @Id

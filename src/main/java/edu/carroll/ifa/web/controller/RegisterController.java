@@ -10,6 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller class for the register page. It makes sure that the user has valid input and then redirects them to login
+ * after successfully registering.
+ */
 @Controller
 public class RegisterController {
 

@@ -9,6 +9,10 @@ import edu.carroll.ifa.jpa.model.User;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * Controller class for the user options after logging in. Once logged in the user can change their age, delete their account,
+ * or logout.
+ */
 @Controller
 public class UserController {
     private final UserService userService;

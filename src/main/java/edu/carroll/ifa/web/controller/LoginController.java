@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+/**
+ * Controller class for the login page. It will check to see if the user is valid and then redirect them to the loginSuccess page.
+ * It will also make sure that someone in the loginSuccess page is a valid user.
+ */
 @Controller
 public class LoginController {
    private final UserService userService;
