@@ -9,32 +9,32 @@ public class LoginForm {
     private String password;
 
     /**
-     *
-     * @return
+     * Returns the username from the loginForm.
+     * @return username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     *
-     * @param username
+     * Sets the username for the loginForm
+     * @param username - Username for the loginForm
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     *
-     * @return
+     * Returns the password from the loginForm.
+     * @return password
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * 
-     * @param password
+     * Sets the password for the loginForm
+     * @param password - Password for the loginForm
      */
     public void setPassword(String password) {
         this.password = password;
