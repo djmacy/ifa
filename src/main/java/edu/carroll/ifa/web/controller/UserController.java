@@ -13,8 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class UserController {
-    @Autowired
-    private UserService service;
+    private final UserService userService;
+
+    /**
+     * Constructs a LoginController instance with the UserService dependency.
+     * @param userService - UserService implementation used in the LoginController
+     */
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
     @GetMapping("/deleteAccount")
     public String deleteAccount(){
         return "deleteAccount";
@@ -23,7 +30,7 @@ public class UserController {
     @GetMapping("/deleteAccountConfirmed")
     public String deleteAccountConfirmed(HttpSession session){
         String sessionUsername = (String) session.getAttribute("username");
-        boolean deleteStatus = service.deleteUser(sessionUsername);
+        boolean deleteStatus = userService.deleteUser(sessionUsername);
         if(deleteStatus){
             session.removeAttribute("username");
             return "redirect:/";
@@ -35,7 +42,7 @@ public class UserController {
     @GetMapping("/updateAccount")
     public String updateAccount(Model model, HttpSession session){
         String sessionUsername = (String) session.getAttribute("username");
-        User user = service.getUserByUserName(sessionUsername);
+        User user = userService.getUserByUserName(sessionUsername);
         model.addAttribute("user", user);
         return "updateAccount";
     }
@@ -43,8 +50,8 @@ public class UserController {
     @PostMapping("/updateAccount")
     public String updateAccount(@ModelAttribute("user") User updatedUser, HttpSession session){
         String sessionUsername = (String) session.getAttribute("username");
-        User user = service.getUserByUserName(sessionUsername);
-        service.saveUserAge(user, updatedUser.getAge());
+        User user = userService.getUserByUserName(sessionUsername);
+        userService.saveUserAge(user, updatedUser.getAge());
         //service.saveUser(user, updatedUser);
         return "redirect:/loginSuccess";
     }
