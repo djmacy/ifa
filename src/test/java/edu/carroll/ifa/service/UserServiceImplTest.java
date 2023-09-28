@@ -67,11 +67,12 @@ public class UserServiceImplTest {
     /*
     @Test
     public void saveUserAgeTest() {
-        Integer newAge = 10;
+        Integer newAge = 11;
         User newUser = new User("new" + username, password, fname, lname, age);
-        assertTrue("saveUserAgeTest: should succeed saving a new age with user in db", userService.saveUserAge(fakeUser, newAge));
+        assertTrue("saveUserAgeTest: should succeed saving a new age with user in db", userService.saveUserAge(newUser, newAge));
+        //change age back to original age so the test will pass if rerun
+        userService.saveUserAge(newUser, age);
     }
-
      */
 
     @Test
@@ -84,5 +85,4 @@ public class UserServiceImplTest {
         User newUser = new User("new1" + username, password, fname, lname, age);
         assertEquals("getUserAgeTestNonUserTest: should equal -1 since user is not in db", -1, userService.getUserAge(newUser.getUsername()));
     }
-
 }
