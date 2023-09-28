@@ -2,7 +2,6 @@ package edu.carroll.ifa.web.controller;
 
 import edu.carroll.ifa.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +12,8 @@ public class DrillsController {
     private final UserService userService;
 
     /**
-     * Constructs a LoginController instance with the UserService dependency.
-     * @param userService - UserService implementation used in the LoginController
+     * Constructs a DrillsController instance with the UserService dependency.
+     * @param userService - UserService implementation used in the DrillsController
      */
     public DrillsController(UserService userService) {
         this.userService = userService;
