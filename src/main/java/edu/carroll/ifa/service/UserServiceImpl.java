@@ -2,8 +2,6 @@ package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
-import edu.carroll.ifa.web.form.LoginForm;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,10 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
 
+    /**
+     * Constructs a new UserServiceImpl instance with the UserRepository
+     * @param userRepo - UserRepository that is used in UserServiceImpl
+     */
     public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
     }
@@ -44,6 +46,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     * Given a User object, it saves the information associated with the user to the database and hash the raw password.
+     * @param user - User object that needs to be added to the database
+     * @return false if user already exists in database, true otherwise
+     */
     @Override
     public boolean saveUser(User user) {
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
@@ -68,6 +75,12 @@ public class UserServiceImpl implements UserService {
 //        return true;
 //    }
 
+    /**
+     * Given the User object and the desired age change, it will update the user's age.
+     * @param user - User object associated with the user that is updating its age
+     * @param age - Age that the user would like to update to
+     * @return true if the user updates its age
+     */
     @Override
     public boolean saveUserAge(User user, Integer age) {
         user.setAge(age);
@@ -75,6 +88,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     * Given a username, delete the User associated with the username provided.
+     * @param username - Username provided by the user after they have already logged in
+     * @return false if the user does not exist in the database, true otherwise
+     */
     @Override
     public boolean deleteUser(String username){
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
@@ -86,6 +104,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     * Given a username, it returns the user's age.
+     * @param username - Username associated with the User
+     * @return the age of the user if the list is not empty, -1 otherwise
+     */
     @Override
     public int getUserAge(String username) {
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
@@ -97,6 +120,11 @@ public class UserServiceImpl implements UserService {
         return -1;
     }
 
+    /**
+     * Given a username object, it returns the User object.
+     * @param username - Username associated with the User
+     * @return the User object if the user is in the database, null otherwise
+     */
     @Override
     public User getUserByUserName(String username){
         List<User> users = userRepo.findByUsernameIgnoreCase(username);

@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -13,7 +12,6 @@ public class User {
     @Id
     @GeneratedValue
     private Integer id;
-
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "fname", nullable = false)
@@ -33,11 +31,11 @@ public class User {
 
     /**
      * Constructor for the user.
-     * @param username associated username of the user
-     * @param hashedPassword associated hashed password of the user
-     * @param firstName associated first name of the user
-     * @param lastName associated last name of the user
-     * @param age associated age of the user
+     * @param username - Username associated with the user
+     * @param hashedPassword - Hashed password associated with the user
+     * @param firstName - First name associated with the user
+     * @param lastName - Last name associated with the user
+     * @param age - Age associated with the user
      */
     public User(String username, String hashedPassword, String firstName, String lastName, Integer age) {
         this.username = username;
@@ -65,7 +63,7 @@ public class User {
 
     /**
      * Sets the user's username.
-     * @param username associated username for the user
+     * @param username - Username associated with the user
      */
     public void setUsername(String username) {
         this.username = username;
@@ -81,7 +79,7 @@ public class User {
 
     /**
      * Sets the user's first name.
-     * @param firstName associated first name for the user
+     * @param firstName - First name associated with the user
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -97,7 +95,7 @@ public class User {
 
     /**
      * Sets the user's last name.
-     * @param lastName associated last name for the user
+     * @param lastName - Last name associated with the user
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -113,7 +111,7 @@ public class User {
 
     /**
      * Sets the user's age.
-     * @param age associated age for the user
+     * @param age - Age associated with the user
      */
     public void setAge(Integer age) {
         this.age = age;
@@ -129,7 +127,7 @@ public class User {
 
     /**
      * Sets the user's hashed password
-     * @param hashedPassword associated hashed password for the user
+     * @param hashedPassword - Hashed password associated with the user
      */
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
@@ -137,7 +135,7 @@ public class User {
 
     /**
      * Compare two User objects for equality.
-     * @param o the object that gets compared with the user
+     * @param o - Object that gets compared with the user
      * @return true if the objects are equal based on username and hashed password. False otherwise.
      */
     @Override
@@ -152,7 +150,7 @@ public class User {
     }
 
     /**
-     * Returns a hash code value for the User object.
+     * Returns a hash code value for the User object given a username and hashed password.
      * @return a hash code value for the User
      */
     @Override
