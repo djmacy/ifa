@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DrillsController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     /**
-     * Constructs a DrillsController instance with the UserService dependency.
-     * @param userService - UserService implementation used in the DrillsController
+     * Constructs a LoginController instance with the UserService dependency.
+     * @param userService - UserService implementation used in the LoginController
      */
-    @Autowired
     public DrillsController(UserService userService) {
         this.userService = userService;
     }
