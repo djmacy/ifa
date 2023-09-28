@@ -24,9 +24,9 @@ public class RegisterController {
     }
 
     /**
-     * Handles the GET request for the /login page. It also initializes the login form model and displays the page.
+     * Handles the GET request for the /register page. It also initializes the register form model and displays the page.
      * @param model - Model object for storing attributes associated with logging in
-     * @return login page
+     * @return register page
      */
     @GetMapping("/register")
     public String registerGet(Model model) {
@@ -34,6 +34,13 @@ public class RegisterController {
         return "register";
     }
 
+    /**
+     * Handles the POST request for the /register page. It also processes user registration.
+     * @param registerForm - RegisterForm contains the information submitted by the user
+     * @param result - BindingResult validates form information
+     * @param model - Model object for storing attributes
+     * @return register page if user gives invalid or incomplete information, otherwise login page
+     */
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute RegisterForm registerForm, BindingResult result, Model model) {
         if (result.hasErrors()) {
