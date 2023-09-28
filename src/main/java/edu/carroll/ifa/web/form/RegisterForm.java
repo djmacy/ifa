@@ -3,8 +3,6 @@ package edu.carroll.ifa.web.form;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.util.LambdaSafe;
 
 public class RegisterForm {
     @NotNull
@@ -23,43 +21,82 @@ public class RegisterForm {
     @NotNull(message = "Age is required")
     private Integer age;
 
-
+    /**
+     * Returns the username from the registerForm.
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets the username from the registerForm
+     * @param username - Username from the registerForm
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Returns the password from the registerForm.
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the password from the registerForm
+     * @param password - Password from the registerForm
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Returns the first name from the registerForm.
+     * @return firstName
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets the first name from the registerForm
+     * @param firstName - First name from the registerForm
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Returns the last name from the registerForm.
+     * @return lastName
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Sets the last name from the registerForm
+     * @param lastName - Last name from the registerForm
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Returns the age from the registerForm.
+     * @return age
+     */
     public Integer getAge() {
         return age;
     }
 
+    /**
+     * Sets the age from the registerForm
+     * @param age - Age from the registerForm
+     */
     public void setAge(Integer age) {
         this.age = age;
     }

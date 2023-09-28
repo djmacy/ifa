@@ -17,8 +17,8 @@ public class LoginForm {
     }
 
     /**
-     * Sets the username for the loginForm
-     * @param username - Username for the loginForm
+     * Sets the username from the loginForm
+     * @param username - Username from the loginForm
      */
     public void setUsername(String username) {
         this.username = username;
@@ -33,8 +33,8 @@ public class LoginForm {
     }
 
     /**
-     * Sets the password for the loginForm
-     * @param password - Password for the loginForm
+     * Sets the password from the loginForm
+     * @param password - Password from the loginForm
      */
     public void setPassword(String password) {
         this.password = password;
