@@ -4,16 +4,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
+/**
+ * This is the User entity class that helps persist data related to a user into a MySQL database.
+ */
 @Entity
 public class User {
     @Id
     @GeneratedValue
     private Integer id;
-
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "fname", nullable = false)
@@ -25,16 +26,19 @@ public class User {
     @Column(name = "password", nullable = false)
     private String hashedPassword;
 
+    /**
+     * No-argument constructor for Spring Dat JPA.
+     */
     public User() {
     }
 
     /**
-     *
-     * @param username
-     * @param hashedPassword
-     * @param firstName
-     * @param lastName
-     * @param age
+     * Constructor for the user.
+     * @param username - Username associated with the user
+     * @param hashedPassword - Hashed password associated with the user
+     * @param firstName - First name associated with the user
+     * @param lastName - Last name associated with the user
+     * @param age - Age associated with the user
      */
     public User(String username, String hashedPassword, String firstName, String lastName, Integer age) {
         this.username = username;
@@ -45,8 +49,8 @@ public class User {
     }
 
     /**
-     *
-     * @return
+     * Returns the user's id.
+     * @return user id
      */
     public Integer getId() {
 
@@ -54,8 +58,8 @@ public class User {
     }
 
     /**
-     *
-     * @return
+     * Returns the user's username.
+     * @return user username
      */
     public String getUsername() {
 
@@ -63,8 +67,8 @@ public class User {
     }
 
     /**
-     *
-     * @param username
+     * Sets the user's username.
+     * @param username - Username associated with the user
      */
     public void setUsername(String username) {
 
@@ -72,8 +76,8 @@ public class User {
     }
 
     /**
-     *
-     * @return
+     * Returns the user's first name.
+     * @return user first name
      */
     public String getFirstName() {
 
@@ -81,8 +85,8 @@ public class User {
     }
 
     /**
-     *
-     * @param firstName
+     * Sets the user's first name.
+     * @param firstName - First name associated with the user
      */
     public void setFirstName(String firstName) {
 
@@ -90,8 +94,8 @@ public class User {
     }
 
     /**
-     *
-     * @return
+     * Returns the user's last name.
+     * @return user last name
      */
     public String getLastName() {
 
@@ -99,8 +103,8 @@ public class User {
     }
 
     /**
-     *
-     * @param lastName
+     * Sets the user's last name.
+     * @param lastName - Last name associated with the user
      */
     public void setLastName(String lastName) {
 
@@ -108,8 +112,8 @@ public class User {
     }
 
     /**
-     *
-     * @return
+     * Returns the user's age.
+     * @return user age
      */
     public Integer getAge() {
 
@@ -117,8 +121,8 @@ public class User {
     }
 
     /**
-     *
-     * @param age
+     * Sets the user's age.
+     * @param age - Age associated with the user
      */
     public void setAge(Integer age) {
 
@@ -126,8 +130,8 @@ public class User {
     }
 
     /**
-     *
-     * @return
+     * Returns the user's hashed password.
+     * @return associated hashed password for the user
      */
     public String getHashedPassword() {
 
@@ -135,8 +139,8 @@ public class User {
     }
 
     /**
-     *
-     * @param hashedPassword
+     * Sets the user's hashed password
+     * @param hashedPassword - Hashed password associated with the user
      */
     public void setHashedPassword(String hashedPassword) {
 
@@ -144,9 +148,9 @@ public class User {
     }
 
     /**
-     *
-     * @param o
-     * @return
+     * Compare two User objects for equality.
+     * @param o - Object that gets compared with the user
+     * @return true if the objects are equal based on username and hashed password. False otherwise.
      */
     @Override
     public boolean equals(Object o) {
@@ -160,8 +164,8 @@ public class User {
     }
 
     /**
-     *
-     * @return
+     * Returns a hash code value for the User object given a username and hashed password.
+     * @return a hash code value for the User
      */
     @Override
     public int hashCode() {

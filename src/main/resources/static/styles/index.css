@@ -1,0 +1,36 @@
+.header {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ifa-logo {
+    display: block;
+    margin: 0 auto;
+    max-width: 20%;
+    border-radius: 50%;
+}
+
+.left-button {
+    margin-right: auto;
+}
+
+.right-button {
+    margin-left: auto;
+}
+
+.button {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}

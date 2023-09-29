@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * This class outlines the criteria for registering with the RegisterForm. It also allows to interact with the data that
+ * has been given to us by the user.
+ */
 public class RegisterOrUpdateForm {
     @NotNull
     @Size(min = 6, message = "Username must be at least 6 characters long")
@@ -22,8 +26,8 @@ public class RegisterOrUpdateForm {
     private Integer age;
 
     /**
-     *
-     * @return
+     * Returns the username from the registerForm.
+     * @return username
      */
     public String getUsername() {
 
@@ -31,8 +35,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @param username
+     * Sets the username from the registerForm
+     * @param username - Username from the registerForm
      */
     public void setUsername(String username) {
 
@@ -40,8 +44,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @return
+     * Returns the password from the registerForm.
+     * @return password
      */
     public String getPassword() {
 
@@ -49,8 +53,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @param password
+     * Sets the password from the registerForm
+     * @param password - Password from the registerForm
      */
     public void setPassword(String password) {
 
@@ -58,8 +62,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @return
+     * Returns the first name from the registerForm.
+     * @return firstName
      */
     public String getFirstName() {
 
@@ -67,8 +71,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @param firstName
+     * Sets the first name from the registerForm
+     * @param firstName - First name from the registerForm
      */
     public void setFirstName(String firstName) {
 
@@ -76,8 +80,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @return
+     * Returns the last name from the registerForm.
+     * @return lastName
      */
     public String getLastName() {
 
@@ -85,8 +89,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @param lastName
+     * Sets the last name from the registerForm
+     * @param lastName - Last name from the registerForm
      */
     public void setLastName(String lastName) {
 
@@ -94,8 +98,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @return
+     * Returns the age from the registerForm.
+     * @return age
      */
     public Integer getAge() {
 
@@ -103,8 +107,8 @@ public class RegisterOrUpdateForm {
     }
 
     /**
-     *
-     * @param age
+     * Sets the age from the registerForm
+     * @param age - Age from the registerForm
      */
     public void setAge(Integer age) {
 

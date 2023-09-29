@@ -12,12 +12,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 
-
+/**
+ * Unit tests for the home page to make sure everything works as expected on that page.
+ */
 @WebMvcTest(HomeController.class)
 public class HomeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * This unit test checks to see that the home page contains the following text
+     * @throws Exception
+     */
     @Test
     //after adding spring security for Bcrypt it seems that we need authentication to run tests so this solves it
     @WithMockUser
@@ -29,6 +35,10 @@ public class HomeControllerTest {
                 .andExpect(content().string(containsString("register")));
     }
 
+    /**
+     * This unit test makes sure that the /login page is reachable
+     * @throws Exception
+     */
     @Test
     public void testLoginLink() throws Exception {
         mockMvc.perform(get("/login"))

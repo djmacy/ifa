@@ -2,9 +2,6 @@ package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
-import edu.carroll.ifa.web.controller.LoginController;
-import edu.carroll.ifa.web.form.LoginForm;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,13 +10,23 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * This class will allows us to interact with the database by making changes to the users information in the database
+ */
 @Service
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final UserRepository userRepo;
 
+
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+
+    /**
+     * Constructs a new UserServiceImpl instance with the UserRepository
+     * @param userRepo - UserRepository that is used in UserServiceImpl
+     */
 
     public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
@@ -51,9 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
-     * @param user
-     * @return
+     * Given a User object, it saves the information associated with the user to the database and hash the raw password.
+     * @param user - User object that needs to be added to the database
+     * @return false if user already exists in database, true otherwise
      */
     @Override
     public boolean saveUser(User user) {
@@ -70,10 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
-     * @param user
-     * @param updatedUser
-     * @return
+
      */
     @Override
     public boolean saveUser(User user, User updatedUser){
@@ -88,9 +92,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
-     * @param username
-     * @return
+     * Given a username, delete the User associated with the username provided.
+     * @param username - Username provided by the user after they have already logged in
+     * @return false if the user does not exist in the database, true otherwise
      */
     @Override
     public boolean deleteUser(String username){
@@ -105,9 +109,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
-     * @param username
-     * @return
+     * Given a username, it returns the user's age.
+     * @param username - Username associated with the User
+     * @return the age of the user if the list is not empty, -1 otherwise
      */
     @Override
     public int getUserAge(String username) {
@@ -122,9 +126,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
-     * @param username
-     * @return
+     * Given a username object, it returns the User object.
+     * @param username - Username associated with the User
+     * @return the User object if the user is in the database, null otherwise
      */
     @Override
     public User getUserByUserName(String username){

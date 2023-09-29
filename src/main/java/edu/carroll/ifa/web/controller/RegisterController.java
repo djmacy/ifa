@@ -4,7 +4,6 @@ import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.service.UserService;
 import edu.carroll.ifa.web.form.RegisterOrUpdateForm;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,17 +12,26 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Controller class for the register page. It makes sure that the user has valid input and then redirects them to login
+ * after successfully registering.
+ */
 @Controller
 public class RegisterController {
-
-    @Autowired
-    private UserService service;
+    private final UserService userService;
     private Logger logger = LoggerFactory.getLogger(RegisterController.class);
+    /**
+     * Constructs a LoginController instance with the UserService dependency.
+     * @param userService - UserService implementation used in the LoginController
+     */
+    public RegisterController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
-     *
-     * @param model
-     * @return
+     * Handles the GET request for the /register page. It also initializes the register form model and displays the page.
+     * @param model - Model object for storing attributes associated with logging in
+     * @return register page
      */
     @GetMapping("/register")
     public String registerGet(Model model) {
@@ -33,11 +41,12 @@ public class RegisterController {
     }
 
     /**
-     *
-     * @param registerOrUpdateForm
-     * @param result
-     * @param model
-     * @return
+     * Handles the POST request for the /register page. It also processes user registration.
+     * @param registerOrUpdateForm - RegisterForm contains the information submitted by the user
+     * @param result - BindingResult validates form information
+     * @param model - Model object for storing attributes
+     * @return register page if user gives invalid or incomplete information, otherwise login page
+
      */
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute RegisterOrUpdateForm registerOrUpdateForm,
@@ -55,7 +64,7 @@ public class RegisterController {
         newUser.setLastName(registerOrUpdateForm.getLastName());
         newUser.setAge(registerOrUpdateForm.getAge());
 
-        boolean saved = service.saveUser(newUser);
+        boolean saved = userService.saveUser(newUser);
 
         if (!saved) {
             result.addError(new ObjectError("globalError", "Username already exists"));
