@@ -17,6 +17,7 @@ public interface UserService {
     boolean saveUser(User user);
 
     boolean deleteUser(String username);
+
     int getUserAge(String username);
 
     User getUserByUserName(String username);

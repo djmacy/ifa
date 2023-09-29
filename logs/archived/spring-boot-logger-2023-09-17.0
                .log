@@ -1742,7 +1742,7 @@ Caused by: org.thymeleaf.exceptions.TemplateProcessingException: Error during ex
 	at org.attoparser.MarkupParser.parseBuffer(MarkupParser.java:706)
 	at org.attoparser.MarkupParser.parseDocument(MarkupParser.java:301)
 	... 50 common frames omitted
-Caused by: org.springframework.beans.InvalidPropertyException: Invalid property 'age' of bean class [edu.carroll.ifa.web.form.RegisterForm]: Getter for property 'age' threw exception
+Caused by: org.springframework.beans.InvalidPropertyException: Invalid property 'age' of bean class [edu.carroll.ifa.web.form.RegisterOrUpdateForm]: Getter for property 'age' threw exception
 	at org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyValue(AbstractNestablePropertyAccessor.java:704)
 	at org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyValue(AbstractNestablePropertyAccessor.java:616)
 	at org.springframework.validation.AbstractPropertyBindingResult.getActualFieldValue(AbstractPropertyBindingResult.java:104)
@@ -1763,14 +1763,14 @@ Caused by: java.lang.reflect.InvocationTargetException: null
 	at org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyValue(AbstractNestablePropertyAccessor.java:629)
 	... 74 common frames omitted
 Caused by: java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "this.age" is null
-	at edu.carroll.ifa.web.form.RegisterForm.getAge(RegisterForm.java:60)
+	at edu.carroll.ifa.web.form.RegisterOrUpdateForm.getAge(RegisterForm.java:60)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	... 77 common frames omitted
 
 2023-09-13 17:16:40,530 - [ERROR] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet] in http-nio-8080-exec-1 
 Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.thymeleaf.exceptions.TemplateInputException: An error happened during template parsing (template: "class path resource [templates/register.html]")] with root cause
 java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "this.age" is null
-	at edu.carroll.ifa.web.form.RegisterForm.getAge(RegisterForm.java:60)
+	at edu.carroll.ifa.web.form.RegisterOrUpdateForm.getAge(RegisterForm.java:60)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
 	at org.springframework.beans.BeanWrapperImpl$BeanPropertyHandler.getValue(BeanWrapperImpl.java:265)
@@ -2034,7 +2034,7 @@ Caused by: org.thymeleaf.exceptions.TemplateProcessingException: Error during ex
 	at org.attoparser.MarkupParser.parseBuffer(MarkupParser.java:706)
 	at org.attoparser.MarkupParser.parseDocument(MarkupParser.java:301)
 	... 50 common frames omitted
-Caused by: org.springframework.beans.InvalidPropertyException: Invalid property 'age' of bean class [edu.carroll.ifa.web.form.RegisterForm]: Getter for property 'age' threw exception
+Caused by: org.springframework.beans.InvalidPropertyException: Invalid property 'age' of bean class [edu.carroll.ifa.web.form.RegisterOrUpdateForm]: Getter for property 'age' threw exception
 	at org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyValue(AbstractNestablePropertyAccessor.java:704)
 	at org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyValue(AbstractNestablePropertyAccessor.java:616)
 	at org.springframework.validation.AbstractPropertyBindingResult.getActualFieldValue(AbstractPropertyBindingResult.java:104)
@@ -2055,14 +2055,14 @@ Caused by: java.lang.reflect.InvocationTargetException: null
 	at org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyValue(AbstractNestablePropertyAccessor.java:629)
 	... 74 common frames omitted
 Caused by: java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "this.age" is null
-	at edu.carroll.ifa.web.form.RegisterForm.getAge(RegisterForm.java:60)
+	at edu.carroll.ifa.web.form.RegisterOrUpdateForm.getAge(RegisterForm.java:60)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	... 77 common frames omitted
 
 2023-09-13 17:17:24,530 - [ERROR] - from org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet] in http-nio-8080-exec-1 
 Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.thymeleaf.exceptions.TemplateInputException: An error happened during template parsing (template: "class path resource [templates/register.html]")] with root cause
 java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "this.age" is null
-	at edu.carroll.ifa.web.form.RegisterForm.getAge(RegisterForm.java:60)
+	at edu.carroll.ifa.web.form.RegisterOrUpdateForm.getAge(RegisterForm.java:60)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
 	at org.springframework.beans.BeanWrapperImpl$BeanPropertyHandler.getValue(BeanWrapperImpl.java:265)

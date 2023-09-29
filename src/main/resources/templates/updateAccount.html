@@ -5,31 +5,39 @@
     <title>Update Account</title>
 </head>
 <body>
-    <h1>Update Account</h1>
-    <a href="/loginSuccess"> click to go back</a>
-    <form th:action="@{/updateAccount}" th:object="${user}" method="post">
-        Username:<br>
-        <input type="text" th:field="*{username}" placeholder="Username"/>
+<h1>Update Account</h1>
+<a href="/loginSuccess"> click to go back</a>
+<form action="#" th:action="@{/updateAccount}" th:object="${registerOrUpdateForm}" method="post">
+    <span th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global error</span><br/>
 
-        <br>
-       Password:<br>
-       <input type="password" th:field="*{hashedPassword}" placeholder="Password"/>
+    Username:<br>
+    <input type="text" th:field="*{username}" placeholder="Username"/>
+    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</span><br/>
 
-       <br>
-        First name:<br>
-        <input type="text" th:field="*{firstName}" placeholder="First Name"/>
+    <br>
+    Password:<br>
+    <input type="password" th:field="*{password}" placeholder="Password"/>
+    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span><br/>
 
-        <br>
-        Last name:<br>
-        <input type="text" th:field="*{lastName}" placeholder="Last Name"/>
+    <br>
+    First name:<br>
+    <input type="text" th:field="*{firstName}" placeholder="First Name"/>
+    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</span><br/>
 
-        <br>
-        Age:<br>
-        <input type="number" th:field="*{age}" placeholder="Age"/>
-        <br>
-        <br>
-        <br>
-        <button type="submit">Submit</button>
-    </form>
+    <br>
+    Last name:<br>
+    <input type="text" th:field="*{lastName}" placeholder="Last Name"/>
+    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</span><br/>
+
+    <br>
+    Age:<br>
+    <input type="number" th:field="*{age}" placeholder="Age"/>
+    <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</span><br/>
+
+    <br>
+    <br>
+    <br>
+    <button type="submit">Submit</button>
+</form>
 </body>
 </html>

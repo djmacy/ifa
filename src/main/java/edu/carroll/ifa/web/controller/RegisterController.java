@@ -2,7 +2,7 @@ package edu.carroll.ifa.web.controller;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.service.UserService;
-import edu.carroll.ifa.web.form.RegisterForm;
+import edu.carroll.ifa.web.form.RegisterOrUpdateForm;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,26 +20,40 @@ public class RegisterController {
     private UserService service;
     private Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
+    /**
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/register")
     public String registerGet(Model model) {
-        model.addAttribute("registerForm", new RegisterForm());
+        model.addAttribute("registerOrUpdateForm", new RegisterOrUpdateForm());
         logger.info("Visited the register page");
         return "register";
     }
 
+    /**
+     *
+     * @param registerOrUpdateForm
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/register")
-    public String registerPost(@Valid @ModelAttribute RegisterForm registerForm, BindingResult result, Model model) {
+    public String registerPost(@Valid @ModelAttribute RegisterOrUpdateForm registerOrUpdateForm,
+                               BindingResult result,
+                               Model model) {
         if (result.hasErrors()) {
             logger.warn("There were " + result.getErrorCount() + " errors");
             return "register";
         }
 
         User newUser = new User();
-        newUser.setUsername(registerForm.getUsername());
-        newUser.setHashedPassword(registerForm.getPassword());
-        newUser.setFirstName(registerForm.getFirstName());
-        newUser.setLastName(registerForm.getLastName());
-        newUser.setAge(registerForm.getAge());
+        newUser.setUsername(registerOrUpdateForm.getUsername());
+        newUser.setHashedPassword(registerOrUpdateForm.getPassword());
+        newUser.setFirstName(registerOrUpdateForm.getFirstName());
+        newUser.setLastName(registerOrUpdateForm.getLastName());
+        newUser.setAge(registerOrUpdateForm.getAge());
 
         boolean saved = service.saveUser(newUser);
 

@@ -36,7 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
-## ds_store
+## OS generated files
 .DS_Store
+.DS_Store?
 
+## Logs
 logs/

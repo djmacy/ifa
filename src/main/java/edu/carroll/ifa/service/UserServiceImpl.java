@@ -50,6 +50,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @Override
     public boolean saveUser(User user) {
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
@@ -64,6 +69,12 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     *
+     * @param user
+     * @param updatedUser
+     * @return
+     */
     @Override
     public boolean saveUser(User user, User updatedUser){
         user.setFirstName(updatedUser.getFirstName());
@@ -76,8 +87,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-
-
+    /**
+     *
+     * @param username
+     * @return
+     */
     @Override
     public boolean deleteUser(String username){
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
@@ -90,6 +104,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     @Override
     public int getUserAge(String username) {
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
@@ -102,6 +121,11 @@ public class UserServiceImpl implements UserService {
         return -1;
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     @Override
     public User getUserByUserName(String username){
         List<User> users = userRepo.findByUsernameIgnoreCase(username);

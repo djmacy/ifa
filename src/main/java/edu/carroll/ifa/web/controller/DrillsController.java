@@ -18,11 +18,22 @@ public class DrillsController {
     private UserService userService;
     private Logger logger = LoggerFactory.getLogger(DrillsController.class);
 
+    /**
+     *
+     * @param userService
+     */
     @Autowired
     public DrillsController(UserService userService) {
+
         this.userService = userService;
     }
 
+    /**
+     *
+     * @param model
+     * @param session
+     * @return
+     */
     @GetMapping("/soccerDrills")
     public String soccerDrills(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");

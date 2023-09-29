@@ -6,7 +6,7 @@
 </head>
 <body>
 <center><h1>Register Account</h1></center>
-<form action="#" th:action="@{/register}" th:object="${registerForm}" method="post">
+<form action="#" th:action="@{/register}" th:object="${registerOrUpdateForm}" method="post">
     <span th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global error</span><br/>
     <input type="text" th:field="*{username}" placeholder="Username"/>
     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</span><br/>

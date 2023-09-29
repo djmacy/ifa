@@ -20,9 +20,19 @@ public class LoginController {
    private final UserService userService;
    private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    /**
+     *
+     * @param userService
+     */
    public LoginController(UserService userService) {
        this.userService = userService;
    }
+
+    /**
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/login")
     public String loginGet(Model model) {
         model.addAttribute("loginForm", new LoginForm());
@@ -30,6 +40,14 @@ public class LoginController {
         return "login";
     }
 
+    /**
+     *
+     * @param loginForm
+     * @param result
+     * @param session
+     * @param attrs
+     * @return
+     */
     @PostMapping("/login")
     public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs) {
         if (result.hasErrors()) {
@@ -46,6 +64,12 @@ public class LoginController {
         return "redirect:/loginSuccess";
     }
 
+    /**
+     *
+     * @param session
+     * @param model
+     * @return
+     */
     @GetMapping("/loginSuccess")
     public String loginSuccess(HttpSession session, Model model) {
        String sessionUsername = (String) session.getAttribute("username");
@@ -59,12 +83,21 @@ public class LoginController {
        }
     }
 
+    /**
+     *
+     * @return
+     */
     @GetMapping("/loginFailure")
     public String loginFailure() {
        logger.warn("failed to log in");
        return "loginFailure";
     }
 
+    /**
+     *
+     * @param session
+     * @return
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
        session.removeAttribute("username");

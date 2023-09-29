@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+
 public class IfaApplication {
 
 	public static void main(String[] args) {

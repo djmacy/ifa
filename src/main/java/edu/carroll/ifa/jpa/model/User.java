@@ -27,6 +27,15 @@ public class User {
 
     public User() {
     }
+
+    /**
+     *
+     * @param username
+     * @param hashedPassword
+     * @param firstName
+     * @param lastName
+     * @param age
+     */
     public User(String username, String hashedPassword, String firstName, String lastName, Integer age) {
         this.username = username;
         this.hashedPassword = hashedPassword;
@@ -35,50 +44,110 @@ public class User {
         this.age = age;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getId() {
+
         return id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUsername() {
+
         return username;
     }
 
+    /**
+     *
+     * @param username
+     */
     public void setUsername(String username) {
+
         this.username = username;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFirstName() {
+
         return firstName;
     }
 
+    /**
+     *
+     * @param firstName
+     */
     public void setFirstName(String firstName) {
+
         this.firstName = firstName;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLastName() {
+
         return lastName;
     }
 
+    /**
+     *
+     * @param lastName
+     */
     public void setLastName(String lastName) {
+
         this.lastName = lastName;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getAge() {
+
         return age;
     }
 
+    /**
+     *
+     * @param age
+     */
     public void setAge(Integer age) {
+
         this.age = age;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getHashedPassword() {
+
         return hashedPassword;
     }
 
+    /**
+     *
+     * @param hashedPassword
+     */
     public void setHashedPassword(String hashedPassword) {
+
         this.hashedPassword = hashedPassword;
     }
 
+    /**
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -90,8 +159,13 @@ public class User {
         return username.equals(user.username) && hashedPassword.equals(user.hashedPassword);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
+
         return Objects.hash(username, hashedPassword);
     }
 
