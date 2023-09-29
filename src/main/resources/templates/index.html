@@ -3,21 +3,27 @@
 <head>
     <title>Welcome page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        img {
-            display: block;
-            margin: 0 auto;
-            max-width: 20%;
-            border-radius: 50%;
-        }
-    </style>
-    <img src="/images/ifaLogo.png" alt="IFA Logo" th:src="@{/images/ifaLogo.png}" />
+    <link rel="stylesheet" type="text/css" href="/styles/index.css">
 
 </head>
 <body>
-<p>Welcome to the application!</p>
-<br/>
-<p><a href="/login">login</a> to review your drills</p>
-<p><a href="/register">register</a> to get your personalized drills</p>
+<div class="header">
+    <div class="column">
+        <a href="/login" style="text-decoration: none; color: inherit; display: inline-block">
+            <button class="button left-button">Login</button>
+        </a>
+    </div>
+
+    <div class="column">
+        <a href="/"style="text-decoration: none; color: inherit; display: inline-block">
+        <img class="ifa-logo" src="/images/ifaLogo.png" alt="IFA Logo" th:src="@{/images/ifaLogo.png}"/>
+        </a>
+    </div>
+    <div class="column">
+        <a href="/register" style="text-decoration: none; color: inherit; display: inline-block">
+            <button class="button right-button">Register</button>
+        </a>
+    </div>
+</div>
 </body>
 </html>
