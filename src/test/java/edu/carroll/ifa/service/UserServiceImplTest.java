@@ -1,20 +1,25 @@
 package edu.carroll.ifa.service;
 
 import java.util.List;
+
+import edu.carroll.ifa.IfaApplication;
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.springframework.test.util.AssertionErrors.*;
 
 /**
  * Unit test for the UserServiceImpl class to make sure we are interacting with the database correctly.
  */
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = IfaApplication.class)
 @Transactional
 public class UserServiceImplTest {
 
@@ -30,7 +35,6 @@ public class UserServiceImplTest {
     private static final Integer age2 = 14;
     private final User fakeUser1 = new User(username1, password1, fname1, lname1, age1);
     private final User fakeUser2 = new User(username2, password2, fname2, lname2, age2);
-
     @Autowired
     private UserService userService;
     @Autowired
@@ -45,7 +49,7 @@ public class UserServiceImplTest {
         assertNotNull("userRepository must be injected", userRepo);
         assertNotNull("userService must be injected", userService);
 
-        // Ensure fake record is in DB
+        // Ensure fake records are in DB
         final List<User> users = userRepo.findByUsernameIgnoreCase(username1);
         if (users.isEmpty())
             userService.saveUser(fakeUser1);
@@ -53,8 +57,6 @@ public class UserServiceImplTest {
         final List<User> users2 = userRepo.findByUsernameIgnoreCase(username2);
         if (users2.isEmpty())
             userService.saveUser(fakeUser2);
-
-
     }
 
     /**
