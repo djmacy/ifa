@@ -15,12 +15,10 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final UserRepository userRepo;
-
-
-    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
     /**
@@ -48,6 +46,9 @@ public class UserServiceImpl implements UserService {
         if (users.size() != 1)
             return false;
         User u = users.get(0);
+        if (password == null) {
+            return false;
+        }
 
         if (!passwordEncoder.matches(password, u.getHashedPassword()))
             return false;

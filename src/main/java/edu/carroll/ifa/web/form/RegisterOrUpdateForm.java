@@ -30,7 +30,6 @@ public class RegisterOrUpdateForm {
      * @return username
      */
     public String getUsername() {
-
         return username;
     }
 
@@ -39,7 +38,6 @@ public class RegisterOrUpdateForm {
      * @param username - Username from the registerForm
      */
     public void setUsername(String username) {
-
         this.username = username;
     }
 
@@ -48,7 +46,6 @@ public class RegisterOrUpdateForm {
      * @return password
      */
     public String getPassword() {
-
         return password;
     }
 
@@ -57,7 +54,6 @@ public class RegisterOrUpdateForm {
      * @param password - Password from the registerForm
      */
     public void setPassword(String password) {
-
         this.password = password;
     }
 
@@ -66,7 +62,6 @@ public class RegisterOrUpdateForm {
      * @return firstName
      */
     public String getFirstName() {
-
         return firstName;
     }
 
@@ -75,7 +70,6 @@ public class RegisterOrUpdateForm {
      * @param firstName - First name from the registerForm
      */
     public void setFirstName(String firstName) {
-
         this.firstName = firstName;
     }
 
@@ -84,7 +78,6 @@ public class RegisterOrUpdateForm {
      * @return lastName
      */
     public String getLastName() {
-
         return lastName;
     }
 
@@ -93,7 +86,6 @@ public class RegisterOrUpdateForm {
      * @param lastName - Last name from the registerForm
      */
     public void setLastName(String lastName) {
-
         this.lastName = lastName;
     }
 
@@ -102,7 +94,6 @@ public class RegisterOrUpdateForm {
      * @return age
      */
     public Integer getAge() {
-
         return age;
     }
 
@@ -111,7 +102,6 @@ public class RegisterOrUpdateForm {
      * @param age - Age from the registerForm
      */
     public void setAge(Integer age) {
-
         this.age = age;
     }
 }
