@@ -18,8 +18,7 @@ import static org.springframework.test.util.AssertionErrors.*;
 /**
  * Unit test for the UserServiceImpl class to make sure we are interacting with the database correctly.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = IfaApplication.class)
+@SpringBootTest
 @Transactional
 public class UserServiceImplTest {
 
@@ -37,8 +36,6 @@ public class UserServiceImplTest {
     private final User fakeUser2 = new User(username2, password2, fname2, lname2, age2);
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepository userRepo;
 
     /**
      * Before each test is run we ensure that the UserRepository and UserService have been injected and that fakeUser is
@@ -46,16 +43,15 @@ public class UserServiceImplTest {
      */
     @BeforeEach
     public void beforeTest() {
-        assertNotNull("userRepository must be injected", userRepo);
         assertNotNull("userService must be injected", userService);
 
         // Ensure fake records are in DB
-        final List<User> users = userRepo.findByUsernameIgnoreCase(username1);
-        if (users.isEmpty())
+        boolean exists = userService.validateUser(fakeUser1.getUsername(), fakeUser1.getHashedPassword());
+        if (!exists)
             userService.saveUser(fakeUser1);
 
-        final List<User> users2 = userRepo.findByUsernameIgnoreCase(username2);
-        if (users2.isEmpty())
+        exists = userService.validateUser(fakeUser2.getUsername(), fakeUser2.getHashedPassword());
+        if (!exists)
             userService.saveUser(fakeUser2);
     }
 
