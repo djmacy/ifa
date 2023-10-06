@@ -39,16 +39,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean validateUser(String username, String password) {
+        if (password == null) {
+            return false;
+        }
         // Always do the lookup in a case-insensitive manner (lower-casing the data). -Nate
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
-
         // We expect 0 or 1, so if we get more than 1, bail out as this is an error we don't deal with properly. -Nate
         if (users.size() != 1)
             return false;
         User u = users.get(0);
-        if (password == null) {
-            return false;
-        }
 
         if (!passwordEncoder.matches(password, u.getHashedPassword()))
             return false;
@@ -65,6 +64,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean saveUser(User user) {
+        //password is still not hashed until we encode it
+        if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
+            user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
+            user.getAge() <= 0 || user.getAge() >= 126) {
+            return false;
+        }
+
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
         //if the username list is empty then the username does not exist
         if (!existingUser.isEmpty()) {
@@ -73,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
         userRepo.save(user);
-        logger.info("Saved the user");
+        logger.info("Saved the user: " + user.getUsername());
         return true;
     }
 

@@ -173,4 +173,19 @@ public class User {
         return Objects.hash(username, hashedPassword);
     }
 
+    private static final String EOL = System.lineSeparator();
+    private static final String TAB = "\t";
+
+    /**
+     * Nate's toString method for User object.
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Login @ ").append(super.toString()).append("[").append(EOL);
+        builder.append(TAB).append("username=").append(username).append(EOL);
+        builder.append(TAB).append("hashedPassword=").append("****").append(EOL);
+        builder.append("]").append(EOL);
+        return builder.toString();
+    }
 }
