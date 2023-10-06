@@ -22,11 +22,11 @@ import org.slf4j.LoggerFactory;
  */
 @Controller
 public class UserController {
+     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
      @Autowired
      private SmartValidator validator;
 
      private final UserService userService;
-     private Logger logger = LoggerFactory.getLogger(UserController.class);
     /**
      * Constructs a UserController instance with the UserService dependency.
      * @param userService - UserService implementation used in the UserController
@@ -38,7 +38,6 @@ public class UserController {
     /**
      * Handles the GET request for the /deleteAccount page and displays the page
      * @return deleteAccount page
->>>>>>> main
      */
     @GetMapping("/deleteAccount")
     public String deleteAccount(){

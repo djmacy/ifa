@@ -1,12 +1,9 @@
 package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
-import edu.carroll.ifa.jpa.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,7 +15,6 @@ import static org.springframework.test.util.AssertionErrors.*;
 @SpringBootTest
 @Transactional
 public class UserServiceImplTest {
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private static final String username1 = "bob_johnson";
     private static final String username2 = "ryan_daniels";
     private static final String icelandicName = "Davíð";
@@ -37,20 +33,17 @@ public class UserServiceImplTest {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserRepository userRepo;
-
     /**
      * Before each test is run we ensure that the UserRepository and UserService have been injected and that fakeUser is
      * in the database.
      */
     @BeforeEach
     public void beforeTest() {
-        assertNotNull("userService must be injected", userService);
 
         //Ensure fake records are in DB
         //It is actually not a hashed password until after the user is saved.
         boolean exists = userService.validateUser(fakeUser1.getUsername(), fakeUser1.getHashedPassword());
+        //if the user does not exist in the database save the fakeUser.
         if (!exists)
             userService.saveUser(fakeUser1);
 
