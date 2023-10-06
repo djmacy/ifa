@@ -1,8 +1,6 @@
 package edu.carroll.ifa.web.form;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 /**
  * This class outlines the criteria for registering with the RegisterForm. It also allows to interact with the data that
@@ -23,6 +21,8 @@ public class RegisterOrUpdateForm {
     private String lastName;
     //@NotNull(message = "Please enter a valid age")
     @NotNull(message = "Age is required")
+    @Min(value = 1L, message = "The value must be positive")
+    @Max(value = 126L, message = "The value must be less than 127")
     private Integer age;
 
     /**
