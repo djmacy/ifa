@@ -219,7 +219,7 @@ public class UserServiceImplTest {
     }
 
     /**
-     * This unit test checks to see that a new User with no age cannot be saved into the database
+     * This unit test checks to see that a new User with no age cannot be added to the database
      */
     @Test
     public void saveUserNullAgeTest() {
@@ -228,21 +228,48 @@ public class UserServiceImplTest {
     }
 
     /**
-     * This unit test checks to see if a new User with a negative age can be added to the database
+     * This unit test checks to see if a new User with a negative age cannot be added to the database
      */
     @Test
     public void saveUserNegativeAgeTest() {
         User negativeAge = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, Integer.MIN_VALUE);
         assertFalse("saveUserNegativeAgeTest: should fail to add a user with negative age", userService.saveUser(negativeAge));
     }
-    
+
     /**
-     * This unit test checks to see if a new user with an age of 125 can be added to the database
+     * This unit test checks to see if a new user with an age of 1 can be added to the database since 1-125 is the cutoff
+     */
+    @Test
+    public void saveUser1AgeTest() {
+        User age1 = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, 1);
+        assertTrue("saveUser1AgeTest: should succeed to add a user with an age of 1", userService.saveUser(age1));
+    }
+
+    /**
+     * This unit test checks to see if a new user with an age of 125 can be added to the database since 1-125 is the cutoff
      */
     @Test
     public void saveUser125AgeTest() {
         User age125 = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, 125);
         assertTrue("saveUser125AgeTest: should succeed to add a user with an age of 125", userService.saveUser(age125));
+    }
+
+    /**
+     * This unit test checks to see if a new user with an age of 0 cannot be added to the database
+     */
+    @Test
+    public void saveUser0AgeTest() {
+        User age0 = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, 0);
+        assertFalse("saveUser0AgeTest: should fail to add a user with an age of 0", userService.saveUser(age0));
+    }
+
+    /**
+     * This unit test checks to see if a new user with an age of Integer.MAX_VALUE cannot be added to the database
+     */
+    @Test
+    public void saveUserMaxAgeTest() {
+        User ageMax = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, Integer.MAX_VALUE);
+        assertFalse("saveUserMaxAgeTest: should fail to add a user with an age of Integer.MAX_VALUE", userService.saveUser(ageMax));
     }
 
     /*
