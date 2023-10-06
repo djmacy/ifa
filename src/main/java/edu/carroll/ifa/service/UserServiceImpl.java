@@ -15,12 +15,10 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final UserRepository userRepo;
-
-
-    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
     /**
@@ -41,9 +39,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean validateUser(String username, String password) {
+        if (password == null) {
+            return false;
+        }
         // Always do the lookup in a case-insensitive manner (lower-casing the data). -Nate
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
-
         // We expect 0 or 1, so if we get more than 1, bail out as this is an error we don't deal with properly. -Nate
         if (users.size() != 1)
             return false;
@@ -63,11 +63,32 @@ public class UserServiceImpl implements UserService {
      * @return false if user already exists in database, true otherwise
      */
     @Override
-    public User saveUser(User user) {
+//<<<<<<< HEAD
+//    public User saveUser(User user) {
+//        user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
+//        userRepo.save(user);
+//        logger.info("Saved the user");
+//        return user;
+//=======
+    public boolean saveUser(User user) {
+        //password is still not hashed until we encode it
+        if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
+            user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
+            user.getAge() <= 0 || user.getAge() >= 126) {
+            return false;
+        }
+
+        List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
+        //if the username list is empty then the username does not exist
+        if (!existingUser.isEmpty()) {
+             return false;
+         }
+
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
         userRepo.save(user);
-        logger.info("Saved the user");
-        return user;
+        logger.info("Saved the user: " + user.getUsername());
+        return true;
+
     }
 
     /**
