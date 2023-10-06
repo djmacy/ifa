@@ -3,8 +3,14 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Login page</title>
+  <link rel="stylesheet" type="text/css" href="/styles/index.css">
 </head>
 <body>
+<div class="column">
+  <a href="/"style="text-decoration: none; color: inherit; display: inline-block">
+    <img class="ifa-logo" src="/images/ifaLogo.png" alt="IFA Logo" th:src="@{/images/ifaLogo.png}"/>
+  </a>
+</div>
 <center><h1>Login</h1></center>
 <form action="#" th:action="@{/login}" th:object="${loginForm}" method="post">
   <span th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global error</span><br/>

@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Update Account</title>
+    <link rel="stylesheet" type="text/css" href="/styles/index.css">
 </head>
 <body>
+<div class="column">
+    <a href="/"style="text-decoration: none; color: inherit; display: inline-block">
+        <img class="ifa-logo" src="/images/ifaLogo.png" alt="IFA Logo" th:src="@{/images/ifaLogo.png}"/>
+    </a>
+</div>
 <h1>Update Account</h1>
 <a href="/loginSuccess"> click to go back</a>
 <form action="#" th:action="@{/updateAccount}" th:object="${registerOrUpdateForm}" method="post">
