@@ -6,10 +6,7 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.SmartValidator;
-import org.springframework.validation.Validator;
+import org.springframework.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import edu.carroll.ifa.jpa.model.User;
@@ -86,6 +83,7 @@ public class UserController {
         registerOrUpdateForm.setLastName(user.getLastName());
         registerOrUpdateForm.setAge(user.getAge());
 
+
         model.addAttribute("registerOrUpdateForm", registerOrUpdateForm);
         logger.info("visited update account page ");
         return "updateAccount";
@@ -103,12 +101,24 @@ public class UserController {
                                 HttpSession session,
                                 BindingResult result) {
         validator.validate(updatedUser, result);
+
+        String sessionUsername = (String) session.getAttribute("username");
+        User preExistingUserCheckUser = userService.getUserByUserName(updatedUser.getUsername());
+
+        /*
+            Check if the user is trying to set their username to the username of a
+            different user who's already in the database
+        */
+        if (preExistingUserCheckUser != null && !sessionUsername.equals(preExistingUserCheckUser.getUsername())) {
+            String userNameAlreadyTakenErrorMessage = String.format("The username you provided (%s) is already in use, please try another", updatedUser.getUsername());
+            result.rejectValue("username", "not.mapped.error.message", userNameAlreadyTakenErrorMessage);
+        }
+
         if (result.hasErrors()) {
             logger.warn("There were " + result.getErrorCount() + " errors");
             return "updateAccount";
         }
 
-        String sessionUsername = (String) session.getAttribute("username");
         // If you're not logged in, redirect to login
         if(sessionUsername == null) {
             return "redirect:/login";
@@ -127,20 +137,12 @@ public class UserController {
         user.setLastName(updatedUser.getLastName());
         user.setAge(updatedUser.getAge());
 
-        boolean saved = userService.saveUser(user);
-
-        if (!saved) {
-            result.addError(new ObjectError("globalError", "Username already exists"));
-            logger.warn("The username " + user.getUsername() + " already exists");
-            return "register";
-        }
-        session.setAttribute("username", user.getUsername());
+        userService.saveUser(user);
         logger.info("The username " + user.getUsername() + " completed registration");
 
-
-        session.setAttribute("username", updatedUser.getUsername());
-
-        logger.info(sessionUsername + " successfully updated their account");
+        logger.info("The username " + user.getUsername() + " completed registration");
+        session.setAttribute("username", user.getUsername());
+        logger.info(user.getUsername() + " successfully updated their account");
 
         return "redirect:/loginSuccess";
     }

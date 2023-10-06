@@ -22,7 +22,7 @@ public interface UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    boolean saveUser(User user);
+    User saveUser(User user);
 
     /**
      * Given a username, delete the User associated with the username provided.

@@ -63,17 +63,11 @@ public class UserServiceImpl implements UserService {
      * @return false if user already exists in database, true otherwise
      */
     @Override
-    public boolean saveUser(User user) {
-        List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
-        //if the username list is empty then the username does not exist
-        if (!existingUser.isEmpty()) {
-             return false;
-         }
-
+    public User saveUser(User user) {
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
         userRepo.save(user);
         logger.info("Saved the user");
-        return true;
+        return user;
     }
 
     /**

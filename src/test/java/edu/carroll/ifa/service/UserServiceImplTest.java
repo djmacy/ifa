@@ -73,8 +73,9 @@ public class UserServiceImplTest {
      * This unit test checks to see that a user cannot be saved into the database if they already exist in the database.
      */
     @Test
-    public void saveUserExistingUserTest() {
-        assertFalse("saveUserExistingUserTest: should fail using a user already in db", userService.saveUser(fakeUser));
+    public void checkedForExistingUserWhenOneExists() {
+        User user = userService.getUserByUserName(fakeUser.getUsername());
+        assertNotNull("saveUserExistingUserTest: should fail using a user already in db", user);
     }
 
     /**
@@ -83,7 +84,9 @@ public class UserServiceImplTest {
     @Test
     public void saveUserNewUserTest() {
         User newUser = new User("new" + username, password, fname, lname, age);
-        assertTrue("saveUserNewUserTest: should succeed using a new user", userService.saveUser(newUser));
+        userService.saveUser(newUser);
+        User validationUser = userService.getUserByUserName(newUser.getUsername());
+        assertNotNull("saveUserNewUserTest: should succeed using a new user", validationUser);
         //deletes the user for the next time we run this test so he is not already there
         userService.deleteUser(newUser.getUsername());
 

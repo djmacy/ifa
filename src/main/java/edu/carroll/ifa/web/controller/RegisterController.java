@@ -3,6 +3,7 @@ package edu.carroll.ifa.web.controller;
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.service.UserService;
 import edu.carroll.ifa.web.form.RegisterOrUpdateForm;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +52,7 @@ public class RegisterController {
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute RegisterOrUpdateForm registerOrUpdateForm,
                                BindingResult result,
+                               HttpSession session,
                                Model model) {
         if (result.hasErrors()) {
             logger.warn("There were " + result.getErrorCount() + " errors");
@@ -64,14 +66,20 @@ public class RegisterController {
         newUser.setLastName(registerOrUpdateForm.getLastName());
         newUser.setAge(registerOrUpdateForm.getAge());
 
-        boolean saved = userService.saveUser(newUser);
+        User preExistingUserCheckUser = userService.getUserByUserName(newUser.getUsername());
 
-        if (!saved) {
+        if (preExistingUserCheckUser != null) {
             result.addError(new ObjectError("globalError", "Username already exists"));
             logger.warn("The username " + newUser.getUsername() + " already exists");
             return "register";
         }
+
+        userService.saveUser(newUser);
         logger.info("The username " + newUser.getUsername() + " completed registration");
-        return "redirect:/login";
+
+        // Set the username up in the session
+        session.setAttribute("username", newUser.getUsername());
+        model.addAttribute("username", newUser.getUsername());
+        return "loginSuccess";
     }
 }
