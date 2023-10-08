@@ -37,7 +37,7 @@ public class RegisterController {
     @GetMapping("/register")
     public String registerGet(Model model) {
         model.addAttribute("registerOrUpdateForm", new RegisterOrUpdateForm());
-        logger.info("Visited the register page");
+        logger.info("New user visited the register page");
         return "register";
     }
 
@@ -55,7 +55,7 @@ public class RegisterController {
                                HttpSession session,
                                Model model) {
         if (result.hasErrors()) {
-            logger.warn("There were " + result.getErrorCount() + " errors");
+            logger.warn("There were {} errors", result.getErrorCount());
             return "register";
         }
 
@@ -70,12 +70,12 @@ public class RegisterController {
 
         if (preExistingUserCheckUser != null) {
             result.addError(new ObjectError("globalError", "Username already exists"));
-            logger.warn("The username " + newUser.getUsername() + " already exists");
+            logger.warn("The username '{}' already exists", newUser.getUsername());
             return "register";
         }
 
         userService.saveUser(newUser);
-        logger.info("The username " + newUser.getUsername() + " completed registration");
+        logger.info("The user '{}' completed registration", newUser.getUsername());
 
         // Set the username up in the session
         session.setAttribute("username", newUser.getUsername());

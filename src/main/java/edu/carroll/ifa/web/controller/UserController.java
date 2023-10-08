@@ -40,8 +40,9 @@ public class UserController {
      * @return deleteAccount page
      */
     @GetMapping("/deleteAccount")
-    public String deleteAccount(){
-        logger.info("visited delete account page ");
+    public String deleteAccount(HttpSession session){
+        String username = (String) session.getAttribute("username");
+        logger.info("User '{}' visited delete account page", username);
         return "deleteAccount";
     }
 
@@ -55,8 +56,8 @@ public class UserController {
         String sessionUsername = (String) session.getAttribute("username");
         boolean deleteStatus = userService.deleteUser(sessionUsername);
         if(deleteStatus){
+            logger.info("User '{}' successfully deleted their account", sessionUsername);
             session.removeAttribute("username");
-            logger.info(sessionUsername + " successfully deleted their account ");
             return "redirect:/";
         }else{
             return "redirect:/loginSuccess";
@@ -84,7 +85,7 @@ public class UserController {
 
 
         model.addAttribute("registerOrUpdateForm", registerOrUpdateForm);
-        logger.info("visited update account page ");
+        logger.info("User '{}' visited update account page", sessionUsername);
         return "updateAccount";
     }
 
@@ -114,7 +115,7 @@ public class UserController {
         }
 
         if (result.hasErrors()) {
-            logger.warn("There were " + result.getErrorCount() + " errors");
+            logger.warn("There were {} errors", result.getErrorCount());
             return "updateAccount";
         }
 
@@ -137,11 +138,8 @@ public class UserController {
         user.setAge(updatedUser.getAge());
 
         userService.saveUser(user);
-        logger.info("The username " + user.getUsername() + " completed registration");
-
-        logger.info("The username " + user.getUsername() + " completed registration");
+        logger.info("The user '{}' updated their information", user.getUsername());
         session.setAttribute("username", user.getUsername());
-        logger.info(user.getUsername() + " successfully updated their account");
 
         return "redirect:/loginSuccess";
     }

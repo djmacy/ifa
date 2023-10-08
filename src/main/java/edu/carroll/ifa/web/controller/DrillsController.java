@@ -21,7 +21,6 @@ public class DrillsController {
      */
 
     public DrillsController(UserService userService) {
-
         this.userService = userService;
     }
 
@@ -37,7 +36,7 @@ public class DrillsController {
         String username = (String) session.getAttribute("username");
         int userAge = userService.getUserAge(username);
         model.addAttribute("userAge", userAge);
-        logger.info(username + " successfully visited the soccer drills page");
+        logger.info("/soccerDrills: user '{}' accessed their drills", username);
         return "soccerDrills";
     }
 }

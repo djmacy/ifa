@@ -44,7 +44,7 @@ public class LoginController {
     @GetMapping("/login")
     public String loginGet(Model model) {
         model.addAttribute("loginForm", new LoginForm());
-        logger.info("Visited the login page");
+        logger.info("New user has visited the login page");
         return "login";
     }
 
@@ -59,7 +59,7 @@ public class LoginController {
     @PostMapping("/login")
     public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs) {
         if (result.hasErrors()) {
-            logger.warn("There were " + result.getErrorCount() + " errors");
+            logger.warn("There were {} errors", result.getErrorCount());
             return "login";
         }
         if (!userService.validateUser(loginForm.getUsername(), loginForm.getPassword())) {
@@ -85,9 +85,10 @@ public class LoginController {
 
        if (sessionUsername != null) {
            model.addAttribute("username", sessionUsername);
-           logger.info(sessionUsername + " successfully logged in");
+           logger.info("User '{}' successfully logged in", sessionUsername);
            return "loginSuccess";
        } else {
+           logger.info("User is not logged in");
            return "redirect:/login";
        }
     }
