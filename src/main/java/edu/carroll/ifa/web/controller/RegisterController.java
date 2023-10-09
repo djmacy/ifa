@@ -47,7 +47,6 @@ public class RegisterController {
      * @param result - BindingResult validates form information
      * @param model - Model object for storing attributes
      * @return register page if user gives invalid or incomplete information, otherwise login page
-
      */
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute RegisterOrUpdateForm registerOrUpdateForm,
@@ -55,7 +54,7 @@ public class RegisterController {
                                HttpSession session,
                                Model model) {
         if (result.hasErrors()) {
-            logger.warn("There were {} errors", result.getErrorCount());
+            logger.debug("There were {} errors", result.getErrorCount());
             return "register";
         }
 
@@ -70,7 +69,7 @@ public class RegisterController {
 
         if (preExistingUserCheckUser != null) {
             result.addError(new ObjectError("globalError", "Username already exists"));
-            logger.warn("The username '{}' already exists", newUser.getUsername());
+            logger.info("The username '{}' already exists", newUser.getUsername());
             return "register";
         }
 

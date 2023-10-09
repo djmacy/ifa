@@ -53,7 +53,6 @@ public class User {
      * @return user id
      */
     public Integer getId() {
-
         return id;
     }
 
@@ -62,7 +61,6 @@ public class User {
      * @return user username
      */
     public String getUsername() {
-
         return username;
     }
 
@@ -71,7 +69,6 @@ public class User {
      * @param username - Username associated with the user
      */
     public void setUsername(String username) {
-
         this.username = username;
     }
 
@@ -80,7 +77,6 @@ public class User {
      * @return user first name
      */
     public String getFirstName() {
-
         return firstName;
     }
 
@@ -89,7 +85,6 @@ public class User {
      * @param firstName - First name associated with the user
      */
     public void setFirstName(String firstName) {
-
         this.firstName = firstName;
     }
 
@@ -98,7 +93,6 @@ public class User {
      * @return user last name
      */
     public String getLastName() {
-
         return lastName;
     }
 
@@ -107,7 +101,6 @@ public class User {
      * @param lastName - Last name associated with the user
      */
     public void setLastName(String lastName) {
-
         this.lastName = lastName;
     }
 
@@ -116,7 +109,6 @@ public class User {
      * @return user age
      */
     public Integer getAge() {
-
         return age;
     }
 
@@ -125,7 +117,6 @@ public class User {
      * @param age - Age associated with the user
      */
     public void setAge(Integer age) {
-
         this.age = age;
     }
 
@@ -134,7 +125,6 @@ public class User {
      * @return associated hashed password for the user
      */
     public String getHashedPassword() {
-
         return hashedPassword;
     }
 
@@ -143,7 +133,6 @@ public class User {
      * @param hashedPassword - Hashed password associated with the user
      */
     public void setHashedPassword(String hashedPassword) {
-
         this.hashedPassword = hashedPassword;
     }
 

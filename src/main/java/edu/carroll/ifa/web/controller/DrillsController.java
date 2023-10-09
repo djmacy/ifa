@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
 public class DrillsController {
     private static final Logger logger = LoggerFactory.getLogger(DrillsController.class);
     private final UserService userService;
+
     /**
      * Constructs a DrillsController instance with the UserService dependency.
      * @param userService - UserService implementation used in the DrillsController
      */
-
     public DrillsController(UserService userService) {
         this.userService = userService;
     }

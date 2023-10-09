@@ -23,16 +23,17 @@ import org.slf4j.LoggerFactory;
 @Controller
 public class UserController {
      private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-     @Autowired
-     private SmartValidator validator;
+     private final SmartValidator validator;
 
      private final UserService userService;
+
     /**
      * Constructs a UserController instance with the UserService dependency.
      * @param userService - UserService implementation used in the UserController
      */
-    public UserController(UserService userService) {
+    public UserController(UserService userService, SmartValidator validator) {
         this.userService = userService;
+        this.validator = validator;
     }
 
     /**
@@ -83,7 +84,6 @@ public class UserController {
         registerOrUpdateForm.setLastName(user.getLastName());
         registerOrUpdateForm.setAge(user.getAge());
 
-
         model.addAttribute("registerOrUpdateForm", registerOrUpdateForm);
         logger.info("User '{}' visited update account page", sessionUsername);
         return "updateAccount";
@@ -95,7 +95,6 @@ public class UserController {
      * @param session - HttpSession for managing session information
      * @return loginSuccess page after updating the age
      */
-
     @PostMapping("/updateAccount")
     public String updateAccount(@ModelAttribute RegisterOrUpdateForm updatedUser,
                                 HttpSession session,
@@ -105,17 +104,14 @@ public class UserController {
         String sessionUsername = (String) session.getAttribute("username");
         User preExistingUserCheckUser = userService.getUserByUserName(updatedUser.getUsername());
 
-        /*
-            Check if the user is trying to set their username to the username of a
-            different user who's already in the database
-        */
+        //Check if the user is trying to set their username to the username of a different user who's already in the database
         if (preExistingUserCheckUser != null && !sessionUsername.equals(preExistingUserCheckUser.getUsername())) {
             String userNameAlreadyTakenErrorMessage = String.format("The username you provided (%s) is already in use, please try another", updatedUser.getUsername());
             result.rejectValue("username", "not.mapped.error.message", userNameAlreadyTakenErrorMessage);
         }
 
         if (result.hasErrors()) {
-            logger.warn("There were {} errors", result.getErrorCount());
+            logger.debug("There were {} errors", result.getErrorCount());
             return "updateAccount";
         }
 

@@ -8,6 +8,7 @@ import edu.carroll.ifa.web.form.LoginForm;
  */
 
 public interface UserService {
+
     /**
      * Given a username and a raw password, determine if the information provided is valid, and the user exists in the system.
      * @param username - Username provided by the user logging in
@@ -37,7 +38,6 @@ public interface UserService {
      * @param username - Username associated with the User
      * @return the age of the user if the list is not empty, -1 otherwise
      */
-
     int getUserAge(String username);
 
     /**

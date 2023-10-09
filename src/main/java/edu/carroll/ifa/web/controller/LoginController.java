@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
  * Controller class for the login page. It will check to see if the user is valid and then redirect them to the loginSuccess page.
  * It will also make sure that someone in the loginSuccess page is a valid user.
  */
-
 @Controller
 public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -59,12 +58,12 @@ public class LoginController {
     @PostMapping("/login")
     public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs) {
         if (result.hasErrors()) {
-            logger.warn("There were {} errors", result.getErrorCount());
+            logger.debug("There were {} errors", result.getErrorCount());
             return "login";
         }
         if (!userService.validateUser(loginForm.getUsername(), loginForm.getPassword())) {
             result.addError(new ObjectError("globalError", "Username and password do not match known users"));
-            logger.warn("login failed username or password do not match known users");
+            logger.info("login failed username or password do not match known users");
             return "login";
         }
         attrs.addAttribute("username", loginForm.getUsername());

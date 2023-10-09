@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
      * Constructs a new UserServiceImpl instance with the UserRepository
      * @param userRepo - UserRepository that is used in UserServiceImpl
      */
-
     public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
     }
@@ -117,7 +116,7 @@ public class UserServiceImpl implements UserService {
         logger.debug("deleteUser: user '{}' attempted to delete their information", username);
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
         if (userList.size() != 1) {
-            logger.warn("saveUser: user '{}' is duplicate", username);
+            logger.info("saveUser: user '{}' is duplicate", username);
             return false;
         }
         User user = userList.get(0);
@@ -153,7 +152,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserName(String username){
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
         if(users.size() != 1){
-            logger.warn("getUserByUsername: user '{}' is duplicated", username);
+            logger.info("getUserByUsername: user '{}' is duplicated", username);
             return null;
         }
         User user = users.get(0);
