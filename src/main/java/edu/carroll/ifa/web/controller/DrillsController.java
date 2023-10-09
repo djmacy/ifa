@@ -34,6 +34,10 @@ public class DrillsController {
     @GetMapping("/soccerDrills")
     public String soccerDrills(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
+        if (username == null) {
+            logger.info("User is not logged in");
+            return "redirect:/login";
+        }
         int userAge = userService.getUserAge(username);
         model.addAttribute("userAge", userAge);
         logger.info("/soccerDrills: user '{}' accessed their drills", username);

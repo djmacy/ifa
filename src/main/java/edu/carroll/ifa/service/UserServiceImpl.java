@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Given a loginForm, determine if the information provided is valid, and the user exists in the system.
+     * Given a username and a password, it determines if the information provided is valid, and the user exists in the system.
      *
      * @param username - Username of the person attempting to login
      * @param rawPassword - Raw password provided by the user logging in
@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
         logger.debug("validateUser: user '{}' attempted login", username);
         if (rawPassword == null) {
             logger.debug("validateUser: user '{}' provided null password", username);
+            return false;
+        }
+        if (username == null) {
+            logger.debug("validateUser: User provided a null username");
             return false;
         }
         // Always do the lookup in a case-insensitive manner (lower-casing the data). -Nate
@@ -88,11 +92,14 @@ public class UserServiceImpl implements UserService {
         userRepo.save(user);
         logger.info("saveUser: user '{}' saved", user.getUsername());
         return true;
-
     }
 
     /**
-
+     * Give a two User objects, the User with the old information and the User with the updated information it will
+     * overwrite the old user's information in the database.
+     * @param user - User that has the old information
+     * @param updatedUser - Updated user that has the new information
+     * @return true when the user is saved
      */
     @Override
     public boolean saveUser(User user, User updatedUser){
