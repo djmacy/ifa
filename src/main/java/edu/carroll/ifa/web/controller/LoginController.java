@@ -22,11 +22,10 @@ import org.slf4j.LoggerFactory;
  * Controller class for the login page. It will check to see if the user is valid and then redirect them to the loginSuccess page.
  * It will also make sure that someone in the loginSuccess page is a valid user.
  */
-
 @Controller
 public class LoginController {
-   private final UserService userService;
-   private Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private final UserService userService;
 
     /**
      * Constructs a LoginController instance with the UserService dependency.
@@ -45,7 +44,7 @@ public class LoginController {
     public String loginGet(Model model) {
         // adds the login form to the model
         model.addAttribute("loginForm", new LoginForm());
-        logger.info("Visited the login page");
+        logger.info("New user has visited the login page");
         return "login";
     }
 
@@ -61,14 +60,14 @@ public class LoginController {
     public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs) {
         // checks if there are any errors when the user trys to log in
         if (result.hasErrors()) {
-            logger.warn("There were " + result.getErrorCount() + " errors");
+            logger.debug("There were {} errors", result.getErrorCount());
             return "login";
         }
         // checks if the user's name and password are invalid
         if (!userService.validateUser(loginForm.getUsername(), loginForm.getPassword())) {
             // adds and error message to the result
             result.addError(new ObjectError("globalError", "Username and password do not match known users"));
-            logger.warn("login failed username or password do not match known users");
+            logger.info("login failed username or password do not match known users");
             return "login";
         }
         // adds the username to the redirect attributes
@@ -93,9 +92,10 @@ public class LoginController {
        if (sessionUsername != null) {
            // adds the username to the model
            model.addAttribute("username", sessionUsername);
-           logger.info(sessionUsername + " successfully logged in");
+           logger.info("User '{}' successfully logged in", sessionUsername);
            return "loginSuccess";
        } else {
+           logger.info("User is not logged in");
            return "redirect:/login";
        }
     }

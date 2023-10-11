@@ -8,6 +8,7 @@ import edu.carroll.ifa.web.form.LoginForm;
  */
 
 public interface UserService {
+
     /**
      * Given a username and a raw password, determine if the information provided is valid, and the user exists in the system.
      * @param username - Username provided by the user logging in

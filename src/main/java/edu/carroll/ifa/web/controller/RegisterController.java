@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
  */
 @Controller
 public class RegisterController {
+    private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     private final UserService userService;
-    private Logger logger = LoggerFactory.getLogger(RegisterController.class);
     /**
      * Constructs a LoginController instance with the UserService dependency.
      * @param userService - UserService implementation used in the LoginController
@@ -38,7 +38,7 @@ public class RegisterController {
     public String registerGet(Model model) {
         // creates a new registration form and adds it to the model
         model.addAttribute("registerOrUpdateForm", new RegisterOrUpdateForm());
-        logger.info("Visited the register page");
+        logger.info("New user visited the register page");
         return "register";
     }
 
@@ -48,7 +48,6 @@ public class RegisterController {
      * @param result - BindingResult validates form information
      * @param model - Model object for storing attributes
      * @return register page if user gives invalid or incomplete information, otherwise login page
-
      */
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute RegisterOrUpdateForm registerOrUpdateForm,
@@ -57,7 +56,7 @@ public class RegisterController {
                                Model model) {
         // check if there were any errors when the user submitted the registration
         if (result.hasErrors()) {
-            logger.warn("There were " + result.getErrorCount() + " errors");
+            logger.debug("There were {} errors", result.getErrorCount());
             return "register";
         }
         // create a new user after the user filled out the registration form
@@ -72,12 +71,12 @@ public class RegisterController {
         // display an error if the username is already in the database
         if (preExistingUserCheckUser != null) {
             result.addError(new ObjectError("globalError", "Username already exists"));
-            logger.warn("The username " + newUser.getUsername() + " already exists");
+            logger.info("The username '{}' already exists", newUser.getUsername());
             return "register";
         }
         // save the new user to the database
         userService.saveUser(newUser);
-        logger.info("The username " + newUser.getUsername() + " completed registration");
+        logger.info("The user '{}' completed registration", newUser.getUsername());
 
         // Set the username up in the session
         session.setAttribute("username", newUser.getUsername());

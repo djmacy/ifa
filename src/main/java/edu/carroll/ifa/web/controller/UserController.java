@@ -23,22 +23,27 @@ import org.slf4j.LoggerFactory;
  */
 @Controller
 public class UserController {
-
      private SmartValidator validator;
 
+     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
      private final UserService userService;
-     private Logger logger = LoggerFactory.getLogger(UserController.class);
+
     /**
      * Constructs a UserController instance with the UserService dependency.
      * @param userService - UserService implementation used in the UserController
      */
-    public UserController(UserService userService) {
+    public UserController(UserService userService, SmartValidator validator) {
         this.userService = userService;
+
         try {
             this.validator = (SmartValidator) Validation.buildDefaultValidatorFactory().getValidator();
         } catch (Exception ex) {
 
         }
+
+        this.validator = validator;
+
     }
 
     /**
@@ -46,8 +51,9 @@ public class UserController {
      * @return deleteAccount page
      */
     @GetMapping("/deleteAccount")
-    public String deleteAccount(){
-        logger.info("visited delete account page ");
+    public String deleteAccount(HttpSession session){
+        String username = (String) session.getAttribute("username");
+        logger.info("User '{}' visited delete account page", username);
         return "deleteAccount";
     }
 
@@ -64,9 +70,9 @@ public class UserController {
         boolean deleteStatus = userService.deleteUser(sessionUsername);
         // checking if the deletion was successful or not
         if(deleteStatus){
+            logger.info("User '{}' successfully deleted their account", sessionUsername);
             // removes username from the session
             session.removeAttribute("username");
-            logger.info(sessionUsername + " successfully deleted their account ");
             return "redirect:/";
         }else{
             return "redirect:/loginSuccess";
@@ -94,7 +100,7 @@ public class UserController {
         registerOrUpdateForm.setAge(user.getAge());
         // adds the registration form to the model
         model.addAttribute("registerOrUpdateForm", registerOrUpdateForm);
-        logger.info("visited update account page ");
+        logger.info("User '{}' visited update account page", sessionUsername);
         return "updateAccount";
     }
 
@@ -104,7 +110,6 @@ public class UserController {
      * @param session - HttpSession for managing session information
      * @return loginSuccess page after updating the age
      */
-
     @PostMapping("/updateAccount")
     public String updateAccount(@ModelAttribute RegisterOrUpdateForm updatedUser,
                                 HttpSession session,
@@ -115,17 +120,14 @@ public class UserController {
         // get the user
         User preExistingUserCheckUser = userService.getUserByUserName(updatedUser.getUsername());
 
-        /*
-            Check if the user is trying to set their username to the username of a
-            different user who's already in the database
-        */
+        //Check if the user is trying to set their username to the username of a different user who's already in the database
         if (preExistingUserCheckUser != null && !sessionUsername.equals(preExistingUserCheckUser.getUsername())) {
             String userNameAlreadyTakenErrorMessage = String.format("The username you provided (%s) is already in use, please try another", updatedUser.getUsername());
             result.rejectValue("username", "not.mapped.error.message", userNameAlreadyTakenErrorMessage);
         }
         // checks for errors and adds to result
         if (result.hasErrors()) {
-            logger.warn("There were " + result.getErrorCount() + " errors");
+            logger.debug("There were {} errors", result.getErrorCount());
             return "updateAccount";
         }
 
@@ -148,12 +150,12 @@ public class UserController {
         user.setAge(updatedUser.getAge());
         // save the user
         userService.saveUser(user);
+
         logger.info("The username {} completed registration", user.getUsername());
 
-        logger.info("The username " + user.getUsername() + " completed registration");
-        // get teh username in the session
+        logger.info("The user '{}' updated their information", user.getUsername());
+        // get the username in the session
         session.setAttribute("username", user.getUsername());
-        logger.info(user.getUsername() + " successfully updated their account");
 
         return "redirect:/loginSuccess";
     }

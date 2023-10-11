@@ -15,13 +15,12 @@ import org.slf4j.LoggerFactory;
 public class DrillsController {
     private static final Logger logger = LoggerFactory.getLogger(DrillsController.class);
     private final UserService userService;
+
     /**
      * Constructs a DrillsController instance with the UserService dependency.
      * @param userService - UserService implementation used in the DrillsController
      */
-
     public DrillsController(UserService userService) {
-
         this.userService = userService;
     }
 
@@ -40,7 +39,7 @@ public class DrillsController {
         int userAge = userService.getUserAge(username);
         // add the age to the model
         model.addAttribute("userAge", userAge);
-        logger.info(username + " successfully visited the soccer drills page");
+        logger.info("/soccerDrills: user '{}' accessed their drills", username);
         return "soccerDrills";
     }
 }
