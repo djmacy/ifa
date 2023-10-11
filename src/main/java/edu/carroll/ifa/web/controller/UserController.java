@@ -4,6 +4,7 @@ import edu.carroll.ifa.service.UserService;
 import edu.carroll.ifa.web.form.RegisterOrUpdateForm;
 import jakarta.servlet.http.HttpSession;
 
+import jakarta.validation.Validation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.*;
@@ -22,7 +23,7 @@ import org.slf4j.LoggerFactory;
  */
 @Controller
 public class UserController {
-     @Autowired
+
      private SmartValidator validator;
 
      private final UserService userService;
@@ -33,12 +34,16 @@ public class UserController {
      */
     public UserController(UserService userService) {
         this.userService = userService;
+        try {
+            this.validator = (SmartValidator) Validation.buildDefaultValidatorFactory().getValidator();
+        } catch (Exception ex) {
+
+        }
     }
 
     /**
      * Handles the GET request for the /deleteAccount page and displays the page
      * @return deleteAccount page
->>>>>>> main
      */
     @GetMapping("/deleteAccount")
     public String deleteAccount(){
@@ -53,9 +58,13 @@ public class UserController {
      */
     @GetMapping("/deleteAccountConfirmed")
     public String deleteAccountConfirmed(HttpSession session){
+        // get username from the session
         String sessionUsername = (String) session.getAttribute("username");
+        // deletes the user given the username
         boolean deleteStatus = userService.deleteUser(sessionUsername);
+        // checking if the deletion was successful or not
         if(deleteStatus){
+            // removes username from the session
             session.removeAttribute("username");
             logger.info(sessionUsername + " successfully deleted their account ");
             return "redirect:/";
@@ -72,18 +81,18 @@ public class UserController {
      */
     @GetMapping("/updateAccount")
     public String updateAccount(Model model, HttpSession session){
+        // get the username from session
         String sessionUsername = (String) session.getAttribute("username");
-
+        // gets the user given the username
         User user = userService.getUserByUserName(sessionUsername);
-
+        // pre populates the form with the user's information
         RegisterOrUpdateForm registerOrUpdateForm = new RegisterOrUpdateForm();
         registerOrUpdateForm.setUsername(user.getUsername());
         registerOrUpdateForm.setPassword(user.getHashedPassword());
         registerOrUpdateForm.setFirstName(user.getFirstName());
         registerOrUpdateForm.setLastName(user.getLastName());
         registerOrUpdateForm.setAge(user.getAge());
-
-
+        // adds the registration form to the model
         model.addAttribute("registerOrUpdateForm", registerOrUpdateForm);
         logger.info("visited update account page ");
         return "updateAccount";
@@ -101,8 +110,9 @@ public class UserController {
                                 HttpSession session,
                                 BindingResult result) {
         validator.validate(updatedUser, result);
-
+        // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");
+        // get the user
         User preExistingUserCheckUser = userService.getUserByUserName(updatedUser.getUsername());
 
         /*
@@ -113,7 +123,7 @@ public class UserController {
             String userNameAlreadyTakenErrorMessage = String.format("The username you provided (%s) is already in use, please try another", updatedUser.getUsername());
             result.rejectValue("username", "not.mapped.error.message", userNameAlreadyTakenErrorMessage);
         }
-
+        // checks for errors and adds to result
         if (result.hasErrors()) {
             logger.warn("There were " + result.getErrorCount() + " errors");
             return "updateAccount";
@@ -123,24 +133,25 @@ public class UserController {
         if(sessionUsername == null) {
             return "redirect:/login";
         }
-
+        // get the user given the username
         User user = userService.getUserByUserName(sessionUsername);
 
         // If the user you're logged in as doesn't exist in the database, redirect
         if(user == null) {
             return "redirect:/login";
         }
-
+        // set the updated information for the user
         user.setUsername(updatedUser.getUsername());
         user.setHashedPassword(updatedUser.getPassword());
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setAge(updatedUser.getAge());
-
+        // save the user
         userService.saveUser(user);
-        logger.info("The username " + user.getUsername() + " completed registration");
+        logger.info("The username {} completed registration", user.getUsername());
 
         logger.info("The username " + user.getUsername() + " completed registration");
+        // get teh username in the session
         session.setAttribute("username", user.getUsername());
         logger.info(user.getUsername() + " successfully updated their account");
 

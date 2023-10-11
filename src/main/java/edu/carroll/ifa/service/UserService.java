@@ -37,7 +37,6 @@ public interface UserService {
      * @param username - Username associated with the User
      * @return the age of the user if the list is not empty, -1 otherwise
      */
-
     int getUserAge(String username);
 
     /**
@@ -47,7 +46,12 @@ public interface UserService {
      */
     User getUserByUserName(String username);
 
-
+    /**
+     * Given a user object with updated information, update the current user and save it
+     * @param user
+     * @param updatedUser
+     * @return
+     */
     boolean saveUser(User user, User updatedUser);
 
 }

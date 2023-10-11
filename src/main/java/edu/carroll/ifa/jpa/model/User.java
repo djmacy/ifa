@@ -154,12 +154,15 @@ public class User {
      */
     @Override
     public boolean equals(Object o) {
+        // check if the object being compared is the same object
         if (this == o)
             return true;
+        // return false if the object is not a User type
         if (o == null || getClass() != o.getClass())
             return false;
-
+        // convert this object into a User class
         final User user = (User)o;
+        // return true if User o has the same username and same password as this User
         return username.equals(user.username) && hashedPassword.equals(user.hashedPassword);
     }
 
