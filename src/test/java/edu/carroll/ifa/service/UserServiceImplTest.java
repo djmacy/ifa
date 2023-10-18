@@ -267,16 +267,46 @@ public class UserServiceImplTest {
         assertFalse("saveUserMaxAgeTest: should fail to add a user with an age of Integer.MAX_VALUE", userService.saveUser(ageMax));
     }
 
-    /*
-    @Test
-    public void saveUserAgeTest() {
-        Integer newAge = 11;
-        User newUser = new User("new" + username, password, fname, lname, age);
-        assertTrue("saveUserAgeTest: should succeed saving a new age with user in db", userService.saveUserAge(newUser, newAge));
-        //change age back to original age so the test will pass if rerun
-        userService.saveUserAge(newUser, age);
-    }
+    /**
+     * This unit test checks to see if a username associated with a user that exists can be deleted from the database
      */
+    @Test
+    public void deleteExistingUserTest() {
+        assertTrue("deleteExistingUserTest: should succeed to delete a user that is already in the database", userService.deleteUser(fakeUser1.getUsername()));
+    }
+
+    /**
+     * This unit test checks to see that a username associated with a user that does not exist in the database can not
+     * be deleted and returns false.
+     */
+    @Test
+    public void deleteNonExistingUserTest() {
+        assertFalse("deleteNonExistingUserTest: should fail to delete a user that does not exist", userService.deleteUser("nonExistingUser"));
+    }
+
+    /**
+     * This unit test checks to see that a user with a username that has foreign characters can be successfully deleted
+     */
+    @Test
+    public void deleteForeignUserTest() {
+        User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
+        User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
+        User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
+
+        userService.saveUser(mandarinUser);
+        userService.saveUser(arabicUser);
+        userService.saveUser(icelandicUser);
+
+        assertTrue("deleteForeignUserTestMandarin: should succeed to delete user with Mandarin username", userService.deleteUser(mandarinName));
+    }
+
+    /**
+     * This unit test checks to see that deleting a null user is handled correctly
+     */
+    @Test
+    public void deleteNullUserTest() {
+        assertFalse("deleteNullUserTest: should fail to delete a null user", userService.deleteUser(null));
+    }
 
     /**
      * This unit test checks to see that the user age matches the expected age of the user in the database
@@ -287,11 +317,13 @@ public class UserServiceImplTest {
     }
 
     /**
-     * This unit test checks to see that an age of -1 is returned if there is no user in the database.
+     * This unit test checks to see that -1 is returned if there is no user in the database.
      */
     @Test
     public void getUserAgeTestNonUserTest() {
         User newUser = new User("new1" + username1, password1, fname1, lname1, age1);
         assertEquals("getUserAgeTestNonUserTest: should equal -1 since user is not in db", -1, userService.getUserAge(newUser.getUsername()));
     }
+
+
 }

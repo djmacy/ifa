@@ -72,15 +72,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean saveUser(User user) {
-        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
         // Password is still not hashed until we encode it
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
             user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
             user.getAge() <= 0 || user.getAge() >= 126) {
-            logger.debug("saveUser: user '{}' gave bad info", user.getUsername());
+            logger.debug("saveUser: user gave bad info");
             return false;
         }
-
+        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
         //if the username list is empty then the username does not exist
         if (!existingUser.isEmpty()) {
@@ -123,7 +122,7 @@ public class UserServiceImpl implements UserService {
         logger.debug("deleteUser: user '{}' attempted to delete their information", username);
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
         if (userList.size() != 1) {
-            logger.info("saveUser: user '{}' is duplicate", username);
+            logger.info("saveUser: user '{}' is duplicate or does not exist", username);
             return false;
         }
         User user = userList.get(0);
