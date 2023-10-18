@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
+
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
         //if the username list is empty then the username does not exist
         if (!existingUser.isEmpty()) {
@@ -87,7 +88,9 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+        // encrypts and sets the user's password
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
+        // saves the user to the database
         userRepo.save(user);
         logger.info("saveUser: user '{}' saved", user.getUsername());
         return true;
@@ -102,11 +105,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean saveUser(User user, User updatedUser){
+        // sets the user's information
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setHashedPassword(passwordEncoder.encode(updatedUser.getHashedPassword()));
         user.setAge(updatedUser.getAge());
         user.setUsername(updatedUser.getUsername());
+        // saves the user with the updated information to the database
         userRepo.save(user);
         logger.info("Saved the new user");
         return true;
@@ -120,12 +125,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(String username){
         logger.debug("deleteUser: user '{}' attempted to delete their information", username);
+
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
+        // checks if the user with the given username exists in the database if not then return false
         if (userList.size() != 1) {
             logger.info("saveUser: user '{}' is duplicate or does not exist", username);
             return false;
         }
+        // gets the user with the given username
         User user = userList.get(0);
+        // deletes the user from the database
         userRepo.delete(user);
         logger.info("saveUser: user '{}' deleted their information", username);
         return true;
@@ -138,6 +147,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public int getUserAge(String username) {
+        // checks if the user with the given username exists in the database. If it does then return that user's age
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
         if (!users.isEmpty()) {
             //There should only be one so get first index
@@ -156,11 +166,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserByUserName(String username){
+        // checks if the user with the given username exists in the database. If not then return null
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
         if(users.size() != 1){
             logger.info("getUserByUsername: user '{}' is duplicated", username);
             return null;
         }
+        // returns the user with the given username
         User user = users.get(0);
         logger.info("getUserByUsername: user '{}' has been retrieved", username);
         return user;

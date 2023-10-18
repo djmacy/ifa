@@ -42,6 +42,7 @@ public class LoginController {
      */
     @GetMapping("/login")
     public String loginGet(Model model) {
+        // adds the login form to the model
         model.addAttribute("loginForm", new LoginForm());
         logger.info("New user has visited the login page");
         return "login";
@@ -57,16 +58,21 @@ public class LoginController {
      */
     @PostMapping("/login")
     public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs) {
+        // checks if there are any errors when the user trys to log in
         if (result.hasErrors()) {
             logger.debug("There were {} errors", result.getErrorCount());
             return "login";
         }
+        // checks if the user's name and password are invalid
         if (!userService.validateUser(loginForm.getUsername(), loginForm.getPassword())) {
+            // adds and error message to the result
             result.addError(new ObjectError("globalError", "Username and password do not match known users"));
             logger.info("login failed username or password do not match known users");
             return "login";
         }
+        // adds the username to the redirect attributes
         attrs.addAttribute("username", loginForm.getUsername());
+        // setting the username to the session
         session.setAttribute("username", loginForm.getUsername());
         return "redirect:/loginSuccess";
     }
@@ -80,9 +86,11 @@ public class LoginController {
      */
     @GetMapping("/loginSuccess")
     public String loginSuccess(HttpSession session, Model model) {
+        // gets the username from the session
        String sessionUsername = (String) session.getAttribute("username");
-
+        // checks if there is a username in the session. Checks if user is logged in
        if (sessionUsername != null) {
+           // adds the username to the model
            model.addAttribute("username", sessionUsername);
            logger.info("User '{}' successfully logged in", sessionUsername);
            return "loginSuccess";
@@ -94,6 +102,7 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
+        // removes the username from the session
        session.removeAttribute("username");
        logger.info("successfully logged out");
        return "logout";

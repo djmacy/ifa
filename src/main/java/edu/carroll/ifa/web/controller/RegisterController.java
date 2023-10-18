@@ -37,6 +37,7 @@ public class RegisterController {
      */
     @GetMapping("/register")
     public String registerGet(Model model) {
+        // creates a new registration form and adds it to the model
         model.addAttribute("registerOrUpdateForm", new RegisterOrUpdateForm());
         logger.info("New user visited the register page");
         return "register";
@@ -54,31 +55,33 @@ public class RegisterController {
                                BindingResult result,
                                HttpSession session,
                                Model model) {
+        // check if there were any errors when the user submitted the registration
         if (result.hasErrors()) {
             logger.debug("There were {} errors", result.getErrorCount());
             return "register";
         }
-
+        // create a new user after the user filled out the registration form
         User newUser = new User();
         newUser.setUsername(registerOrUpdateForm.getUsername());
         newUser.setHashedPassword(registerOrUpdateForm.getPassword());
         newUser.setFirstName(registerOrUpdateForm.getFirstName());
         newUser.setLastName(registerOrUpdateForm.getLastName());
         newUser.setAge(registerOrUpdateForm.getAge());
-
+        // checks if the username is already in the database
         User preExistingUserCheckUser = userService.getUserByUserName(newUser.getUsername());
-
+        // display an error if the username is already in the database
         if (preExistingUserCheckUser != null) {
             result.addError(new ObjectError("globalError", "Username already exists"));
             logger.info("The username '{}' already exists", newUser.getUsername());
             return "register";
         }
-
+        // save the new user to the database
         userService.saveUser(newUser);
         logger.info("The user '{}' completed registration", newUser.getUsername());
 
         // Set the username up in the session
         session.setAttribute("username", newUser.getUsername());
+        // add the username to the model
         model.addAttribute("username", newUser.getUsername());
         return "loginSuccess";
     }

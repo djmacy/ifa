@@ -47,7 +47,12 @@ public interface UserService {
      */
     User getUserByUserName(String username);
 
-
+    /**
+     * Given a user object with updated information, update the current user and save it
+     * @param user
+     * @param updatedUser
+     * @return
+     */
     boolean saveUser(User user, User updatedUser);
 
 }
