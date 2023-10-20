@@ -123,8 +123,7 @@ public class UserServiceImpl implements UserService {
      * @return false if the user does not exist in the database, true otherwise
      */
     @Override
-    public boolean deleteUser(String username){
-        logger.debug("deleteUser: user '{}' attempted to delete their information", username);
+    public boolean deleteUser(String username) {
 
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
         // checks if the user with the given username exists in the database if not then return false
@@ -132,6 +131,7 @@ public class UserServiceImpl implements UserService {
             logger.info("saveUser: user '{}' is duplicate or does not exist", username);
             return false;
         }
+        logger.debug("deleteUser: user '{}'is attempting to delete their information", username);
         // gets the user with the given username
         User user = userList.get(0);
         // deletes the user from the database
@@ -166,6 +166,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserByUserName(String username){
+        if (username == null) {
+            return null;
+        }
         // checks if the user with the given username exists in the database. If not then return null
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
         if(users.size() != 1){

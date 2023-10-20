@@ -114,9 +114,15 @@ public class UserController {
     public String updateAccount(@ModelAttribute RegisterOrUpdateForm updatedUser,
                                 HttpSession session,
                                 BindingResult result) {
+
         validator.validate(updatedUser, result);
         // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");
+
+        // If you're not logged in, redirect to login
+        if(sessionUsername == null) {
+            return "redirect:/login";
+        }
         // get the user
         User preExistingUserCheckUser = userService.getUserByUserName(updatedUser.getUsername());
 
@@ -131,10 +137,6 @@ public class UserController {
             return "updateAccount";
         }
 
-        // If you're not logged in, redirect to login
-        if(sessionUsername == null) {
-            return "redirect:/login";
-        }
         // get the user given the username
         User user = userService.getUserByUserName(sessionUsername);
 
