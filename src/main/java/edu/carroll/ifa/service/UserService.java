@@ -55,4 +55,11 @@ public interface UserService {
      */
     boolean saveUser(User user, User updatedUser);
 
+    /**
+     * Given a User object, save the updated information associated with the user to the database without hashing the raw password.
+     * @param user - User object that needs to be added to the database
+     * @return false if user already exists in database, true otherwise
+     */
+    boolean saveUpdated(User user);
+
 }

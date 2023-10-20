@@ -95,7 +95,40 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Given a User object, save the updated information associated with the user to the database without hashing the raw password.
+     * @param user - User object that needs to be added to the database
+     * @return false if user already exists in database, true otherwise
+     */
+    public boolean saveUpdated(User user) {
+        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
+        // Password is still not hashed until we encode it
+        if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
+                user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
+                user.getAge() <= 0 || user.getAge() >= 126) {
+            logger.debug("saveUser: user '{}' gave bad info", user.getUsername());
+            return false;
+        }
 
+
+        List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
+        //if the username list is empty then the username does not exist
+        if (!existingUser.isEmpty()) {
+            logger.debug("saveUser: user '{}' already exists", user.getUsername());
+            return false;
+        }
+
+        // saves the user to the database
+        userRepo.save(user);
+        logger.info("saveUser: user '{}' saved", user.getUsername());
+        return true;
+
+    }
+
+    /**
+     * Updating the user's information
+     * @param user
+     * @param updatedUser
+     * @return
      */
     @Override
     public boolean saveUser(User user, User updatedUser){
