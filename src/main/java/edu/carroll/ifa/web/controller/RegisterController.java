@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     private final UserService userService;
+
     /**
      * Constructs a LoginController instance with the UserService dependency.
      * @param userService - UserService implementation used in the LoginController

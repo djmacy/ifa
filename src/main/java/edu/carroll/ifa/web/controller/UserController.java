@@ -143,6 +143,7 @@ public class UserController {
     public String updateAccount(@ModelAttribute RegisterOrUpdateForm updatedUser,
                                 HttpSession session,
                                 BindingResult result) {
+
         // checking if updated user is meeting all required validations
         validator.validate(updatedUser, result);
         // get the username from the session
@@ -166,7 +167,6 @@ public class UserController {
             logger.debug("There were {} errors", result.getErrorCount());
             return "updateAccount";
         }
-
 
         // get the user given the username
         User user = userService.getUserByUserName(sessionUsername);
@@ -214,6 +214,7 @@ public class UserController {
         if(sessionUsername == null) {
             return "redirect:/login";
         }
+
         // get the user given the username
         User user = userService.getUserByUserName(sessionUsername);
 

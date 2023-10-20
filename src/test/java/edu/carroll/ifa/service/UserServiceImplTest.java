@@ -267,17 +267,61 @@ public class UserServiceImplTest {
         assertFalse("saveUserMaxAgeTest: should fail to add a user with an age of Integer.MAX_VALUE", userService.saveUser(ageMax));
     }
 
-    /*
-    @Test
-    public void saveUserAgeTest() {
-        Integer newAge = 11;
-        User newUser = new User("new" + username, password, fname, lname, age);
-        assertTrue("saveUserAgeTest: should succeed saving a new age with user in db", userService.saveUserAge(newUser, newAge));
-        //change age back to original age so the test will pass if rerun
-        userService.saveUserAge(newUser, age);
-    }
+    /**
+     * This unit test checks to see if a username associated with a user that exists can be deleted from the database
      */
+    @Test
+    public void deleteExistingUserTest() {
+        assertTrue("deleteExistingUserTest: should succeed to delete a user that is already in the database", userService.deleteUser(fakeUser1.getUsername()));
+    }
 
+    /**
+     * This unit test checks to see that a username associated with a user that does not exist in the database can not
+     * be deleted and returns false.
+     */
+    @Test
+    public void deleteNonExistingUserTest() {
+        assertFalse("deleteNonExistingUserTest: should fail to delete a user that does not exist", userService.deleteUser("nonExistingUser"));
+    }
+
+    /**
+     * This unit test checks to see that a user with a username that has foreign characters can be successfully deleted
+     */
+    @Test
+    public void deleteForeignUserTest() {
+        User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
+        User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
+        User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
+
+        userService.saveUser(mandarinUser);
+        userService.saveUser(arabicUser);
+        userService.saveUser(icelandicUser);
+
+        assertTrue("deleteForeignUserTestMandarin: should succeed to delete user with Mandarin username", userService.deleteUser(mandarinName));
+        assertTrue("deleteForeignUserTestArabic: should succeed to delete user with Arabic username", userService.deleteUser(arabicName));
+        assertTrue("deleteForeignUserTestIcelandic: should succeed to delete user with Icelandic username", userService.deleteUser(icelandicName));
+
+    }
+
+    /**
+     * This unit test checks to see that deleting a null user is handled correctly
+     */
+    @Test
+    public void deleteNullUserTest() {
+        assertFalse("deleteNullUserTest: should fail to delete a null user", userService.deleteUser(null));
+    }
+
+    /**
+     * This unit test checks to see if a user with a new
+     */
+    /*    @Test
+    public void updateUserTest() {
+        User extraUser = new User(username1+"john", password2+"5", fname1, lname1, 10);
+        userService.saveUser(extraUser);
+        //assertTrue("updateUserTest: should succeed to update user info", userService.saveUser(fakeUser1, extraUser));
+        assertEquals("updateUserTest: should equal the new age of 10", 10, userService.getUserAge(fakeUser1.getUsername()));
+    }
+*/
     /**
      * This unit test checks to see that the user age matches the expected age of the user in the database
      */
@@ -287,11 +331,44 @@ public class UserServiceImplTest {
     }
 
     /**
-     * This unit test checks to see that an age of -1 is returned if there is no user in the database.
+     * This unit test checks to see that -1 is returned if there is no user in the database.
      */
     @Test
     public void getUserAgeTestNonUserTest() {
         User newUser = new User("new1" + username1, password1, fname1, lname1, age1);
         assertEquals("getUserAgeTestNonUserTest: should equal -1 since user is not in db", -1, userService.getUserAge(newUser.getUsername()));
     }
+
+    /**
+     * This unit test checks to see that -1 is returned for a null user
+     */
+    @Test
+    public void getUserAgeNullUserTest() {
+        assertEquals("getUserAgeNullUserTest: should equal -1 since user is null", -1, userService.getUserAge(null));
+    }
+
+    /**
+     * This unit test checks to see that the correct User object is returned given a username
+     */
+    @Test
+    public void getUserValidUsernameTest() {
+        assertEquals("getUserValidUsernameTest: the username associated with fakeUser1 should return the fakeUser1 object", fakeUser1, userService.getUserByUserName(username1));
+    }
+
+    /**
+     * This unit test checks to see that null is returned given a username to an invalid User object
+     */
+    @Test
+    public void getUserInvalidUsernameTest() {
+        assertEquals("getUserInvalidUsernameTest: the fake username should return null", null, userService.getUserByUserName("FaKeUserNAME"));
+    }
+
+    /**
+     * This unit test checks to see that the null is returned given a null username
+     */
+    @Test
+    public void getUserNullUsernameTest() {
+        assertEquals("getUserNullUsernameTest: the null username should return null", null, userService.getUserByUserName(null));
+    }
+
 }

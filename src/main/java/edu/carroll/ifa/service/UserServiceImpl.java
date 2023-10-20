@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Given a loginForm, determine if the information provided is valid, and the user exists in the system.
+     * Given a username and a password, it determines if the information provided is valid, and the user exists in the system.
      *
      * @param username - Username of the person attempting to login
      * @param rawPassword - Raw password provided by the user logging in
@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
         logger.debug("validateUser: user '{}' attempted login", username);
         if (rawPassword == null) {
             logger.debug("validateUser: user '{}' provided null password", username);
+            return false;
+        }
+        if (username == null) {
+            logger.debug("validateUser: User provided a null username");
             return false;
         }
         // Always do the lookup in a case-insensitive manner (lower-casing the data). -Nate
@@ -68,15 +72,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean saveUser(User user) {
-        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
         // Password is still not hashed until we encode it
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
             user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
             user.getAge() <= 0 || user.getAge() >= 126) {
-            logger.debug("saveUser: user '{}' gave bad info", user.getUsername());
+            logger.debug("saveUser: user gave bad info");
             return false;
         }
-
+        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
 
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
         //if the username list is empty then the username does not exist
@@ -91,7 +94,6 @@ public class UserServiceImpl implements UserService {
         userRepo.save(user);
         logger.info("saveUser: user '{}' saved", user.getUsername());
         return true;
-
     }
 
     /**
@@ -126,9 +128,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Updating the user's information
-     * @param user
-     * @param updatedUser
-     * @return
+     * Give a two User objects, the User with the old information and the User with the updated information it will
+     * overwrite the old user's information in the database.
+     * @param user - User that has the old information
+     * @param updatedUser - Updated user that has the new information
+     * @return true when the user is saved
      */
     @Override
     public boolean saveUser(User user, User updatedUser){
@@ -150,15 +154,15 @@ public class UserServiceImpl implements UserService {
      * @return false if the user does not exist in the database, true otherwise
      */
     @Override
-    public boolean deleteUser(String username){
-        logger.debug("deleteUser: user '{}' attempted to delete their information", username);
+    public boolean deleteUser(String username) {
 
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
         // checks if the user with the given username exists in the database if not then return false
         if (userList.size() != 1) {
-            logger.info("saveUser: user '{}' is duplicate", username);
+            logger.info("saveUser: user '{}' is duplicate or does not exist", username);
             return false;
         }
+        logger.debug("deleteUser: user '{}'is attempting to delete their information", username);
         // gets the user with the given username
         User user = userList.get(0);
         // deletes the user from the database
@@ -193,6 +197,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserByUserName(String username){
+        if (username == null) {
+            return null;
+        }
         // checks if the user with the given username exists in the database. If not then return null
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
         if(users.size() != 1){
