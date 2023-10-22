@@ -111,14 +111,6 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-
-        List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
-        //if the username list is empty then the username does not exist
-        if (!existingUser.isEmpty()) {
-            logger.debug("saveUser: user '{}' already exists", user.getUsername());
-            return false;
-        }
-
         // saves the user to the database
         userRepo.save(user);
         logger.info("saveUser: user '{}' saved", user.getUsername());

@@ -198,6 +198,9 @@ public class UserController {
     public String updatePassword(@ModelAttribute UpdatePasswordForm updatedPassword,
                                 HttpSession session,
                                 BindingResult result) {
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         // checking if updated user is meeting all required validations
         validator.validate(updatedPassword, result);
         // get the username from the session
@@ -221,6 +224,11 @@ public class UserController {
         // If the user you're logged in as doesn't exist in the database, redirect
         if(user == null) {
             return "redirect:/login";
+        }
+
+        if(!passwordEncoder.matches(updatedPassword.getCurrentPassword(), user.getHashedPassword())){
+            result.addError(new ObjectError("currentPassword", "current password doesnt match"));
+            return "updatePassword";
         }
 
         if (!updatedPassword.getNewPassword().equals(updatedPassword.getConfirmNewPassword())) {
