@@ -16,9 +16,11 @@
 <form action="#" th:action="@{/updateAccount}" th:object="${registerOrUpdateForm}" method="post">
     <span th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global error</span><br/>
 
+    <div class="hide">
     Username:<br>
-    <input type="text" th:field="*{username}" placeholder="Username"/>
+    <input type="text" th:field="*{username}" placeholder="Username" readonly="true"/>
     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</span><br/>
+    </div>
 
     <input type="hidden" th:field="*{password}" placeholder="Password"/>
 
