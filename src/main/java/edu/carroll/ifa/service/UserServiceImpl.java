@@ -128,18 +128,22 @@ public class UserServiceImpl implements UserService {
      * Give a two User objects, the User with the old information and the User with the updated information it will
      * overwrite the old user's information in the database.
      * @param user - User that has the old information
-     * @param updatedUser - Updated user that has the new information
-     * @return true when the user is saved
+     * @param updatedPassword - New password that will replace the old password
+     * @return true when the user is saved false otherwise
      */
-    //updatePassword
     @Override
     public boolean updatePassword(User user, String updatedPassword) {
         if (user == null || updatedPassword == null) {
+            logger.info("updatedPassword: User gave bad information");
+            return false;
+        }
+        if (updatedPassword.length() < 8 || updatedPassword.length() > 72) {
+            logger.info("updatedPassword: user '{} provided an invalid password", user.getUsername());
             return false;
         }
         List<User> userList= userRepo.findByUsernameIgnoreCase(user.getUsername());
         if (userList.size() != 1) {
-            logger.info("saveUser: user '{}' does not exist or is duplicated", user.getUsername());
+            logger.info("updatedPassword: user '{}' does not exist or is duplicated", user.getUsername());
             return false;
         }
         // sets the user's information
