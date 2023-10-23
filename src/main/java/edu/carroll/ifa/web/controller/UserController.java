@@ -177,16 +177,12 @@ public class UserController {
         }
         // set the updated information for the user
         user.setUsername(updatedUser.getUsername());
-
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setAge(updatedUser.getAge());
         // save the user
         userService.saveUpdated(user);
-
         logger.info("The username {} completed registration", user.getUsername());
-
-        logger.info("The user '{}' updated their information", user.getUsername());
         // get the username in the session
         session.setAttribute("username", user.getUsername());
 

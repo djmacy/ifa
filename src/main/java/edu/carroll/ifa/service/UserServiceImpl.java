@@ -102,15 +102,13 @@ public class UserServiceImpl implements UserService {
      * @return false if user already exists in database, true otherwise
      */
     public boolean saveUpdated(User user) {
-        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
         // Password is still not hashed until we encode it
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
                 user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
                 user.getAge() <= 0 || user.getAge() >= 126) {
-            logger.debug("saveUser: user '{}' gave bad info", user.getUsername());
+            logger.debug("saveUser: user gave bad info");
             return false;
         }
-
 
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
         //if the username list is empty then the username does not exist
@@ -119,11 +117,10 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        // saves the user to the database
+        // saves the user to the database without hashing the password again
         userRepo.save(user);
         logger.info("saveUser: user '{}' saved", user.getUsername());
         return true;
-
     }
 
     /**
@@ -135,7 +132,15 @@ public class UserServiceImpl implements UserService {
      * @return true when the user is saved
      */
     @Override
-    public boolean saveUser(User user, User updatedUser){
+    public boolean saveUser(User user, User updatedUser) {
+        if (user == null || updatedUser == null) {
+            return false;
+        }
+        List<User> userList= userRepo.findByUsernameIgnoreCase(user.getUsername());
+        if (userList.size() != 1) {
+            logger.info("saveUser: user '{}' does not exist or is duplicated", user.getUsername());
+            return false;
+        }
         // sets the user's information
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());

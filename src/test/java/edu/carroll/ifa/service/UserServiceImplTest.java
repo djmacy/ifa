@@ -267,6 +267,11 @@ public class UserServiceImplTest {
         assertFalse("saveUserMaxAgeTest: should fail to add a user with an age of Integer.MAX_VALUE", userService.saveUser(ageMax));
     }
 
+    @Test
+    public void saveUserNewPassword() {
+
+    }
+
     /**
      * This unit test checks to see if a username associated with a user that exists can be deleted from the database
      */
@@ -311,17 +316,6 @@ public class UserServiceImplTest {
         assertFalse("deleteNullUserTest: should fail to delete a null user", userService.deleteUser(null));
     }
 
-    /**
-     * This unit test checks to see if a user with a new
-     */
-    /*    @Test
-    public void updateUserTest() {
-        User extraUser = new User(username1+"john", password2+"5", fname1, lname1, 10);
-        userService.saveUser(extraUser);
-        //assertTrue("updateUserTest: should succeed to update user info", userService.saveUser(fakeUser1, extraUser));
-        assertEquals("updateUserTest: should equal the new age of 10", 10, userService.getUserAge(fakeUser1.getUsername()));
-    }
-*/
     /**
      * This unit test checks to see that the user age matches the expected age of the user in the database
      */
