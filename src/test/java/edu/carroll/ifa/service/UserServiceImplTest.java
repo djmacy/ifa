@@ -268,7 +268,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void saveUserNewPassword() {
+    public void updatePassword() {
 
     }
 

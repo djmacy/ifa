@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import edu.carroll.ifa.jpa.model.User;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -144,24 +143,22 @@ public class UserController {
                                 HttpSession session,
                                 BindingResult result) {
 
-        // checking if updated user is meeting all required validations
-        validator.validate(updatedUser, result);
         // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");
-
         // If you're not logged in, redirect to login
-        if(sessionUsername == null) {
+        if (sessionUsername == null) {
             return "redirect:/login";
         }
-
+        // checking if updated user is meeting all required validations
+        validator.validate(updatedUser, result);
         // get the user
         User preExistingUserCheckUser = userService.getUserByUserName(updatedUser.getUsername());
-
         //Check if the user is trying to set their username to the username of a different user who's already in the database
         if (preExistingUserCheckUser != null && !sessionUsername.equals(preExistingUserCheckUser.getUsername())) {
             String userNameAlreadyTakenErrorMessage = String.format("The username you provided (%s) is already in use, please try another", updatedUser.getUsername());
             result.rejectValue("username", "not.mapped.error.message", userNameAlreadyTakenErrorMessage);
         }
+
         // checks for errors and adds to result
         if (result.hasErrors()) {
             logger.debug("There were {} errors", result.getErrorCount());
@@ -170,25 +167,27 @@ public class UserController {
 
         // get the user given the username
         User user = userService.getUserByUserName(sessionUsername);
-
         // If the user you're logged in as doesn't exist in the database, redirect
-        if(user == null) {
+        if (user == null) {
             return "redirect:/login";
         }
+
         // set the updated information for the user
         user.setUsername(updatedUser.getUsername());
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setAge(updatedUser.getAge());
-        // save the user
-        userService.saveUpdated(user);
-        logger.info("The username {} completed registration", user.getUsername());
+        // save the user with new information
+        if (userService.updateUser(user)) {
+            logger.info("User did update information");
+        }
+
+        logger.info("The username {} updated account information", user.getUsername());
         // get the username in the session
         session.setAttribute("username", user.getUsername());
 
         return "redirect:/loginSuccess";
     }
-
 
     @PostMapping("/updatePassword")
     public String updatePassword(@ModelAttribute UpdatePasswordForm updatedPassword,
@@ -218,7 +217,7 @@ public class UserController {
         User user = userService.getUserByUserName(sessionUsername);
 
         // If the user you're logged in as doesn't exist in the database, redirect
-        if(user == null) {
+        if (user == null) {
             return "redirect:/login";
         }
 
@@ -232,13 +231,9 @@ public class UserController {
             return "updatePassword";
         }
 
-        // set the updated information for the user
-        user.setHashedPassword(updatedPassword.getNewPassword());
-        // save the user
-        userService.saveUser(user, user);
-
+        // save the user with new password
+        userService.updatePassword(user, updatedPassword.getNewPassword());
         logger.info("The user '{}' updated their password", user.getUsername());
-
 
         return "redirect:/loginSuccess";
     }

@@ -1,7 +1,6 @@
 package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
-import edu.carroll.ifa.web.form.LoginForm;
 
 /**
  * Interface which has methods that are used in the UserServiceImpl class to help manage the information in the database
@@ -53,13 +52,13 @@ public interface UserService {
      * @param updatedUser
      * @return
      */
-    boolean saveUser(User user, User updatedUser);
+    boolean updatePassword(User user, String updatedPassword);
 
     /**
      * Given a User object, save the updated information associated with the user to the database without hashing the raw password.
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    boolean saveUpdated(User user);
+    boolean updateUser(User user);
 
 }

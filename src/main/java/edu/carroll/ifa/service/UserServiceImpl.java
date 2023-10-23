@@ -66,10 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Given a User object, it saves the information associated with the user to the database and hash the raw password.
+     * Given a User object, it saves the information associated with the user to the database and hashes the raw password.
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
+    //rename to registerUser
     @Override
     public boolean saveUser(User user) {
         // Password is still not hashed until we encode it
@@ -97,14 +98,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Given a User object, save the updated information associated with the user to the database without hashing the raw password.
+     * Given a User object, saves the updated information associated with the user to the database without altering
+     * already set password. This method is only used to update the names or age of the user.
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    public boolean saveUpdated(User user) {
-        // Password is still not hashed until we encode it
-        if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
-                user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
+    public boolean updateUser(User user) {
+        if (user == null || user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
                 user.getAge() <= 0 || user.getAge() >= 126) {
             logger.debug("saveUser: user gave bad info");
             return false;
@@ -131,9 +131,10 @@ public class UserServiceImpl implements UserService {
      * @param updatedUser - Updated user that has the new information
      * @return true when the user is saved
      */
+    //updatePassword
     @Override
-    public boolean saveUser(User user, User updatedUser) {
-        if (user == null || updatedUser == null) {
+    public boolean updatePassword(User user, String updatedPassword) {
+        if (user == null || updatedPassword == null) {
             return false;
         }
         List<User> userList= userRepo.findByUsernameIgnoreCase(user.getUsername());
@@ -142,11 +143,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         // sets the user's information
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setHashedPassword(passwordEncoder.encode(updatedUser.getHashedPassword()));
-        user.setAge(updatedUser.getAge());
-        user.setUsername(updatedUser.getUsername());
+        user.setHashedPassword(passwordEncoder.encode(updatedPassword));
         // saves the user with the updated information to the database
         userRepo.save(user);
         logger.info("Saved the new user");
