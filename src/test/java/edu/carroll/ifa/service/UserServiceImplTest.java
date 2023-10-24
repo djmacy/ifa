@@ -267,9 +267,72 @@ public class UserServiceImplTest {
         assertFalse("saveUserMaxAgeTest: should fail to add a user with an age of Integer.MAX_VALUE", userService.saveUser(ageMax));
     }
 
+    /**
+     * This unit test checks to see if a user can update their account with a new password
+     */
     @Test
-    public void updatePasswordTest() {
+    public void updatePasswordValidPasswordTest() {
+        String newPassword = "Password1234";
+        assertTrue("updatePasswordValidPasswordTest: should succeed to change the user password", userService.updatePassword(fakeUser1, newPassword));
+    }
 
+    /**
+     * This unit test checks to see that a password with less than 8 characters can not substitute an old password
+     */
+    @Test
+    public void updatePasswordShortPasswordTest() {
+        String shortPassword = "1234";
+        assertFalse("updatePasswordShortPasswordTest: should fail to update the user password", userService.updatePassword(fakeUser1, shortPassword));
+    }
+
+    /**
+     * This unit test checks to see that a password with greater than 71 characters can not substitute an old password
+     * due to BCrypt's password length limit
+     */
+    @Test
+    public void updatePasswordLongPasswordTest() {
+        String longPassword = "This is intentionally very long and greater than 72 characters so that the password will not be accepted.";
+        assertFalse("updatePasswordLongPasswordTest: should fail to update the user password that is greater than 71 characters", userService.updatePassword(fakeUser1, longPassword));
+    }
+
+    /**
+     * This unit test checks to see if a null password can substitute an old password
+     */
+    @Test
+    public void updatePasswordNullPasswordTest() {
+        assertFalse("updatePasswordNullPasswordTest: should fail to udpate the user password provided a null password", userService.updatePassword(fakeUser1, null));
+    }
+
+    /**
+     * This unit test checks to see if a null user can have its password updated
+     */
+    @Test
+    public void updatePasswordNullUserTest() {
+        String newPassword = "Password1234";
+        assertFalse("updatePasswordNullUserTest: should fail to update a password for a null user", userService.updatePassword(null, newPassword));
+    }
+
+    /**
+     * This unit test checks to see if an unsaved user can have its password updated
+     */
+    @Test
+    public void updatePasswordUnsavedUserTest() {
+        User unsavedUser = new User("djmacy", "1234567890", "David", "Macy", 35);
+        String newPassword = "Password1234";
+        assertFalse("updatePasswordUnsavedUserTest: should fail to update a password for a user that is not in the db", userService.updatePassword(unsavedUser, newPassword));
+    }
+
+    /**
+     * This unit test checks to see if passwords with foreign characters can be updated and that the same user can change his password multiple times
+     */
+    @Test
+    public void updatePasswordForeignCharactersTest() {
+        String mandarinPassword = "密码1234567";
+        String arabicPassword = "كلمة المرور1234";
+        String icelandicPassword = "Lykilorð1234";
+        assertTrue("updatePasswordMandarinPasswordTest: should succeed to update password with mandarin characters", userService.updatePassword(fakeUser1, mandarinPassword));
+        assertTrue("updatePasswordArabicPasswordTest: should succeed to update password with arabic characters", userService.updatePassword(fakeUser1, arabicPassword));
+        assertTrue("updatePasswordIcelandicPasswordTest: should succeed to update password with icelandic characters", userService.updatePassword(fakeUser1, icelandicPassword));
     }
 
     /**

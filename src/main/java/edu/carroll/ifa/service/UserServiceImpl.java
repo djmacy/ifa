@@ -80,8 +80,8 @@ public class UserServiceImpl implements UserService {
             logger.debug("saveUser: user gave bad info");
             return false;
         }
-        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
 
+        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
         //if the username list is empty then the username does not exist
         if (!existingUser.isEmpty()) {
@@ -137,19 +137,28 @@ public class UserServiceImpl implements UserService {
             logger.info("updatedPassword: User gave bad information");
             return false;
         }
+
+        //password must be 8 or more characters and less than 72 characters. BCrypt has a 72 character limit.
         if (updatedPassword.length() < 8 || updatedPassword.length() > 72) {
             logger.info("updatedPassword: user '{} provided an invalid password", user.getUsername());
             return false;
         }
+
         List<User> userList= userRepo.findByUsernameIgnoreCase(user.getUsername());
         if (userList.size() != 1) {
             logger.info("updatedPassword: user '{}' does not exist or is duplicated", user.getUsername());
             return false;
         }
+
         // sets the user's information
         user.setHashedPassword(passwordEncoder.encode(updatedPassword));
         // saves the user with the updated information to the database
         userRepo.save(user);
+        // password does not match whats in the database. If this happens its bad
+        if (!passwordEncoder.matches(updatedPassword, user.getHashedPassword())) {
+            return false;
+        }
+
         logger.info("Saved the new user");
         return true;
     }
@@ -161,13 +170,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean deleteUser(String username) {
-
         List<User> userList = userRepo.findByUsernameIgnoreCase(username);
         // checks if the user with the given username exists in the database if not then return false
         if (userList.size() != 1) {
             logger.info("saveUser: user '{}' is duplicate or does not exist", username);
             return false;
         }
+
         logger.debug("deleteUser: user '{}'is attempting to delete their information", username);
         // gets the user with the given username
         User user = userList.get(0);
@@ -191,6 +200,7 @@ public class UserServiceImpl implements UserService {
             logger.info("getUserAge: user '{}' successfully retrieved age", username);
             return users.get(0).getAge();
         }
+
         //change this later to handle not finding the username
         logger.debug("getUserAge: user '{}' has no age", username);
         return -1;
