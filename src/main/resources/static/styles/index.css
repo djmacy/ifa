@@ -38,3 +38,40 @@
 .hide {
     display: none;
 }
+
+.navigation {
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.navigation li {
+    display: inline;
+    margin: 20px;
+}
+
+.navigation li a:link,
+.navigation li a:visited,
+.backButton, .cancelButton, .deleteButton{
+    text-decoration: none;
+    border: 1px solid black;
+    background: blue;
+    color: white;
+    padding: 5px;
+}
+
+body {
+    background: green;
+}
+
+.center {
+    text-align: center;
+    margin: 0px auto;
+}
+
+table {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}

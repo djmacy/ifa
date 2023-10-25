@@ -11,8 +11,8 @@
         <img class="ifa-logo" src="/images/ifaLogo.png" alt="IFA Logo" th:src="@{/images/ifaLogo.png}"/>
     </a>
 </div>
-<h1>Update Account</h1>
-<a href="/loginSuccess"> click to go back</a>
+<h1 class = "center">Update Account</h1>
+
 <form action="#" th:action="@{/updateAccount}" th:object="${registerOrUpdateForm}" method="post">
     <span th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global error</span><br/>
 
@@ -40,6 +40,9 @@
     <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</span><br/>
 
     <br>
+    <br>
+    <br>
+    <a class="backButton" href="/loginSuccess"> click to go back</a>
     <br>
     <br>
     <button type="submit">Submit</button>

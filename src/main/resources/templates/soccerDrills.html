@@ -11,10 +11,10 @@
         <img class="ifa-logo" src="/images/ifaLogo.png" alt="IFA Logo" th:src="@{/images/ifaLogo.png}"/>
     </a>
 </div>
-<h1>Personalized Drills</h1>
+<h1 class = "center">Personalized Drills</h1>
 
-<h2 th:if="${userAge >= 5 and userAge <= 8}">Ages 5-8</h2>
-<table th:if="${userAge >= 5 and userAge <= 8}">
+<h2 class = "center" th:if="${userAge >= 5 and userAge <= 8}">Ages 5-8</h2>
+<table class = "center" border="1" cellspacing="0" cellpadding="15" th:if="${userAge >= 5 and userAge <= 8}">
     <tr>
         <th>Juggles</th>
         <td>Juggles for at least 10 minutes</td>
@@ -33,8 +33,8 @@
     </tr>
 </table>
 
-<h2 th:if="${userAge >= 9 and userAge <= 11}">Ages 9-11</h2>
-<table th:if="${userAge >= 9 and userAge <= 11}">
+<h2 class = "center" th:if="${userAge >= 9 and userAge <= 11}">Ages 9-11</h2>
+<table class = "center" border="1" cellspacing="0" cellpadding="15" th:if="${userAge >= 9 and userAge <= 11}">
     <tr>
         <th>Juggles</th>
         <td>At least 20 minutes</td>
@@ -53,8 +53,8 @@
     </tr>
 </table>
 
-<h2 th:if="${userAge >= 12 and userAge <= 14}">Ages 12-14</h2>
-<table th:if="${userAge >= 12 and userAge <= 14}">
+<h2 class = "center" th:if="${userAge >= 12 and userAge <= 14}">Ages 12-14</h2>
+<table class = "center" border="1" cellspacing="0" cellpadding="15" th:if="${userAge >= 12 and userAge <= 14}">
     <tr>
         <th>Juggles</th>
         <td>At least 30 minutes or 100 juggles</td>
@@ -73,8 +73,8 @@
     </tr>
 </table>
 
-<h2 th:if="${userAge >= 15}">Age 15+</h2>
-<table th:if="${userAge >= 15}">
+<h2 class = "center" th:if="${userAge >= 15}">Age 15+</h2>
+<table class = "center" border="1" cellspacing="0" cellpadding="15" th:if="${userAge >= 15}">
     <tr>
         <th>Juggles</th>
         <td>At least 30 minutes or 500 juggles</td>
@@ -93,7 +93,9 @@
     </tr>
 </table>
 <p th:if="${userAge < 5 }">No Drills available for your age group</p>
-<p><a href="/loginSuccess">Click</a> to go back</p>
+<p class="center">
+<a class="backButton" href="/loginSuccess">Click to go back</a>
+</p>
 
 </body>
 </html>

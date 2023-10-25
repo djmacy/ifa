@@ -11,12 +11,15 @@
     <img class="ifa-logo" src="/images/ifaLogo.png" alt="IFA Logo" th:src="@{/images/ifaLogo.png}"/>
   </a>
 </div>
-<p>Login successful</p>
-<p th:text="'Welcome ' + ${username} + '.'"/>
-<p><a href="/soccerDrills">Click</a> to view your personalized drills</p>
-<p><a href="/updateAccount">Click</a> to update your account</p>
-<p><a href="/updatePassword">Click</a> to update your password</p>
-<p><a href="/deleteAccount">Click</a> to delete your account</p>
-<p><a href="/logout">Click</a> to log out of your account</p>
+<ul class="navigation">
+  <li><a href="/soccerDrills">Soccer Drills</a></li>
+  <li><a href="/updateAccount">Update Account</a></li>
+  <li><a href="/updatePassword">Update Password</a></li>
+  <li><a href="/deleteAccount">Delete Account</a></li>
+  <li><a href="/logout">Log Out</a></li>
+</ul>
+
+<p class = "center">Login successful</p>
+<p class = "center" th:text="'Welcome ' + ${username} + '.'"/>
 </body>
 </html>
