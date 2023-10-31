@@ -35,4 +35,4 @@ Started IfaApplication in 5.857 seconds (process running for 6.433)
 Open the following URL in your browser to check out the web application:
 http://localhost:8080
 
-To stop running the application you can click the ctrl c command.
+To stop running the application you can click ctrl c in your terminal.
