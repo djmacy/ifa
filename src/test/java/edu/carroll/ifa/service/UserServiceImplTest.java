@@ -273,7 +273,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordValidPasswordTest() {
         String newPassword = "Password1234";
-        assertTrue("updatePasswordValidPasswordTest: should succeed to change the user password", userService.updatePassword(fakeUser1, newPassword));
+        assertTrue("updatePasswordValidPasswordTest: should succeed to change the user password", userService.updatePassword(fakeUser1, newPassword, password1));
     }
 
     /**
@@ -282,7 +282,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordShortPasswordTest() {
         String shortPassword = "1234";
-        assertFalse("updatePasswordShortPasswordTest: should fail to update the user password", userService.updatePassword(fakeUser1, shortPassword));
+        assertFalse("updatePasswordShortPasswordTest: should fail to update the user password", userService.updatePassword(fakeUser1, shortPassword, password1));
     }
 
     /**
@@ -292,7 +292,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordLongPasswordTest() {
         String longPassword = "This is intentionally very long and greater than 72 characters so that the password will not be accepted.";
-        assertFalse("updatePasswordLongPasswordTest: should fail to update the user password that is greater than 71 characters", userService.updatePassword(fakeUser1, longPassword));
+        assertFalse("updatePasswordLongPasswordTest: should fail to update the user password that is greater than 71 characters", userService.updatePassword(fakeUser1, longPassword, password1));
     }
 
     /**
@@ -300,7 +300,7 @@ public class UserServiceImplTest {
      */
     @Test
     public void updatePasswordNullPasswordTest() {
-        assertFalse("updatePasswordNullPasswordTest: should fail to udpate the user password provided a null password", userService.updatePassword(fakeUser1, null));
+        assertFalse("updatePasswordNullPasswordTest: should fail to udpate the user password provided a null password", userService.updatePassword(fakeUser1, null, password1));
     }
 
     /**
@@ -309,7 +309,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordNullUserTest() {
         String newPassword = "Password1234";
-        assertFalse("updatePasswordNullUserTest: should fail to update a password for a null user", userService.updatePassword(null, newPassword));
+        assertFalse("updatePasswordNullUserTest: should fail to update a password for a null user", userService.updatePassword(null, newPassword, password1));
     }
 
     /**
@@ -319,7 +319,7 @@ public class UserServiceImplTest {
     public void updatePasswordUnsavedUserTest() {
         User unsavedUser = new User("djmacy", "1234567890", "David", "Macy", 35);
         String newPassword = "Password1234";
-        assertFalse("updatePasswordUnsavedUserTest: should fail to update a password for a user that is not in the db", userService.updatePassword(unsavedUser, newPassword));
+        assertFalse("updatePasswordUnsavedUserTest: should fail to update a password for a user that is not in the db", userService.updatePassword(unsavedUser, newPassword, password1));
     }
 
     /**
@@ -330,9 +330,9 @@ public class UserServiceImplTest {
         String mandarinPassword = "密码1234567";
         String arabicPassword = "كلمة المرور1234";
         String icelandicPassword = "Lykilorð1234";
-        assertTrue("updatePasswordMandarinPasswordTest: should succeed to update password with mandarin characters", userService.updatePassword(fakeUser1, mandarinPassword));
-        assertTrue("updatePasswordArabicPasswordTest: should succeed to update password with arabic characters", userService.updatePassword(fakeUser1, arabicPassword));
-        assertTrue("updatePasswordIcelandicPasswordTest: should succeed to update password with icelandic characters", userService.updatePassword(fakeUser1, icelandicPassword));
+        assertTrue("updatePasswordMandarinPasswordTest: should succeed to update password with mandarin characters", userService.updatePassword(fakeUser1, mandarinPassword, password1));
+        assertTrue("updatePasswordArabicPasswordTest: should succeed to update password with arabic characters", userService.updatePassword(fakeUser1, arabicPassword, mandarinPassword));
+        assertTrue("updatePasswordIcelandicPasswordTest: should succeed to update password with icelandic characters", userService.updatePassword(fakeUser1, icelandicPassword, arabicPassword));
     }
 
     /**
