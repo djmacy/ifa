@@ -103,13 +103,16 @@ public class UserServiceImpl implements UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    public boolean updateUser(User user) {
+    public boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge) {
         if (user == null || user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
                 user.getAge() <= 0 || user.getAge() >= 126) {
             logger.debug("saveUser: user gave bad info");
             return false;
         }
-
+        // set the updated information for the user
+        user.setFirstName(updatedFName);
+        user.setLastName(updatedLName);
+        user.setAge(updatedAge);
         // saves the user to the database without hashing the password again
         userRepo.save(user);
         logger.info("saveUser: user '{}' saved", user.getUsername());

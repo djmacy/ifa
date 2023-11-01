@@ -126,7 +126,6 @@ public class UserController {
         updatePasswordForm.setNewPassword(user.getHashedPassword());
         updatePasswordForm.setConfirmNewPassword(user.getHashedPassword());
 
-
         model.addAttribute("updatePasswordForm", updatePasswordForm);
         logger.info("User '{}' visited update password page", sessionUsername);
         return "updatePassword";
@@ -172,13 +171,8 @@ public class UserController {
             return "redirect:/login";
         }
 
-        // set the updated information for the user
-        //user.setUsername(updatedUser.getUsername());
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setAge(updatedUser.getAge());
         // save the user with new information
-        if (userService.updateUser(user)) {
+        if (userService.updateUser(user, updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getAge())) {
             logger.info("User did update information");
         }
 

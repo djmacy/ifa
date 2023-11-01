@@ -49,7 +49,7 @@ public interface UserService {
     /**
      * Given a user object with updated information, update the current user and save it
      * @param user
-     * @param updatedUser
+     * @param updatedPassword
      * @return
      */
     boolean updatePassword(User user, String updatedPassword);
@@ -59,6 +59,6 @@ public interface UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    boolean updateUser(User user);
+    boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge);
 
 }
