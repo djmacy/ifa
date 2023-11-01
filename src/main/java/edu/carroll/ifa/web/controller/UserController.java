@@ -173,7 +173,7 @@ public class UserController {
         }
 
         // set the updated information for the user
-        user.setUsername(updatedUser.getUsername());
+        //user.setUsername(updatedUser.getUsername());
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setAge(updatedUser.getAge());
