@@ -216,17 +216,17 @@ public class UserController {
         }
 
         if(!passwordEncoder.matches(updatedPassword.getCurrentPassword(), user.getHashedPassword())){
-            result.addError(new ObjectError("currentPassword", "current password doesnt match"));
+            result.addError(new ObjectError("currentPassword", "Current password does not match"));
             return "updatePassword";
         }
 
         if (!updatedPassword.getNewPassword().equals(updatedPassword.getConfirmNewPassword())) {
-            result.addError(new ObjectError("newPassword", "Passwords don't match"));
+            result.addError(new ObjectError("newPassword", "New passwords do not match"));
             return "updatePassword";
         }
 
         // save the user with new password
-        userService.updatePassword(user, updatedPassword.getNewPassword());
+        userService.updatePassword(user, updatedPassword.getNewPassword(), updatedPassword.getCurrentPassword());
         logger.info("The user '{}' updated their password", user.getUsername());
 
         return "redirect:/loginSuccess";
