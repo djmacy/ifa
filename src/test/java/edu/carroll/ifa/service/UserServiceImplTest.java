@@ -105,6 +105,14 @@ public class UserServiceImplTest {
     }
 
     /**
+     * This unit test checks to see that a null username and null password can not be validated
+     */
+    @Test
+    public void validateUserNullUserNullPasswordTest() {
+        assertFalse("validateUserNullUserNullPasswordTest: should fail to validate a user with null parameters", userService.validateUser(null, null));
+    }
+
+    /**
      * This unit test checks to see that a user cannot log in with their valid username and someone elses valid password.
      */
     @Test
@@ -113,34 +121,50 @@ public class UserServiceImplTest {
     }
 
     /**
-     * This unit test checks to see that Icelandic characters can be used as a username and validated in the db
+     * This unit test checks to see that multiple users can be validated
      */
     @Test
-    public void validateUserIcelandicUserValidPassword() {
+    public void validateMultipleUsersTest() {
+        assertTrue("validateMultipleUser1Test: should be able to validate the first user: ", userService.validateUser(username1, password1));
+        assertTrue("validateMultipleUser2Test: should be able to validate the second user as well: ", userService.validateUser(username2, password2));
+    }
+
+    /**
+     * This unit test checks to see that foreign users can be validated in the database
+     */
+    @Test
+    public void validateUserForeignUserValidPassword() {
         User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
-        userService.saveUser(icelandicUser);
-        assertTrue("validateUserNonIcelandicUserValidPassword: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
-    }
+        assertTrue("Icelandic user should be added to database",userService.saveUser(icelandicUser));
+        assertTrue("validateUserIcelandicUsernameValidPassword: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
 
-    /**
-     * This unit test checks to see that Arabic characters can be used as a username and validated in the db
-     */
-    @Test
-    public void validateUserArabicUserValidPassword() {
         User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
-        userService.saveUser(arabicUser);
-        assertTrue("validateUserNonArabicUserValidPassword: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
+        assertTrue("Arabic user should be added to database",userService.saveUser(arabicUser));
+        assertTrue("validateUserArabicUsernameValidPassword: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
+
+        User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
+        assertTrue("Mandarin user should be added to database",userService.saveUser(mandarinUser));
+        assertTrue("validateUserChineseUsernameValidPasswordTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
     }
 
     /**
-     * This unit test checks to see that Mandarin characters can be used as a username and validated in the db
+     *
      */
     @Test
-    public void validateUserMandarinUserValidPassword() {
+    public void validateUserForeignUserDifferentOrderTest() {
+        User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
+        User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
         User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
-        userService.saveUser(mandarinUser);
-        assertTrue("validateUserNonChineseUserValidPassword: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
+
+        assertTrue("Icelandic user should be added to database",userService.saveUser(icelandicUser));
+        assertTrue("Arabic user should be added to database",userService.saveUser(arabicUser));
+        assertTrue("Mandarin user should be added to database",userService.saveUser(mandarinUser));
+
+        assertTrue("validateUserIcelandicUsernameValidPassword: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
+        assertTrue("validateUserArabicUsernameValidPassword: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
+        assertTrue("validateUserChineseUsernameValidPasswordTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
     }
+
 
     /**
      * This unit test checks to see that a user cannot be saved into the database if they already exist in the database.
@@ -273,7 +297,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordValidPasswordTest() {
         String newPassword = "Password1234";
-        assertTrue("updatePasswordValidPasswordTest: should succeed to change the user password", userService.updatePassword(fakeUser1, newPassword));
+        assertTrue("updatePasswordValidPasswordTest: should succeed to change the user password", userService.updatePassword(fakeUser1, newPassword, password1));
     }
 
     /**
@@ -282,7 +306,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordShortPasswordTest() {
         String shortPassword = "1234";
-        assertFalse("updatePasswordShortPasswordTest: should fail to update the user password", userService.updatePassword(fakeUser1, shortPassword));
+        assertFalse("updatePasswordShortPasswordTest: should fail to update the user password", userService.updatePassword(fakeUser1, shortPassword, password1));
     }
 
     /**
@@ -292,7 +316,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordLongPasswordTest() {
         String longPassword = "This is intentionally very long and greater than 72 characters so that the password will not be accepted.";
-        assertFalse("updatePasswordLongPasswordTest: should fail to update the user password that is greater than 71 characters", userService.updatePassword(fakeUser1, longPassword));
+        assertFalse("updatePasswordLongPasswordTest: should fail to update the user password that is greater than 71 characters", userService.updatePassword(fakeUser1, longPassword, password1));
     }
 
     /**
@@ -300,7 +324,7 @@ public class UserServiceImplTest {
      */
     @Test
     public void updatePasswordNullPasswordTest() {
-        assertFalse("updatePasswordNullPasswordTest: should fail to udpate the user password provided a null password", userService.updatePassword(fakeUser1, null));
+        assertFalse("updatePasswordNullPasswordTest: should fail to udpate the user password provided a null password", userService.updatePassword(fakeUser1, null, password1));
     }
 
     /**
@@ -309,7 +333,7 @@ public class UserServiceImplTest {
     @Test
     public void updatePasswordNullUserTest() {
         String newPassword = "Password1234";
-        assertFalse("updatePasswordNullUserTest: should fail to update a password for a null user", userService.updatePassword(null, newPassword));
+        assertFalse("updatePasswordNullUserTest: should fail to update a password for a null user", userService.updatePassword(null, newPassword, password1));
     }
 
     /**
@@ -319,7 +343,7 @@ public class UserServiceImplTest {
     public void updatePasswordUnsavedUserTest() {
         User unsavedUser = new User("djmacy", "1234567890", "David", "Macy", 35);
         String newPassword = "Password1234";
-        assertFalse("updatePasswordUnsavedUserTest: should fail to update a password for a user that is not in the db", userService.updatePassword(unsavedUser, newPassword));
+        assertFalse("updatePasswordUnsavedUserTest: should fail to update a password for a user that is not in the db", userService.updatePassword(unsavedUser, newPassword, password1));
     }
 
     /**
@@ -330,9 +354,9 @@ public class UserServiceImplTest {
         String mandarinPassword = "密码1234567";
         String arabicPassword = "كلمة المرور1234";
         String icelandicPassword = "Lykilorð1234";
-        assertTrue("updatePasswordMandarinPasswordTest: should succeed to update password with mandarin characters", userService.updatePassword(fakeUser1, mandarinPassword));
-        assertTrue("updatePasswordArabicPasswordTest: should succeed to update password with arabic characters", userService.updatePassword(fakeUser1, arabicPassword));
-        assertTrue("updatePasswordIcelandicPasswordTest: should succeed to update password with icelandic characters", userService.updatePassword(fakeUser1, icelandicPassword));
+        assertTrue("updatePasswordMandarinPasswordTest: should succeed to update password with mandarin characters", userService.updatePassword(fakeUser1, mandarinPassword, password1));
+        assertTrue("updatePasswordArabicPasswordTest: should succeed to update password with arabic characters", userService.updatePassword(fakeUser1, arabicPassword, mandarinPassword));
+        assertTrue("updatePasswordIcelandicPasswordTest: should succeed to update password with icelandic characters", userService.updatePassword(fakeUser1, icelandicPassword, arabicPassword));
     }
 
     /**

@@ -103,13 +103,16 @@ public class UserServiceImpl implements UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    public boolean updateUser(User user) {
+    public boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge) {
         if (user == null || user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
                 user.getAge() <= 0 || user.getAge() >= 126) {
             logger.debug("saveUser: user gave bad info");
             return false;
         }
-
+        // set the updated information for the user
+        user.setFirstName(updatedFName);
+        user.setLastName(updatedLName);
+        user.setAge(updatedAge);
         // saves the user to the database without hashing the password again
         userRepo.save(user);
         logger.info("saveUser: user '{}' saved", user.getUsername());
@@ -125,8 +128,8 @@ public class UserServiceImpl implements UserService {
      * @return true when the user is saved false otherwise
      */
     @Override
-    public boolean updatePassword(User user, String updatedPassword) {
-        if (user == null || updatedPassword == null) {
+    public boolean updatePassword(User user, String updatedPassword, String oldPassword) {
+        if (user == null || updatedPassword == null || oldPassword == null) {
             logger.info("updatedPassword: User gave bad information");
             return false;
         }
@@ -140,6 +143,11 @@ public class UserServiceImpl implements UserService {
         List<User> userList= userRepo.findByUsernameIgnoreCase(user.getUsername());
         if (userList.size() != 1) {
             logger.info("updatedPassword: user '{}' does not exist or is duplicated", user.getUsername());
+            return false;
+        }
+
+        if (!passwordEncoder.matches(oldPassword, user.getHashedPassword())) {
+            logger.info("updatePassword: old password and password in database do not match");
             return false;
         }
 

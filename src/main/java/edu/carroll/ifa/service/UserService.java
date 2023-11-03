@@ -49,17 +49,21 @@ public interface UserService {
 
     /**
      * Given a user object with updated information, update the current user and save it
-     * @param user
-     * @param updatedUser
+     * @param user - User object that needs to update their password
+     * @param updatedPassword - new password that the user wishes to use
+     * @param oldPassword - old password that the user had
      * @return
      */
-    boolean updatePassword(User user, String updatedPassword);
+    boolean updatePassword(User user, String updatedPassword, String oldPassword);
 
     /**
      * Given a User object, save the updated information associated with the user to the database without hashing the raw password.
-     * @param user - User object that needs to be added to the database
+     * @param user - User object that needs to be updated in the database
+     * @param updatedFName - User's new first name
+     * @param updatedLName - User's new last name
+     * @param updatedAge - User's new age
      * @return false if user already exists in database, true otherwise
      */
-    boolean updateUser(User user);
+    boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge);
 
 }

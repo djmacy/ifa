@@ -116,7 +116,6 @@ public class UserController {
         UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
         updatePasswordForm.setUsername(user.getUsername());
 
-
         model.addAttribute("updatePasswordForm", updatePasswordForm);
         logger.info("User '{}' visited update password page", sessionUsername);
         return "updatePassword";
@@ -146,20 +145,15 @@ public class UserController {
         if (user == null) {
             return "redirect:/login";
         }
-
+        
         // checks for errors and adds to result
         if (result.hasErrors()) {
             logger.debug("There were {} errors", result.getErrorCount());
             return "updateAccount";
         }
-        
-        // set the updated information for the user
-        user.setUsername(updatedUser.getUsername());
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setAge(updatedUser.getAge());
+
         // save the user with new information
-        if (userService.updateUser(user)) {
+        if (userService.updateUser(user, updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getAge())) {
             logger.info("User did update information");
         }
 
@@ -203,17 +197,17 @@ public class UserController {
         }
 
         if(!passwordEncoder.matches(updatedPassword.getCurrentPassword(), user.getHashedPassword())){
-            result.addError(new ObjectError("currentPassword", "current password doesnt match"));
+            result.addError(new ObjectError("currentPassword", "Current password does not match"));
             return "updatePassword";
         }
 
         if (!updatedPassword.getNewPassword().equals(updatedPassword.getConfirmNewPassword())) {
-            result.addError(new ObjectError("newPassword", "Passwords don't match"));
+            result.addError(new ObjectError("newPassword", "New passwords do not match"));
             return "updatePassword";
         }
 
         // save the user with new password
-        userService.updatePassword(user, updatedPassword.getNewPassword());
+        userService.updatePassword(user, updatedPassword.getNewPassword(), updatedPassword.getCurrentPassword());
         logger.info("The user '{}' updated their password", user.getUsername());
 
         return "redirect:/loginSuccess";
