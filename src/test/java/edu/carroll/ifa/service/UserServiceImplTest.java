@@ -452,4 +452,12 @@ public class UserServiceImplTest {
         assertEquals("getUserNullUsernameTest: the null username should return null", null, userService.getUserByUserName(null));
     }
 
+    /**
+     * This unit test checks to see that the raw password associated with the hashed password of the user matches
+     */
+    @Test
+    public void passwordMatchesTest() {
+        String hashedPassword = fakeUser1.getHashedPassword();
+        assertTrue("passwordMatchesTest: the hashedPassword should match the raw password provided", userService.passwordMatches(password1, hashedPassword));
+    }
 }

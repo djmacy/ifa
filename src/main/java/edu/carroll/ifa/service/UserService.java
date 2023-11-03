@@ -66,4 +66,10 @@ public interface UserService {
      */
     boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge);
 
+    /**
+     * Given two strings, the raw and hashed password, the method checks to see that the user provided the correct
+     * password.
+     */
+    boolean passwordMatches(String rawPassword, String hashedPassword);
+
 }

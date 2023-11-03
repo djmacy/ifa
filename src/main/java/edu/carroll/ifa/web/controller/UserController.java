@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private final SmartValidator validator;
      private final UserService userService;
 
     /**
@@ -37,7 +36,6 @@ public class UserController {
      */
     public UserController(UserService userService, SmartValidator validator) {
         this.userService = userService;
-        this.validator = validator;
 
     }
 
@@ -122,7 +120,7 @@ public class UserController {
     }
 
     /**
-     * Handles the POST request for the "/updateAccount" page which updates the user's age.
+     * Handles the POST request for the "/updateAccount" page which updates the user's age and names.
      * @param updatedUser - User object associated with the user that's logged in
      * @param session - HttpSession for managing session information
      * @return loginSuccess page after updating the age
@@ -165,14 +163,12 @@ public class UserController {
     }
 
     @PostMapping("/updatePassword")
-    public String updatePassword(@ModelAttribute UpdatePasswordForm updatedPassword,
+    public String updatePassword(@Valid @ModelAttribute UpdatePasswordForm updatedPassword,
                                 HttpSession session,
                                 BindingResult result) {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        // checking if updated user is meeting all required validations
-        validator.validate(updatedPassword, result);
         // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");
 

@@ -22,11 +22,13 @@
         <div class="row mb-3 text-left">
             <div class="form-group col-sm-6">
                 <label class="form-label" for="username">Username</label>
+                <br>
                 <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</span>
                 <input class="form-control" id="username" type="text" th:field="*{username}" placeholder="Username"/>
             </div>
             <div class="form-group col-sm-6">
                 <label class="form-label" for="password">Password</label>
+                <br>
                 <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span>
                 <input class="form-control" id="password" type="password" th:field="*{password}" placeholder="Password"/>
             </div>
@@ -34,11 +36,13 @@
         <div class="row mb-3 text-left">
             <div class="form-group col-sm-6">
                 <label class="form-label" for="firstname">First name</label>
+                <br>
                 <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</span>
                 <input class="form-control" id="firstname" type="text" th:field="*{firstName}" placeholder="First Name"/>
             </div>
             <div class="form-group col-sm-6">
                 <label class="form-label" for="lastname">Last name</label>
+                <br>
                 <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</span>
                 <input class="form-control" id="lastname" type="text" th:field="*{lastName}" placeholder="Last Name"/>
             </div>
@@ -46,6 +50,7 @@
         <div class="row mb-3 text-left">
             <div class="form-group col-sm-6">
                 <label class="form-label" for="age">Age</label>
+                <br>
                 <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</span>
                 <input class="form-control" id="age" type="number" th:field="*{age}" placeholder="Age"/>
             </div>

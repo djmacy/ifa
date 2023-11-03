@@ -8,10 +8,10 @@ import jakarta.validation.constraints.*;
  */
 public class RegisterOrUpdateForm {
     @NotNull
-    @Size(min = 6, message = "Username must be at least 6 characters long")
+    @Size(min = 6, message = "Username must be at least 6 characters")
     private String username;
     @NotNull
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
     @NotNull(message = "Please enter a valid name")
     @NotEmpty(message = "First Name is required")
@@ -19,7 +19,6 @@ public class RegisterOrUpdateForm {
     @NotNull(message = "Please enter a valid name")
     @NotEmpty(message = "Last Name is required")
     private String lastName;
-    //@NotNull(message = "Please enter a valid age")
     @NotNull(message = "Age is required")
     @Min(value = 1L, message = "The value must be positive")
     @Max(value = 126L, message = "The value must be less than 127")

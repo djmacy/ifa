@@ -2,6 +2,7 @@ package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final UserRepository userRepo;
 
 
@@ -204,7 +205,7 @@ public class UserServiceImpl implements UserService {
 
         //change this later to handle not finding the username
         logger.debug("getUserAge: user '{}' has no age", username);
-        return -1;
+        return INVALID_AGE;
     }
 
     /**
@@ -227,5 +228,20 @@ public class UserServiceImpl implements UserService {
         User user = users.get(0);
         logger.info("getUserByUsername: user '{}' has been retrieved", username);
         return user;
+    }
+
+    /**
+     * Given the rawPassword and the hashed password it checks to see that the passwords match.
+     * @param rawPassword - The raw password provided by the user
+     * @param hashedPassword - The hashed password stored in the database
+     * @return true if passwords match else false
+     */
+    @Override
+    public boolean passwordMatches(String rawPassword, String hashedPassword) {
+        if (passwordEncoder.matches(rawPassword, hashedPassword)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
