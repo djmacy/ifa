@@ -5,6 +5,7 @@ import edu.carroll.ifa.web.form.RegisterOrUpdateForm;
 import edu.carroll.ifa.web.form.UpdatePasswordForm;
 import jakarta.servlet.http.HttpSession;
 
+import jakarta.validation.Valid;
 import jakarta.validation.Validation;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,10 +26,9 @@ import org.slf4j.LoggerFactory;
  */
 @Controller
 public class UserController {
-     private SmartValidator validator;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
+    private final SmartValidator validator;
      private final UserService userService;
 
     /**
@@ -37,19 +37,12 @@ public class UserController {
      */
     public UserController(UserService userService, SmartValidator validator) {
         this.userService = userService;
-
-        try {
-            this.validator = (SmartValidator) Validation.buildDefaultValidatorFactory().getValidator();
-        } catch (Exception ex) {
-
-        }
-
         this.validator = validator;
 
     }
 
     /**
-     * Handles the GET request for the /deleteAccount page and displays the page
+     * Handles the GET request for the /deleteAccount page and displays the delete page
      * @return deleteAccount page
      */
     @GetMapping("/deleteAccount")
@@ -122,9 +115,6 @@ public class UserController {
 
         UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
         updatePasswordForm.setUsername(user.getUsername());
-        updatePasswordForm.setCurrentPassword(user.getHashedPassword());
-        updatePasswordForm.setNewPassword(user.getHashedPassword());
-        updatePasswordForm.setConfirmNewPassword(user.getHashedPassword());
 
 
         model.addAttribute("updatePasswordForm", updatePasswordForm);
@@ -139,7 +129,7 @@ public class UserController {
      * @return loginSuccess page after updating the age
      */
     @PostMapping("/updateAccount")
-    public String updateAccount(@ModelAttribute RegisterOrUpdateForm updatedUser,
+    public String updateAccount(@Valid @ModelAttribute RegisterOrUpdateForm updatedUser,
                                 HttpSession session,
                                 BindingResult result) {
 
@@ -149,21 +139,6 @@ public class UserController {
         if (sessionUsername == null) {
             return "redirect:/login";
         }
-        // checking if updated user is meeting all required validations
-        validator.validate(updatedUser, result);
-        // get the user
-        User preExistingUserCheckUser = userService.getUserByUserName(updatedUser.getUsername());
-        //Check if the user is trying to set their username to the username of a different user who's already in the database
-        if (preExistingUserCheckUser != null && !sessionUsername.equals(preExistingUserCheckUser.getUsername())) {
-            String userNameAlreadyTakenErrorMessage = String.format("The username you provided (%s) is already in use, please try another", updatedUser.getUsername());
-            result.rejectValue("username", "not.mapped.error.message", userNameAlreadyTakenErrorMessage);
-        }
-
-        // checks for errors and adds to result
-        if (result.hasErrors()) {
-            logger.debug("There were {} errors", result.getErrorCount());
-            return "updateAccount";
-        }
 
         // get the user given the username
         User user = userService.getUserByUserName(sessionUsername);
@@ -172,6 +147,12 @@ public class UserController {
             return "redirect:/login";
         }
 
+        // checks for errors and adds to result
+        if (result.hasErrors()) {
+            logger.debug("There were {} errors", result.getErrorCount());
+            return "updateAccount";
+        }
+        
         // set the updated information for the user
         user.setUsername(updatedUser.getUsername());
         user.setFirstName(updatedUser.getFirstName());

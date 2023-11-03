@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * This class will allows us to interact with the database by making changes to the users information in the database
+ * This class will allow us to interact with the database by making changes to the users information in the database
  */
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Given a username and a password, it determines if the information provided is valid, and the user exists in the system.
+     * Given a username and a password, determine if the information provided is valid, and the user exists in the system.
      *
      * @param username - Username of the person attempting to login
      * @param rawPassword - Raw password provided by the user logging in
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Given a User object, it saves the information associated with the user to the database and hashes the raw password.
+     * Given a User object, save the information associated with the user to the database and hashes the raw password.
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        logger.debug("saveUser: user '{}' attempted to save their information", user.getUsername());
+        logger.debug("saveUser: user '{}' attempted to save their user information", user.getUsername());
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
         //if the username list is empty then the username does not exist
         if (!existingUser.isEmpty()) {
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        //password must be 8 or more characters and less than 72 characters. BCrypt has a 72 character limit.
+        //password must be 8 or more characters and less than 72 characters. BCrypt has a 72 characters limit.
         if (updatedPassword.length() < 8 || updatedPassword.length() > 72) {
             logger.info("updatedPassword: user '{} provided an invalid password", user.getUsername());
             return false;
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
         User user = userList.get(0);
         // deletes the user from the database
         userRepo.delete(user);
-        logger.info("saveUser: user '{}' deleted their information", username);
+        logger.info("deleteUser: user '{}' deleted their information", username);
         return true;
     }
 

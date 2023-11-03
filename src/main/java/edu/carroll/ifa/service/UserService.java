@@ -8,6 +8,7 @@ import edu.carroll.ifa.jpa.model.User;
 
 public interface UserService {
 
+    final int INVALID_AGE = -1;
     /**
      * Given a username and a raw password, determine if the information provided is valid, and the user exists in the system.
      * @param username - Username provided by the user logging in
@@ -35,7 +36,7 @@ public interface UserService {
     /**
      * Given a username, it returns the user's age.
      * @param username - Username associated with the User
-     * @return the age of the user if the list is not empty, -1 otherwise
+     * @return the age of the user if the list is not empty, INVALID_AGE otherwise
      */
     int getUserAge(String username);
 
