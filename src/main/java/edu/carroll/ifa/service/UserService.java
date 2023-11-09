@@ -23,7 +23,7 @@ public interface UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    boolean saveUser(User user);
+    boolean registerUser(User user);
 
     /**
      * Given a username, delete the User associated with the username provided.
@@ -31,7 +31,6 @@ public interface UserService {
      * @return false if the user does not exist in the database, true otherwise
      */
     boolean deleteUser(String username);
-
 
     /**
      * Given a username, it returns the user's age.

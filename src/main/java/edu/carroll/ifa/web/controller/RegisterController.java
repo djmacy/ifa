@@ -76,7 +76,7 @@ public class RegisterController {
             return "register";
         }
         // save the new user to the database
-        userService.saveUser(newUser);
+        userService.registerUser(newUser);
         logger.info("The user '{}' completed registration", newUser.getUsername());
 
         // Set the username up in the session

@@ -34,7 +34,7 @@
         </div>
         <div class="row mb-3 text-left">
             <div class="form-group col-sm-12">
-                <label class="form-label" for="age">Username</label>
+                <label class="form-label" for="age">Age</label>
                 <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</span>
                 <input id="age" class="form-control" type="number" th:field="*{age}" placeholder="Age"/>
             </div>

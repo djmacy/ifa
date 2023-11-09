@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         }
         User u = users.get(0);
         // Checks to see if rawPassword matches the hashed password in the database using BCrypts matches function
-        if (!passwordEncoder.matches(rawPassword, u.getHashedPassword())) {
+        if (!passwordMatches(rawPassword, u.getHashedPassword())) {
             logger.debug("validateUser: password does not match");
             return false;
         }
@@ -71,9 +71,8 @@ public class UserServiceImpl implements UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    //rename to registerUser
     @Override
-    public boolean saveUser(User user) {
+    public boolean registerUser(User user) {
         // Password is still not hashed until we encode it
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
             user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
@@ -147,8 +146,8 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        if (!passwordEncoder.matches(oldPassword, user.getHashedPassword())) {
-            logger.info("updatePassword: old password and password in database do not match");
+        if (!passwordMatches(oldPassword, user.getHashedPassword())) {
+            logger.info("updatePassword: old raw password and password in database do not match");
             return false;
         }
 
@@ -156,12 +155,7 @@ public class UserServiceImpl implements UserService {
         user.setHashedPassword(passwordEncoder.encode(updatedPassword));
         // saves the user with the updated information to the database
         userRepo.save(user);
-        // password does not match whats in the database. If this happens its bad
-        if (!passwordEncoder.matches(updatedPassword, user.getHashedPassword())) {
-            return false;
-        }
-
-        logger.info("Saved the new user");
+        logger.info("updatePassword: user'{}' has updated their password", user.getUsername());
         return true;
     }
 
