@@ -27,7 +27,7 @@ public class User {
     private String hashedPassword;
 
     /**
-     * No-argument constructor for Spring Dat JPA.
+     * No-argument constructor for Spring Data JPA.
      */
     public User() {
     }
@@ -161,7 +161,6 @@ public class User {
      */
     @Override
     public int hashCode() {
-
         return Objects.hash(username, hashedPassword);
     }
 

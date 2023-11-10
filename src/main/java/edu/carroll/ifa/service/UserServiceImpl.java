@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         user.setAge(updatedAge);
         // saves the user to the database without hashing the password again
         userRepo.save(user);
-        logger.info("saveUser: user '{}' saved", user.getUsername());
+        logger.info("saveUser: user '{}' updated", user.getUsername());
         return true;
     }
 
@@ -153,14 +153,12 @@ public class UserServiceImpl implements UserService {
 
         // sets the user's information
         user.setHashedPassword(passwordEncoder.encode(updatedPassword));
+
         // saves the user with the updated information to the database
         userRepo.save(user);
-        // password does not match whats in the database. If this happens its bad
-        if (!passwordEncoder.matches(updatedPassword, user.getHashedPassword())) {
-            return false;
-        }
 
-        logger.info("Saved the new user");
+        logger.info("Password has been updated");
+
         return true;
     }
 

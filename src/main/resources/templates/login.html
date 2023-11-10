@@ -16,9 +16,11 @@
   <h1>Login</h1>
   <form action="#" th:action="@{/login}" th:object="${loginForm}" method="post">
     <span th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global error</span><br/>
-    <input class="mb-2 form-control w-50 center" type="text" th:field="*{username}" placeholder="Username"/>
+    <label class="form-label" for="username">Username</label>
+    <input id="username" class="mb-2 form-control w-50 center" type="text" th:field="*{username}" placeholder="Username"/>
     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</span><br/>
-    <input class="form-control w-50 center" type="password" th:field="*{password}" placeholder="Password"/>
+    <label class="form-label" for="password">Password</label>
+    <input id="password" class="form-control w-50 center" type="password" th:field="*{password}" placeholder="Password"/>
     <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span><br/>
     <button class="btn btn-primary mt-3" type="submit">Login</button>
   </form>

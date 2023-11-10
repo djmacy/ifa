@@ -32,7 +32,6 @@ public interface UserService {
      */
     boolean deleteUser(String username);
 
-
     /**
      * Given a username, it returns the user's age.
      * @param username - Username associated with the User
@@ -65,5 +64,4 @@ public interface UserService {
      * @return false if user already exists in database, true otherwise
      */
     boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge);
-
 }

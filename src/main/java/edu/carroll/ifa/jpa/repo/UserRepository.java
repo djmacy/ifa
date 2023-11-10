@@ -19,5 +19,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * @return one User in a list if found, otherwise an empty list.
      */
     List<User> findByUsernameIgnoreCase(String username);
-
 }

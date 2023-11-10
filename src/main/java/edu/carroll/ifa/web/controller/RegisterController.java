@@ -53,8 +53,7 @@ public class RegisterController {
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute RegisterOrUpdateForm registerOrUpdateForm,
                                BindingResult result,
-                               HttpSession session,
-                               Model model) {
+                               HttpSession session) {
         // check if there were any errors when the user submitted the registration
         if (result.hasErrors()) {
             logger.debug("There were {} errors", result.getErrorCount());
@@ -81,8 +80,7 @@ public class RegisterController {
 
         // Set the username up in the session
         session.setAttribute("username", newUser.getUsername());
-        // add the username to the model
-        model.addAttribute("username", newUser.getUsername());
+
         return "loginSuccess";
     }
 }
