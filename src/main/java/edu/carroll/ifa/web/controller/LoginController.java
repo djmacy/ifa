@@ -57,7 +57,7 @@ public class LoginController {
      * @return login page if user has incorrect information, otherwise the loginSuccess page
      */
     @PostMapping("/login")
-    public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs) {
+    public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs, Model model) {
         // checks if there are any errors when the user trys to log in
         if (result.hasErrors()) {
             logger.debug("There were {} errors", result.getErrorCount());
@@ -72,6 +72,7 @@ public class LoginController {
         }
         // adds the username to the redirect attributes
         attrs.addAttribute("username", loginForm.getUsername());
+
         // setting the username to the session
         session.setAttribute("username", loginForm.getUsername());
         return "redirect:/loginSuccess";
