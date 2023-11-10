@@ -6,9 +6,6 @@ import edu.carroll.ifa.web.form.UpdatePasswordForm;
 import jakarta.servlet.http.HttpSession;
 
 import jakarta.validation.Valid;
-import jakarta.validation.Validation;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.*;
@@ -28,8 +25,9 @@ import org.slf4j.LoggerFactory;
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private final SmartValidator validator;
      private final UserService userService;
+    private final SmartValidator validator;
+
 
     /**
      * Constructs a UserController instance with the UserService dependency.
@@ -106,6 +104,12 @@ public class UserController {
         return "updateAccount";
     }
 
+    /**
+     *
+     * @param model
+     * @param session
+     * @return
+     */
     @GetMapping("/updatePassword")
     public String updatePassword(Model model, HttpSession session){
         // get the username from session
@@ -122,15 +126,18 @@ public class UserController {
     }
 
     /**
-     * Handles the POST request for the "/updateAccount" page which updates the user's age.
+     * Handles the POST request for the "/updateAccount" page which updates the user's age and names.
      * @param updatedUser - User object associated with the user that's logged in
      * @param session - HttpSession for managing session information
      * @return loginSuccess page after updating the age
      */
     @PostMapping("/updateAccount")
-    public String updateAccount(@Valid @ModelAttribute RegisterOrUpdateForm updatedUser,
+    public String updateAccount(@ModelAttribute RegisterOrUpdateForm updatedUser,
                                 HttpSession session,
                                 BindingResult result) {
+
+        // checking if updated user is meeting all required validations
+        validator.validate(updatedUser, result);
 
         // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");
@@ -154,37 +161,33 @@ public class UserController {
 
         // save the user with new information
         if (userService.updateUser(user, updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getAge())) {
-            logger.info("User did update information");
+            logger.info("The user '{}' updated account information", user.getUsername());
         }
 
-        logger.info("The username {} updated account information", user.getUsername());
         // get the username in the session
         session.setAttribute("username", user.getUsername());
 
         return "redirect:/loginSuccess";
     }
 
+    /**
+     *
+     * @param updatedPassword
+     * @param session
+     * @param result
+     * @return
+     */
     @PostMapping("/updatePassword")
     public String updatePassword(@ModelAttribute UpdatePasswordForm updatedPassword,
                                 HttpSession session,
                                 BindingResult result) {
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        // checking if updated user is meeting all required validations
-        validator.validate(updatedPassword, result);
         // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");
 
-
-        // checks for errors and adds to result
-        if (result.hasErrors()) {
-            logger.debug("There were {} errors", result.getErrorCount());
-            return "updatePassword";
-        }
-
         // If you're not logged in, redirect to login
-        if(sessionUsername == null) {
+        if (sessionUsername == null) {
             return "redirect:/login";
         }
 
@@ -196,7 +199,16 @@ public class UserController {
             return "redirect:/login";
         }
 
-        if(!passwordEncoder.matches(updatedPassword.getCurrentPassword(), user.getHashedPassword())){
+        // checks for errors and adds to result
+        if (result.hasErrors()) {
+            logger.debug("There were {} errors", result.getErrorCount());
+            return "updatePassword";
+        }
+
+        // checking if updated user is meeting all required validations
+        validator.validate(updatedPassword, result);
+
+        if(!userService.passwordMatches(updatedPassword.getCurrentPassword(), user.getHashedPassword())){
             result.addError(new ObjectError("currentPassword", "Current password does not match"));
             return "updatePassword";
         }
@@ -212,5 +224,4 @@ public class UserController {
 
         return "redirect:/loginSuccess";
     }
-
 }

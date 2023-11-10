@@ -2,6 +2,7 @@ package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final UserRepository userRepo;
 
 
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
         }
         User u = users.get(0);
         // Checks to see if rawPassword matches the hashed password in the database using BCrypts matches function
-        if (!passwordEncoder.matches(rawPassword, u.getHashedPassword())) {
+        if (!passwordMatches(rawPassword, u.getHashedPassword())) {
             logger.debug("validateUser: password does not match");
             return false;
         }
@@ -70,9 +71,8 @@ public class UserServiceImpl implements UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    //rename to registerUser
     @Override
-    public boolean saveUser(User user) {
+    public boolean registerUser(User user) {
         // Password is still not hashed until we encode it
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
             user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
@@ -146,8 +146,8 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        if (!passwordEncoder.matches(oldPassword, user.getHashedPassword())) {
-            logger.info("updatePassword: old password and password in database do not match");
+        if (!passwordMatches(oldPassword, user.getHashedPassword())) {
+            logger.info("updatePassword: old raw password and password in database do not match");
             return false;
         }
 
@@ -156,8 +156,7 @@ public class UserServiceImpl implements UserService {
 
         // saves the user with the updated information to the database
         userRepo.save(user);
-
-        logger.info("Password has been updated");
+        logger.info("updatePassword: user'{}' has updated their password", user.getUsername());
 
         return true;
     }
@@ -202,7 +201,7 @@ public class UserServiceImpl implements UserService {
 
         //change this later to handle not finding the username
         logger.debug("getUserAge: user '{}' has no age", username);
-        return -1;
+        return INVALID_AGE;
     }
 
     /**
@@ -225,5 +224,20 @@ public class UserServiceImpl implements UserService {
         User user = users.get(0);
         logger.info("getUserByUsername: user '{}' has been retrieved", username);
         return user;
+    }
+
+    /**
+     * Given the rawPassword and the hashed password it checks to see that the passwords match.
+     * @param rawPassword - The raw password provided by the user
+     * @param hashedPassword - The hashed password stored in the database
+     * @return true if passwords match else false
+     */
+    @Override
+    public boolean passwordMatches(String rawPassword, String hashedPassword) {
+        if (passwordEncoder.matches(rawPassword, hashedPassword)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

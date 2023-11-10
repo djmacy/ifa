@@ -23,7 +23,7 @@ public interface UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
-    boolean saveUser(User user);
+    boolean registerUser(User user);
 
     /**
      * Given a username, delete the User associated with the username provided.
@@ -64,4 +64,10 @@ public interface UserService {
      * @return false if user already exists in database, true otherwise
      */
     boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge);
+
+    /**
+     * Given two strings, the raw and hashed password, the method checks to see that the user provided the correct
+     * password.
+     */
+    boolean passwordMatches(String rawPassword, String hashedPassword);
 }
