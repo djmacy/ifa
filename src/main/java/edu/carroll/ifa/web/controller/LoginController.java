@@ -53,11 +53,10 @@ public class LoginController {
      * @param loginForm - LoginForm information that is submitted by the user
      * @param result - BindingResult for validating the form information
      * @param session - HttpSession for managing session data
-     * @param attrs - RedirectAttributes for passing attributes to the /loginSuccess page
      * @return login page if user has incorrect information, otherwise the loginSuccess page
      */
     @PostMapping("/login")
-    public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session, RedirectAttributes attrs, Model model) {
+    public String loginPost(@Valid @ModelAttribute LoginForm loginForm, BindingResult result, HttpSession session) {
         // checks if there are any errors when the user trys to log in
         if (result.hasErrors()) {
             logger.debug("There were {} errors", result.getErrorCount());
@@ -70,8 +69,6 @@ public class LoginController {
             logger.info("login failed username or password do not match known users");
             return "login";
         }
-        // adds the username to the redirect attributes
-        attrs.addAttribute("username", loginForm.getUsername());
 
         // setting the username to the session
         session.setAttribute("username", loginForm.getUsername());
@@ -101,10 +98,15 @@ public class LoginController {
        }
     }
 
+    /**
+     *
+     * @param session
+     * @return
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         // removes the username from the session
-       session.removeAttribute("username");
+       session.invalidate();
        logger.info("successfully logged out");
        return "logout";
     }

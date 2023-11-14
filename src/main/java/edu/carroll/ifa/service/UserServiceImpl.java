@@ -2,7 +2,6 @@ package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
 import edu.carroll.ifa.jpa.repo.UserRepository;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,9 +47,9 @@ public class UserServiceImpl implements UserService {
             logger.debug("validateUser: User provided a null username");
             return false;
         }
-        // Always do the lookup in a case-insensitive manner (lower-casing the data). -Nate
+        // Always do the lookup in a case-insensitive manner (lower-casing the data).
         List<User> users = userRepo.findByUsernameIgnoreCase(username);
-        // We expect 0 or 1, so if we get more than 1, bail out as this is an error we don't deal with properly. -Nate
+        // We expect 0 or 1, so if we get more than 1, bail out as this is an error we don't deal with properly.
         if (users.size() != 1) {
             logger.debug("validateUser: found {} users", users.size());
             return false;
@@ -73,7 +72,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean registerUser(User user) {
-        // Password is still not hashed until we encode it
+        // Password is still not hashed
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
             user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
             user.getAge() <= 0 || user.getAge() >= 126) {
@@ -89,7 +88,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        // encrypts and sets the user's password
+        // hashes and sets the user's password
         user.setHashedPassword(passwordEncoder.encode(user.getHashedPassword()));
         // saves the user to the database
         userRepo.save(user);
@@ -104,6 +103,7 @@ public class UserServiceImpl implements UserService {
      * @return false if user already exists in database, true otherwise
      */
     public boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge) {
+        //Checking to make sure the information given is valid
         if (user == null || user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
                 user.getAge() <= 0 || user.getAge() >= 126) {
             logger.debug("saveUser: user gave bad info");
@@ -120,10 +120,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Updating the user's information
-     * Give a two User objects, the User with the old information and the User with the updated information it will
-     * overwrite the old user's information in the database.
-     * @param user - User that has the old information
+     * Updating the user's password
+     * Give a two User objects, the User with the old password and the User with the updated password it will
+     * overwrite the user's old password in the database.
+     * @param user - User that has the old password
      * @param updatedPassword - New password that will replace the old password
      * @return true when the user is saved false otherwise
      */
@@ -142,12 +142,12 @@ public class UserServiceImpl implements UserService {
 
         List<User> userList= userRepo.findByUsernameIgnoreCase(user.getUsername());
         if (userList.size() != 1) {
-            logger.info("updatedPassword: user '{}' does not exist or is duplicated", user.getUsername());
+            logger.warn("updatedPassword: user '{}' does not exist or is duplicated", user.getUsername());
             return false;
         }
 
         if (!passwordMatches(oldPassword, user.getHashedPassword())) {
-            logger.info("updatePassword: old raw password and password in database do not match");
+            logger.debug("updatePassword: user '{}' old raw password and password in database do not match", user.getUsername());
             return false;
         }
 
@@ -199,7 +199,6 @@ public class UserServiceImpl implements UserService {
             return users.get(0).getAge();
         }
 
-        //change this later to handle not finding the username
         logger.debug("getUserAge: user '{}' has no age", username);
         return INVALID_AGE;
     }
@@ -234,10 +233,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean passwordMatches(String rawPassword, String hashedPassword) {
-        if (passwordEncoder.matches(rawPassword, hashedPassword)) {
-            return true;
-        } else {
-            return false;
-        }
+        return passwordEncoder.matches(rawPassword, hashedPassword);
     }
 }
