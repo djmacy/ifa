@@ -20,7 +20,7 @@ public class UserServiceImplTest {
     private static final String icelandicName = "Davíð";
     private static final String arabicName = "ديفيد";
     private static final String mandarinName = "大衛";
-    private static final String password1 = "1234";
+    private static final String password1 = "123456789";
     private static final String password2 = "password";
     private static final String fname1 = "Bob";
     private static final String fname2 = "Ryan";
@@ -65,7 +65,7 @@ public class UserServiceImplTest {
     @Test
     public void validateUserValidUserInvalidPasswordTest() {
         assertTrue("validateUserSuccessTest: Add user to database failed", userService.registerUser(fakeUser1));
-        assertFalse("validateUserValidUserInvalidPasswordTest: should fail using a valid user, and an invalid password", userService.validateUser(fakeUser1.getUsername(), password1+"not"));
+        assertFalse("validateUserValidUserInvalidPasswordTest: should fail using a valid user, and an invalid password", userService.validateUser(fakeUser1.getUsername(), password1 + "not"));
     }
 
     /**
@@ -132,16 +132,16 @@ public class UserServiceImplTest {
     @Test
     public void validateUserForeignUserValidPassword() {
         User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
-        assertTrue("Icelandic user should be added to database",userService.registerUser(icelandicUser));
-        assertTrue("validateUserIcelandicUsernameValidPassword: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
+        assertTrue("validateUserForeignUserValidPassword: Icelandic user should be added to database",userService.registerUser(icelandicUser));
+        assertTrue("validateUserForeignUserValidPassword: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
 
         User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
-        assertTrue("Arabic user should be added to database",userService.registerUser(arabicUser));
-        assertTrue("validateUserArabicUsernameValidPassword: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
+        assertTrue("validateUserForeignUserValidPassword: Arabic user should be added to database",userService.registerUser(arabicUser));
+        assertTrue("validateUserForeignUserValidPassword: validateUserArabicUsernameValidPassword: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
 
         User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
-        assertTrue("Mandarin user should be added to database",userService.registerUser(mandarinUser));
-        assertTrue("validateUserChineseUsernameValidPasswordTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
+        assertTrue("validateUserForeignUserValidPassword: Mandarin user should be added to database",userService.registerUser(mandarinUser));
+        assertTrue("validateUserForeignUserValidPassword: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
     }
 
     /**
@@ -153,13 +153,13 @@ public class UserServiceImplTest {
         User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
         User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
 
-        assertTrue("Icelandic user should be added to database",userService.registerUser(icelandicUser));
-        assertTrue("Arabic user should be added to database",userService.registerUser(arabicUser));
-        assertTrue("Mandarin user should be added to database",userService.registerUser(mandarinUser));
+        assertTrue("validateUserForeignUserDifferentOrderTest: Icelandic user should be added to database",userService.registerUser(icelandicUser));
+        assertTrue("validateUserForeignUserDifferentOrderTest: Arabic user should be added to database",userService.registerUser(arabicUser));
+        assertTrue("validateUserForeignUserDifferentOrderTest: Mandarin user should be added to database",userService.registerUser(mandarinUser));
 
-        assertTrue("validateUserIcelandicUsernameValidPassword: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
-        assertTrue("validateUserArabicUsernameValidPassword: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
-        assertTrue("validateUserChineseUsernameValidPasswordTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
+        assertTrue("validateUserForeignUserDifferentOrderTest: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
+        assertTrue("validateUserForeignUserDifferentOrderTest: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
+        assertTrue("validateUserForeignUserDifferentOrderTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
     }
 
 
@@ -222,8 +222,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserNullFnameTest() {
-        User noFname = new User("newUsername"+username1, "new"+password1, null, "new"+lname1, age1);
-        assertFalse("saveUserNullFnameTest: should fail to add a user with no first name", userService.registerUser(noFname));
+        User noFname = new User(username1, password1, null, lname1, age1);
+        assertFalse("registerUserNullFnameTest: should fail to add a user with no first name", userService.registerUser(noFname));
+        assertFalse("registerUserNullFnameTest: should fail to validate user", userService.validateUser(noFname.getUsername(), password1));
     }
 
     /**
@@ -231,8 +232,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserNullLnameTest() {
-        User noLname = new User("newUsername"+username1, "new"+password1, "new"+fname1, null, age1);
-        assertFalse("saveUserNullLnameTest: should fail to add a user with no last name", userService.registerUser(noLname));
+        User noLname = new User(username1, password1, fname1, null, age1);
+        assertFalse("registerUserNullLnameTest: should fail to add a user with no last name", userService.registerUser(noLname));
+        assertFalse("registerUserNullLnameTest: should fail to validate user", userService.validateUser(noLname.getUsername(), password1));
     }
 
     /**
@@ -240,8 +242,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserNullAgeTest() {
-        User noAge = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, null);
-        assertFalse("saveUserNullAgeTest: should fail to add a user with no last name", userService.registerUser(noAge));
+        User noAge = new User(username1, password1, fname1, lname1, null);
+        assertFalse("registerUserNullAgeTest: should fail to add a user with no age name", userService.registerUser(noAge));
+        assertFalse("registerUserNullAgeTest: should fail to validate user", userService.validateUser(noAge.getUsername(), password1));
     }
 
     /**
@@ -249,8 +252,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserNegativeAgeTest() {
-        User negativeAge = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, Integer.MIN_VALUE);
-        assertFalse("saveUserNegativeAgeTest: should fail to add a user with negative age", userService.registerUser(negativeAge));
+        User negativeAge = new User(username1, password1, fname1, lname1, Integer.MIN_VALUE);
+        assertFalse("registerUserNegativeAgeTest: should fail to add a user with negative age", userService.registerUser(negativeAge));
+        assertFalse("registerUserNegativeAgeTest: should fail to validate user", userService.validateUser(negativeAge.getUsername(), password1));
     }
 
     /**
@@ -259,8 +263,8 @@ public class UserServiceImplTest {
     @Test
     public void registerUser1AgeTest() {
         User age1 = new User(username1, password1, fname1, lname1, 1);
-        assertTrue("saveUser1AgeTest: should succeed to add a user with an age of 1", userService.registerUser(age1));
-        assertTrue("saveUser1AgeTest: failed to validate user in db", userService.validateUser(username1, password1));
+        assertTrue("registerUser1AgeTest: should succeed to add a user with an age of 1", userService.registerUser(age1));
+        assertTrue("registerUser1AgeTest: failed to validate user in db", userService.validateUser(age1.getUsername(), password1));
     }
 
     /**
@@ -269,8 +273,8 @@ public class UserServiceImplTest {
     @Test
     public void registerUserEdgeCaseAgeTest() {
         User edgeCaseAge = new User(username1, password1, fname1,lname1, userService.TOO_OLD_AGE - 1);
-        assertTrue("saveUserEdgeCaseAgeTest: should succeed to add a user with an age of 122", userService.registerUser(edgeCaseAge));
-        assertTrue("saveUserEdgeCaseAgeTest: failed to validate user in db", userService.validateUser(username1, password1));
+        assertTrue("registerUserEdgeCaseAgeTest: should succeed to add a user with an age of 122", userService.registerUser(edgeCaseAge));
+        assertTrue("registerUserEdgeCaseAgeTest: failed to validate user in db", userService.validateUser(edgeCaseAge.getUsername(), password1));
     }
 
     /**
@@ -278,8 +282,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUser0AgeTest() {
-        User age0 = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, 0);
-        assertFalse("saveUser0AgeTest: should fail to add a user with an age of 0", userService.registerUser(age0));
+        User age0 = new User(username1, password1, fname1, lname1, 0);
+        assertFalse("registerUser0AgeTest: should fail to add a user with an age of 0", userService.registerUser(age0));
+        assertFalse("registerUser0AgeTest: should fail to validate user in db", userService.validateUser(age0.getUsername(), password1));
     }
 
     /**
@@ -287,8 +292,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserMaxAgeTest() {
-        User ageMax = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, Integer.MAX_VALUE);
-        assertFalse("saveUserMaxAgeTest: should fail to add a user with an age of Integer.MAX_VALUE", userService.registerUser(ageMax));
+        User ageMax = new User(username1, password1, fname1, lname1, Integer.MAX_VALUE);
+        assertFalse("registerUserMaxAgeTest: should fail to add a user with an age of Integer.MAX_VALUE", userService.registerUser(ageMax));
+        assertFalse("registerUserMaxAgeTest: should fail to validate user in db", userService.validateUser(ageMax.getUsername(), password1));
     }
 
     /**
@@ -300,6 +306,16 @@ public class UserServiceImplTest {
         assertTrue("updatePasswordValidPasswordTest: failed to add fakeUser1", userService.registerUser(fakeUser1));
         assertTrue("updatePasswordValidPasswordTest: should succeed to change the user password", userService.updatePassword(fakeUser1, newPassword, password1));
         assertTrue("updatePasswordValidPasswordTest: failed to validate user with new password", userService.validateUser(fakeUser1.getUsername(), newPassword));
+    }
+
+    /**
+     * This unit test checks to see if a user can update their account with the same password
+     */
+    @Test
+    public void updatePasswordSamePasswordTest() {
+        assertTrue("updatePasswordValidPasswordTest: failed to add fakeUser1", userService.registerUser(fakeUser1));
+        assertTrue("updatePasswordValidPasswordTest: should succeed to keep the same the user password", userService.updatePassword(fakeUser1, password1, password1));
+        assertTrue("updatePasswordValidPasswordTest: failed to validate user with new password", userService.validateUser(fakeUser1.getUsername(), password1));
     }
 
     /**
@@ -562,7 +578,57 @@ public class UserServiceImplTest {
         assertEquals("updateUserNullInfoTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
         assertEquals("updateUserNullInfoTest: old age does not match current age", age1, fakeUser1.getAge());
         assertTrue("updateUserNullInfoTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
 
+    /**
+     * This unit test checks to see that a user cannot update with a null fname, same lname, and same age
+     */
+    @Test
+    public void updateUserNullFnameTest() {
+        assertTrue("updateUserNullFnameTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserNullFnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        assertFalse("updateUserNullFnameTest: should fail to update user with null fname", userService.updateUser(fakeUser1, null, fakeUser1.getLastName(), fakeUser1.getAge()));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserNullFnameTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserNullFnameTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserNullFnameTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserNullFnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user cannot update with a same fname, null lname, and same age
+     */
+    @Test
+    public void updateUserNullLnameTest() {
+        assertTrue("updateUserNullLnameTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserNullLnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        assertFalse("updateUserNullLnameTest: should fail to update user with null lname", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), null, fakeUser1.getAge()));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserNullLnameTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserNullLnameTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserNullLnameTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserNullLnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user cannot update with a same fname, same lname, and null age
+     */
+    @Test
+    public void updateUserNullAgeTest() {
+        assertTrue("updateUserNullLnameTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserNullLnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        assertFalse("updateUserNullLnameTest: should fail to update user with null lname", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), fakeUser1.getLastName(), null));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserNullLnameTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserNullLnameTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserNullLnameTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserNullLnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
     }
 
     /**
@@ -747,6 +813,18 @@ public class UserServiceImplTest {
      * This unit test checks to see that the raw password associated with the hashed password of the user matches
      */
     @Test
+    public void passwordMatchesValidHashedValidRawTest() {
+        //password does not get hashed until added to db
+        assertTrue("passwordMatchesValidHashedValidRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertTrue("passwordMatchesValidHashedValidRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+        String hashedPassword = fakeUser1.getHashedPassword();
+        assertTrue("passwordMatchesValidHashedValidRawTest: the hashedPassword should match the raw password provided", userService.passwordMatches(password1, hashedPassword));
+    }
+
+    /**
+     * This unit test checks to see that the raw password associated with the hashed password of the user matches
+     */
+    @Test
     public void passwordMatchesTest() {
         //password does not get hashed until added to db
         assertTrue("passwordMatchesTest: failed to add the user", userService.registerUser(fakeUser1));
@@ -754,6 +832,4 @@ public class UserServiceImplTest {
         String hashedPassword = fakeUser1.getHashedPassword();
         assertTrue("passwordMatchesTest: the hashedPassword should match the raw password provided", userService.passwordMatches(password1, hashedPassword));
     }
-
-    //add password same password as old test
 }
