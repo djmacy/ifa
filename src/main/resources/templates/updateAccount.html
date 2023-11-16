@@ -21,30 +21,31 @@
         <div class="row mb-3 text-left">
             <div class="form-group col-sm-12">
                 <label class="form-label" for="firstname">First Name</label>
-                <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</span>
+                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</div>
                 <input id="firstname" class="form-control" type="text" th:field="*{firstName}" placeholder="First Name"/>
             </div>
         </div>
         <div class="row mb-3 text-left">
             <div class="form-group col-sm-12">
                 <label class="form-label" for="lastname">Last Name</label>
-                <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</span>
+                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</div>
                 <input id="lastname" class="form-control" type="text" th:field="*{lastName}" placeholder="Last Name"/>
             </div>
         </div>
         <div class="row mb-3 text-left">
             <div class="form-group col-sm-12">
                 <label class="form-label" for="age">Age</label>
-                <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</span>
+                <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
                 <input id="age" class="form-control" type="number" th:field="*{age}" placeholder="Age"/>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="form-group col-sm-12">
-                <a class="backButton mb-3" href="/loginSuccess"> Return</a>
-                <br>
                 <button class="btn btn-primary mt-3" type="submit">Submit</button>
+                <br>
+                <br>
+                <a class="backButton mb-3" href="/loginSuccess"> Back</a>
             </div>
         </div>
 
