@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     public boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge) {
         //Checking to make sure the information given is valid
         if (user == null || user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
-                user.getAge() <= 0 || user.getAge() >= 126) {
+                updatedAge <= 0 || updatedAge >= 126) {
             logger.debug("saveUser: user gave bad info");
             return false;
         }

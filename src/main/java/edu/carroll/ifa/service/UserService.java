@@ -14,7 +14,7 @@ public interface UserService {
      * @param username - Username provided by the user logging in
      * @param password - Raw password provided by the user logging in
      * @return true if data exists and matches what's on record, false otherwise
-     * - Nate
+     *
      */
     boolean validateUser(String username, String password);
 
@@ -51,7 +51,7 @@ public interface UserService {
      * @param user - User object that needs to update their password
      * @param updatedPassword - new password that the user wishes to use
      * @param oldPassword - old password that the user had
-     * @return
+     * @return true if password has been successfully updated, false otherwise
      */
     boolean updatePassword(User user, String updatedPassword, String oldPassword);
 
@@ -68,6 +68,9 @@ public interface UserService {
     /**
      * Given two strings, the raw and hashed password, the method checks to see that the user provided the correct
      * password.
+     * @param rawPassword - User's raw password
+     * @param hashedPassword - User's hashedPassword stored in db
+     * @return true if raw password matches BCrypts hashed password, false otherwise
      */
     boolean passwordMatches(String rawPassword, String hashedPassword);
 }
