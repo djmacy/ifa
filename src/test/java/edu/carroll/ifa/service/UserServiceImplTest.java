@@ -1,6 +1,7 @@
 package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,8 +202,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserNullUsernameTest() {
-        User noUsername = new User(null, "new"+ password1, "new"+fname1, "new"+lname1, age1);
-        assertFalse("saveUserNullUsernameTest: should fail to add a user with no username", userService.registerUser(noUsername));
+        User noUsername = new User(null, password1, fname1, lname1, age1);
+        assertFalse("registerUserNullUsernameTest: should fail to add a user with no username", userService.registerUser(noUsername));
+        assertFalse("registerUserNullUsernameTest: should fail to validate user", userService.validateUser(noUsername.getUsername(), password1));
     }
 
     /**
@@ -210,8 +212,9 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserNullPasswordTest() {
-        User noPassword = new User("newUsername"+username1, null, "new"+fname1, "new"+lname1, age1);
-        assertFalse("saveUserNullPasswordTest: should fail to add a user with no password", userService.registerUser(noPassword));
+        User noPassword = new User(username1, null, fname1, lname1, age1);
+        assertFalse("registerUserNullPasswordTest: should fail to add a user with no password", userService.registerUser(noPassword));
+        assertFalse("registerUserNullPasswordTest: should fail to validate user", userService.validateUser(noPassword.getUsername(), null));
     }
 
     /**
@@ -255,17 +258,19 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUser1AgeTest() {
-        User age1 = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, 1);
+        User age1 = new User(username1, password1, fname1, lname1, 1);
         assertTrue("saveUser1AgeTest: should succeed to add a user with an age of 1", userService.registerUser(age1));
+        assertTrue("saveUser1AgeTest: failed to validate user in db", userService.validateUser(username1, password1));
     }
 
     /**
      * This unit test checks to see if a new user with an age of 125 can be added to the database since 1-125 is the cutoff
      */
     @Test
-    public void registerUserTooOldAgeTest() {
-        User age125 = new User("newUsername"+username1, "new"+password1, "new"+fname1, "new"+lname1, 125);
-        assertTrue("saveUserTooOldAgeTest: should succeed to add a user with an age of 125", userService.registerUser(age125));
+    public void registerUserEdgeCaseAgeTest() {
+        User edgeCaseAge = new User(username1, password1, fname1,lname1, userService.TOO_OLD_AGE - 1);
+        assertTrue("saveUserEdgeCaseAgeTest: should succeed to add a user with an age of 122", userService.registerUser(edgeCaseAge));
+        assertTrue("saveUserEdgeCaseAgeTest: failed to validate user in db", userService.validateUser(username1, password1));
     }
 
     /**
@@ -543,6 +548,155 @@ public class UserServiceImplTest {
     }
 
     /**
+     * This unit test checks to see that a user cannot update with a null fname, null lname, and null age
+     */
+    @Test
+    public void updateUserNullInfoTest() {
+        assertTrue("updateUserNullInfoTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserNullInfoTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        assertFalse("updateUserNullInfoTest: should fail to update user with null info", userService.updateUser(fakeUser1, null, null, null));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserNullInfoTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserNullInfoTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserNullInfoTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserNullInfoTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+    }
+
+    /**
+     * This unit test checks to see that a user can update first name, last name, and age with the same information as before
+     */
+    @Test
+    public void updateUserSameInfoTest() {
+        assertTrue("updateUserSameInfoTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserSameInfoTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        assertTrue("updateUserSameInfoTest: should succeed to update user with same info", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), fakeUser1.getLastName(), fakeUser1.getAge()));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserSameInfoTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserSameInfoTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserSameInfoTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserSameInfoTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user can update first name, but keep last name and age the same
+     */
+    @Test
+    public void updateUserDifferentFnameTest() {
+        assertTrue("updateUserDifferentFnameTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserDifferentFnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        String newFname = fakeUser1.getFirstName() + "newFname";
+
+        assertTrue("updateUserDifferentFnameTest: should succeed to update user with new first name", userService.updateUser(fakeUser1, newFname, fakeUser1.getLastName(), fakeUser1.getAge()));
+
+        //checks to make sure the user information was altered appropriately
+        assertEquals("updateUserDifferentFnameTest: new fname does not match updated fname", newFname, fakeUser1.getFirstName());
+        assertEquals("updateUserDifferentFnameTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserDifferentFnameTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserDifferentFnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user can update last name, but keep first name and age the same
+     */
+    @Test
+    public void updateUserDifferentLnameTest() {
+        assertTrue("updateUserDifferentLnameTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserDifferentLnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        String newLname = fakeUser1.getLastName() + "newLname";
+
+        assertTrue("updateUserDifferentLnameTest: should succeed to update user with new last name", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), newLname, fakeUser1.getAge()));
+
+        //checks to make sure the user information was altered appropriately
+        assertEquals("updateUserDifferentLnameTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserDifferentLnameTest: new lname does not match updated lname", newLname, fakeUser1.getLastName());
+        assertEquals("updateUserDifferentLnameTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserDifferentLnameTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user can update age, but keep first and last name the same
+     */
+    @Test
+    public void updateUserDifferentAgeTest() {
+        assertTrue("updateUserDifferentAgeTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        Integer newAge = fakeUser1.getAge() + 1;
+
+        assertTrue("updateUserDifferentAgeTest: should succeed to update user with new age info", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), fakeUser1.getLastName(), newAge));
+
+        //checks to make sure the user information was altered appropriately
+        assertEquals("updateUserDifferentAgeTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserDifferentAgeTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserDifferentAgeTest: new age does not match updated age", newAge, fakeUser1.getAge());
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user cannot update information with a negative age
+     */
+    @Test
+    public void updateUserNegativeAgeTest() {
+        assertTrue("updateUserDifferentAgeTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        Integer negativeAge = Integer.MIN_VALUE;
+
+        assertFalse("updateUserDifferentAgeTest: should fail to update user with negative age", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), fakeUser1.getLastName(), negativeAge));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserDifferentAgeTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserDifferentAgeTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserDifferentAgeTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user cannot update information with a zero age
+     */
+    @Test
+    public void updateUserZeroAgeTest() {
+        assertTrue("updateUserDifferentAgeTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        Integer zeroAge = 0;
+
+        assertFalse("updateUserDifferentAgeTest: should fail to update user with negative age", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), fakeUser1.getLastName(), zeroAge));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserDifferentAgeTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserDifferentAgeTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserDifferentAgeTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a user cannot update information with an age of above 126
+     */
+    @Test
+    public void updateUserTooOldTest() {
+        assertTrue("updateUserDifferentAgeTest: failed to add user to db", userService.registerUser(fakeUser1));
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+
+        Integer tooOldAge = userService.TOO_OLD_AGE;
+
+        assertFalse("updateUserDifferentAgeTest: should fail to update user with negative age", userService.updateUser(fakeUser1, fakeUser1.getFirstName(), fakeUser1.getLastName(), tooOldAge));
+
+        //checks to make sure the user information was not altered
+        assertEquals("updateUserDifferentAgeTest: old fname does not match current fname", fname1, fakeUser1.getFirstName());
+        assertEquals("updateUserDifferentAgeTest: old lname does not match current lname", lname1, fakeUser1.getLastName());
+        assertEquals("updateUserDifferentAgeTest: old age does not match current age", age1, fakeUser1.getAge());
+        assertTrue("updateUserDifferentAgeTest: failed to validate user in db", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
      * This unit test checks to see that a user can update first name, last name, and age given valid information
      */
     @Test
@@ -572,21 +726,21 @@ public class UserServiceImplTest {
         Integer newMandarinAge = mandarinUser.getAge() + 1;
         Integer newArabicAge = arabicUser.getAge() + 1;
 
-        assertTrue("updateUserValidInfoTest: failed to update user info", userService.updateUser(icelandicUser, newIcelandicFname, newIcelandicLname, newIcelandicAge));
-        assertTrue("updateUserValidInfoTest: failed to update user info", userService.updateUser(mandarinUser, newMandarinFname, newMandarinLname, newMandarinAge));
-        assertTrue("updateUserValidInfoTest: failed to update user info", userService.updateUser(arabicUser, newArabicFname, newArabicLname, newArabicAge));
+        assertTrue("getMultipleUserForeignUsernameTest: failed to update user info", userService.updateUser(icelandicUser, newIcelandicFname, newIcelandicLname, newIcelandicAge));
+        assertTrue("getMultipleUserForeignUsernameTest: failed to update user info", userService.updateUser(mandarinUser, newMandarinFname, newMandarinLname, newMandarinAge));
+        assertTrue("getMultipleUserForeignUsernameTest: failed to update user info", userService.updateUser(arabicUser, newArabicFname, newArabicLname, newArabicAge));
 
-        assertEquals("updateUserValidInfoTest: new icelandic fname does not match updated fname", newIcelandicFname, icelandicUser.getFirstName());
-        assertEquals("updateUserValidInfoTest: new icelandic lname does not match updated lname", newIcelandicLname, icelandicUser.getLastName());
-        assertEquals("updateUserValidInfoTest: new age does not match updated age", newIcelandicAge, icelandicUser.getAge());
+        assertEquals("getMultipleUserForeignUsernameTest: new icelandic fname does not match updated fname", newIcelandicFname, icelandicUser.getFirstName());
+        assertEquals("getMultipleUserForeignUsernameTest: new icelandic lname does not match updated lname", newIcelandicLname, icelandicUser.getLastName());
+        assertEquals("getMultipleUserForeignUsernameTest: new age does not match updated age", newIcelandicAge, icelandicUser.getAge());
 
-        assertEquals("updateUserValidInfoTest: new mandarin fname does not match updated fname", newMandarinFname, mandarinUser.getFirstName());
-        assertEquals("updateUserValidInfoTest: new mandarin lname does not match updated lname", newMandarinLname, mandarinUser.getLastName());
-        assertEquals("updateUserValidInfoTest: new age does not match updated age", newMandarinAge, mandarinUser.getAge());
+        assertEquals("getMultipleUserForeignUsernameTest: new mandarin fname does not match updated fname", newMandarinFname, mandarinUser.getFirstName());
+        assertEquals("getMultipleUserForeignUsernameTest: new mandarin lname does not match updated lname", newMandarinLname, mandarinUser.getLastName());
+        assertEquals("getMultipleUserForeignUsernameTest: new age does not match updated age", newMandarinAge, mandarinUser.getAge());
 
-        assertEquals("updateUserValidInfoTest: new arabic fname does not match updated fname", newArabicFname, arabicUser.getFirstName());
-        assertEquals("updateUserValidInfoTest: new arabic lname does not match updated lname", newArabicLname, arabicUser.getLastName());
-        assertEquals("updateUserValidInfoTest: new arabic age does not match updated age", newArabicAge, arabicUser.getAge());
+        assertEquals("getMultipleUserForeignUsernameTest: new arabic fname does not match updated fname", newArabicFname, arabicUser.getFirstName());
+        assertEquals("getMultipleUserForeignUsernameTest: new arabic lname does not match updated lname", newArabicLname, arabicUser.getLastName());
+        assertEquals("getMultipleUserForeignUsernameTest: new arabic age does not match updated age", newArabicAge, arabicUser.getAge());
     }
 
     /**
@@ -600,4 +754,6 @@ public class UserServiceImplTest {
         String hashedPassword = fakeUser1.getHashedPassword();
         assertTrue("passwordMatchesTest: the hashedPassword should match the raw password provided", userService.passwordMatches(password1, hashedPassword));
     }
+
+    //add password same password as old test
 }

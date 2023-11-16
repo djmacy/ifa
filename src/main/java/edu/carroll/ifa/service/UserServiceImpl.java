@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final UserRepository userRepo;
 
-
     /**
      * Constructs a new UserServiceImpl instance with the UserRepository
      * @param userRepo - UserRepository that is used in UserServiceImpl
@@ -75,7 +74,7 @@ public class UserServiceImpl implements UserService {
         // Password is still not hashed
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
             user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
-            user.getAge() <= 0 || user.getAge() >= 126) {
+            user.getAge() <= 0 || user.getAge() >= TOO_OLD_AGE) {
             logger.debug("saveUser: user gave bad info");
             return false;
         }
@@ -104,8 +103,8 @@ public class UserServiceImpl implements UserService {
      */
     public boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge) {
         //Checking to make sure the information given is valid
-        if (user == null || user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
-                updatedAge <= 0 || updatedAge >= 126) {
+        if (user == null || updatedFName == null || updatedLName == null || updatedAge == null ||
+                updatedAge <= 0 || updatedAge >= TOO_OLD_AGE) {
             logger.debug("saveUser: user gave bad info");
             return false;
         }

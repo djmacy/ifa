@@ -8,7 +8,10 @@ import edu.carroll.ifa.jpa.model.User;
 
 public interface UserService {
 
-    final int INVALID_AGE = -1;
+    int INVALID_AGE = -1;
+    // The oldest person to ever live was 122. You probably shouldn't be playing soccer at this age, but I'm not going to stop you.
+    // https://www.sciencefocus.com/the-human-body/oldest-person-in-the-world
+    int TOO_OLD_AGE = 123;
     /**
      * Given a username and a raw password, determine if the information provided is valid, and the user exists in the system.
      * @param username - Username provided by the user logging in
