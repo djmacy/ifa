@@ -816,20 +816,73 @@ public class UserServiceImplTest {
     public void passwordMatchesValidHashedValidRawTest() {
         //password does not get hashed until added to db
         assertTrue("passwordMatchesValidHashedValidRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertTrue("passwordMatchesValidHashedValidRawTest: the hashedPassword should match the raw password provided", userService.passwordMatches(password1, fakeUser1.getHashedPassword()));
         assertTrue("passwordMatchesValidHashedValidRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
-        String hashedPassword = fakeUser1.getHashedPassword();
-        assertTrue("passwordMatchesValidHashedValidRawTest: the hashedPassword should match the raw password provided", userService.passwordMatches(password1, hashedPassword));
     }
 
     /**
-     * This unit test checks to see that the raw password associated with the hashed password of the user matches
+     * This unit test checks to see that a raw password associated with a null hashed password do not match
      */
     @Test
-    public void passwordMatchesTest() {
+    public void passwordMatchesValidHashedInvalidRawTest() {
         //password does not get hashed until added to db
-        assertTrue("passwordMatchesTest: failed to add the user", userService.registerUser(fakeUser1));
-        assertTrue("passwordMatchesTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
-        String hashedPassword = fakeUser1.getHashedPassword();
-        assertTrue("passwordMatchesTest: the hashedPassword should match the raw password provided", userService.passwordMatches(password1, hashedPassword));
+        assertTrue("passwordMatchesValidHashedInvalidRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesValidHashedInvalidRawTest: the hashedPassword should not match the raw password provided", userService.passwordMatches("wrong" + password1, fakeUser1.getHashedPassword()));
+        assertTrue("passwordMatchesValidHashedInvalidRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that the user's raw password does not match an incorrect hashed password
+     */
+    @Test
+    public void passwordMatchesInvalidHashedValidRawTest() {
+        //password does not get hashed until added to db
+        assertTrue("passwordMatchesInvalidHashedValidRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesInvalidHashedValidRawTest: the hashedPassword should not match the raw password provided", userService.passwordMatches(password1, "wrong" + fakeUser1.getHashedPassword()));
+        assertTrue("passwordMatchesInvalidHashedValidRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that an invalid raw password does not match with the hashed password of the user
+     */
+    @Test
+    public void passwordMatchesInvalidHashedInvalidRawTest() {
+        //password does not get hashed until added to db
+        assertTrue("passwordMatchesInvalidHashedInvalidRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesInvalidHashedInvalidRawTest: the hashedPassword should not match the raw password provided", userService.passwordMatches("wrong" + password1, "wrong" + fakeUser1.getHashedPassword()));
+        assertTrue("passwordMatchesInvalidHashedInvalidRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a null password associated with a null hashed password do not match
+     */
+    @Test
+    public void passwordMatchesNullHashedNullRawTest() {
+        //password does not get hashed until added to db
+        assertTrue("passwordMatchesNullHashedNullRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesNullHashedNullRawTest: the null hashedPassword should not match the null raw password provided", userService.passwordMatches(null, null));
+        assertTrue("passwordMatchesNullHashedNullRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a null password associated with the hashed password do not match
+     */
+    @Test
+    public void passwordMatchesValidHashedNullRawTest() {
+        //password does not get hashed until added to db
+        assertTrue("passwordMatchesValidHashedNullRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesValidHashedNullRawTest: the hashedPassword should not match the raw password provided", userService.passwordMatches(null, fakeUser1.getHashedPassword()));
+        assertTrue("passwordMatchesValidHashedNullRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to see that a raw password associated with a null hashed password do not match
+     */
+    @Test
+    public void passwordMatchesNullHashedValidRawTest() {
+        //password does not get hashed until added to db
+        assertTrue("passwordMatchesValidHashedNullRawTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesValidHashedNullRawTest: the hashedPassword should not match the raw password provided", userService.passwordMatches(password1, null));
+        assertTrue("passwordMatchesValidHashedNullRawTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
     }
 }

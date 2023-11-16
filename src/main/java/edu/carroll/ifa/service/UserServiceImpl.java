@@ -232,6 +232,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean passwordMatches(String rawPassword, String hashedPassword) {
+        if (rawPassword == null || hashedPassword == null) {
+            return false;
+        }
         return passwordEncoder.matches(rawPassword, hashedPassword);
     }
 }
