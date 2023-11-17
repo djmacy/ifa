@@ -5,7 +5,6 @@ import edu.carroll.ifa.web.form.RegisterOrUpdateForm;
 import edu.carroll.ifa.web.form.UpdatePasswordForm;
 import jakarta.servlet.http.HttpSession;
 
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.*;
@@ -105,10 +104,10 @@ public class UserController {
     }
 
     /**
-     *
-     * @param model
-     * @param session
-     * @return
+     * Handles the GET request for the /updatePassword page, by displaying the updatePassword page
+     * @param model - Model for storing attributes
+     * @param session - HttpSession for managing session information
+     * @return updatePassword page
      */
     @GetMapping("/updatePassword")
     public String updatePassword(Model model, HttpSession session){
@@ -129,6 +128,7 @@ public class UserController {
      * Handles the POST request for the "/updateAccount" page which updates the user's age and names.
      * @param updatedUser - User object associated with the user that's logged in
      * @param session - HttpSession for managing session information
+     * @param result - BindingResult validates form information
      * @return loginSuccess page after updating the age
      */
     @PostMapping("/updateAccount")
@@ -171,11 +171,11 @@ public class UserController {
     }
 
     /**
-     *
-     * @param updatedPassword
-     * @param session
-     * @param result
-     * @return
+     * Handles the POST request for the "/updatePassword" page which updates the user's password
+     * @param updatedPassword - the new password that the user will use
+     * @param session - HttpSession for managing session information
+     * @param result - BindingResult validates form information
+     * @return the loginSuccess page after redirecting
      */
     @PostMapping("/updatePassword")
     public String updatePassword(@ModelAttribute UpdatePasswordForm updatedPassword,

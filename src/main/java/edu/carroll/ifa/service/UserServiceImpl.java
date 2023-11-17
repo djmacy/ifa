@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean registerUser(User user) {
-        // Password is still not hashed
+        // Password is still not hashed until the end
         if (user == null || user.getHashedPassword() == null || user.getUsername() == null ||
             user.getFirstName() == null || user.getLastName() == null || user.getAge() == null ||
             user.getAge() <= 0 || user.getAge() >= TOO_OLD_AGE) {
