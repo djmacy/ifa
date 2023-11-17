@@ -168,7 +168,7 @@ public class User {
     private static final String TAB = "\t";
 
     /**
-     * Nate's toString method for User object.
+     * toString method for User object.
      */
     @Override
     public String toString() {

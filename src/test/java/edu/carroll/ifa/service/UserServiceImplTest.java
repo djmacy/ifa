@@ -1,7 +1,6 @@
 package edu.carroll.ifa.service;
 
 import edu.carroll.ifa.jpa.model.User;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

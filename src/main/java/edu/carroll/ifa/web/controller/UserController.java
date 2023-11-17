@@ -208,7 +208,7 @@ public class UserController {
         // checking if updated user is meeting all required validations
         validator.validate(updatedPassword, result);
 
-        if(!userService.passwordMatches(updatedPassword.getCurrentPassword(), user.getHashedPassword())){
+        if (!userService.passwordMatches(updatedPassword.getCurrentPassword(), user.getHashedPassword())){
             result.addError(new ObjectError("currentPassword", "Current password does not match"));
             return "updatePassword";
         }

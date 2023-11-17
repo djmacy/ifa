@@ -11,7 +11,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,9 +98,9 @@ public class LoginController {
     }
 
     /**
-     *
-     * @param session
-     * @return
+     * Handles the GET request for the logout page and deletes session information
+     * @param session - the session that will be deleted
+     * @return logout page
      */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
