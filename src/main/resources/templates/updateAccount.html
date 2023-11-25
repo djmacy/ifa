@@ -36,7 +36,11 @@
             <div class="form-group col-sm-12">
                 <label class="form-label" for="age">Age</label>
                 <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
-                <input id="age" class="form-control" type="number" th:field="*{age}" placeholder="Age"/>
+                <!--
+                This prevents user from pressing +, -, ., and using exponential notation when inserting values into number field of form
+                https://stackoverflow.com/questions/31706611/why-does-the-html-input-with-type-number-allow-the-letter-e-to-be-entered-in#:~:text=HTML%20input%20number%20type%20allows,also%20be%20written%20as%202e5.
+                -->
+                <input id="age" class="form-control" type="number" th:field="*{age}" placeholder="Age" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"/>
             </div>
         </div>
 

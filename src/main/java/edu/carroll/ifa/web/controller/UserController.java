@@ -136,22 +136,21 @@ public class UserController {
                                 HttpSession session,
                                 BindingResult result) {
 
-        // checking if updated user is meeting all required validations
-        validator.validate(updatedUser, result);
-
         // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");
         // If you're not logged in, redirect to login
         if (sessionUsername == null) {
             return "redirect:/login";
         }
-
         // get the user given the username
         User user = userService.getUserByUserName(sessionUsername);
         // If the user you're logged in as doesn't exist in the database, redirect
         if (user == null) {
             return "redirect:/login";
         }
+
+        // checking if updated user is meeting all required validations
+        validator.validate(updatedUser, result);
         
         // checks for errors and adds to result
         if (result.hasErrors()) {
@@ -181,7 +180,6 @@ public class UserController {
     public String updatePassword(@ModelAttribute UpdatePasswordForm updatedPassword,
                                 HttpSession session,
                                 BindingResult result) {
-
 
         // get the username from the session
         String sessionUsername = (String) session.getAttribute("username");

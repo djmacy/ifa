@@ -38,6 +38,7 @@ public class UserServiceImplTest {
      */
     @Test
     public void validateUserSuccessTest() {
+        assertFalse("validateUserNotInDatabaseTest: should fail to validate a user that is not in the database", userService.validateUser(fakeUser1.getUsername(), password1));
         assertTrue("validateUserSuccessTest: Add user to database failed", userService.registerUser(fakeUser1));
         assertTrue("validateUserSuccessTest: should succeed using the same user/pass info", userService.validateUser(fakeUser1.getUsername(), password1));
     }
@@ -168,6 +169,7 @@ public class UserServiceImplTest {
     @Test
     public void registerUserNewUserTest() {
         assertTrue("saveUserNewUserTest: should succeed using a new user", userService.registerUser(fakeUser1));
+        //assertTrueGetUserByUsername
     }
 
 
@@ -177,7 +179,10 @@ public class UserServiceImplTest {
     @Test
     public void registerUserExistingUserTest() {
         assertTrue("saveUserExistingUserTest: fakeUser1 failed to register the user", userService.registerUser(fakeUser1));
+        //assertTrueGetUserByUsername
         assertFalse("saveUserExistingUserTest: should fail using a user already in db", userService.registerUser(fakeUser1));
+
+
     }
 
     /**
@@ -282,6 +287,7 @@ public class UserServiceImplTest {
     @Test
     public void registerUser0AgeTest() {
         User age0 = new User(username1, password1, fname1, lname1, 0);
+
         assertFalse("registerUser0AgeTest: should fail to add a user with an age of 0", userService.registerUser(age0));
         assertFalse("registerUser0AgeTest: should fail to validate user in db", userService.validateUser(age0.getUsername(), password1));
     }
