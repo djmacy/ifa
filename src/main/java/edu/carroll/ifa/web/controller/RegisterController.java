@@ -39,7 +39,7 @@ public class RegisterController {
     public String registerGet(Model model) {
         // creates a new registration form and adds it to the model
         model.addAttribute("registerOrUpdateForm", new RegisterOrUpdateForm());
-        logger.info("New user visited the register page");
+        logger.debug("New user visited the register page");
         return "register";
     }
 

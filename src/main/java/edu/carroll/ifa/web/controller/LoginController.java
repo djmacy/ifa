@@ -43,7 +43,7 @@ public class LoginController {
     public String loginGet(Model model) {
         // adds the login form to the model
         model.addAttribute("loginForm", new LoginForm());
-        logger.info("New user has visited the login page");
+        logger.debug("New user has visited the login page");
         return "login";
     }
 
