@@ -107,6 +107,7 @@ public class UserServiceImpl implements UserService {
      * @param user - User object that needs to be added to the database
      * @return false if user already exists in database, true otherwise
      */
+    @Override
     public boolean updateUser(User user, String updatedFName, String updatedLName, Integer updatedAge) {
         //Checking to make sure the information given is valid
         if (user == null || updatedFName == null || updatedLName == null || updatedAge == null ||
