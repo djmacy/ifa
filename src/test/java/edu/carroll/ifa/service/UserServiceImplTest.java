@@ -931,6 +931,53 @@ public class UserServiceImplTest {
     }
 
     /**
+     * This unit test checks to see that multiple users can see if raw password matches with their hashed one
+     */
+    @Test
+    public void passwordMatchesMultipleUsersTest() {
+        String mandarinPassword = "密码1234567";
+        String arabicPassword = "كلمة المرور1234";
+        String icelandicPassword = "Lykilorð1234";
+
+        User icelandicUser = new User(icelandicName, icelandicPassword, fname1, lname1, 9);
+        User mandarinUser = new User(mandarinName, mandarinPassword, fname1, lname1, 21);
+        User arabicUser = new User(arabicName, arabicPassword, fname1, lname1, 37);
+
+        assertTrue("passwordMatchesMultipleUsersTest: failed to add the icelandic user", userService.registerUser(icelandicUser));
+        assertTrue("passwordMatchesMultipleUsersTest: failed to add the mandarin user", userService.registerUser(mandarinUser));
+        assertTrue("passwordMatchesMultipleUsersTest: failed to add the arabic user", userService.registerUser(arabicUser));
+
+        assertTrue("passwordMatchesMultipleUsersTest: the hashedPassword should match the raw password provided", userService.passwordMatches(icelandicPassword, icelandicUser.getHashedPassword()));
+        assertTrue("passwordMatchesMultipleUsersTest: the hashedPassword should match the raw password provided", userService.passwordMatches(mandarinPassword, mandarinUser.getHashedPassword()));
+        assertTrue("passwordMatchesMultipleUsersTest: the hashedPassword should match the raw password provided", userService.passwordMatches(arabicPassword, arabicUser.getHashedPassword()));
+
+        assertTrue("passwordMatchesValidHashedValidRawTest: failed to validate the user", userService.validateUser(icelandicUser.getUsername(), icelandicPassword));
+        assertTrue("passwordMatchesValidHashedValidRawTest: failed to validate the user", userService.validateUser(mandarinUser.getUsername(), mandarinPassword));
+        assertTrue("passwordMatchesValidHashedValidRawTest: failed to validate the user", userService.validateUser(arabicUser.getUsername(), arabicPassword));
+    }
+
+
+    /**
+     * This unit test checks to make sure that the two raw passwords do not match
+     */
+    @Test
+    public void passwordMatchesTwoRawPasswordsTest() {
+        assertTrue("passwordMatchesTwoRawPasswordsTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesTwoRawPasswordsTest: two raw password should not match", userService.passwordMatches(password1, password1));
+        assertTrue("passwordMatchesTwoRawPasswordsTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to make sure that two hashed passwords do not match
+     */
+    @Test
+    public void passwordMatchesTwoHashedPasswordTest() {
+        assertTrue("passwordMatchesTwoHashedPasswordTest: failed to add the user", userService.registerUser(fakeUser1));
+        assertFalse("passwordMatchesTwoHashedPasswordTest: two raw password should not match", userService.passwordMatches(fakeUser1.getHashedPassword(), fakeUser1.getHashedPassword()));
+        assertTrue("passwordMatchesTwoHashedPasswordTest: failed to validate the user", userService.validateUser(fakeUser1.getUsername(), password1));
+    }
+
+    /**
      * This unit test checks to see that a raw password associated with a null hashed password do not match
      */
     @Test
