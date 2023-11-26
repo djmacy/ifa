@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 /**
  * Controller class for the login page. It will check to see if the user is valid and then redirect them to the loginSuccess page.
  * It will also make sure that someone in the loginSuccess page is a valid user.
@@ -109,5 +107,4 @@ public class LoginController {
        logger.info("successfully logged out");
        return "logout";
     }
-
 }

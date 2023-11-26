@@ -16,9 +16,9 @@ import static org.springframework.test.util.AssertionErrors.*;
 public class UserServiceImplTest {
     private static final String username1 = "bob_johnson";
     private static final String username2 = "ryan_daniels";
-    private static final String icelandicName = "Davíð";
-    private static final String arabicName = "ديفيد";
-    private static final String mandarinName = "大衛";
+    private static final String icelandicName = "Davíð123";
+    private static final String arabicName = "123ديفيد";
+    private static final String mandarinName = "大衛1234";
     private static final String password1 = "123456789";
     private static final String password2 = "password";
     private static final String fname1 = "Bob";
@@ -29,6 +29,7 @@ public class UserServiceImplTest {
     private static final Integer age2 = 14;
     private final User fakeUser1 = new User(username1, password1, fname1, lname1, age1);
     private final User fakeUser2 = new User(username2, password2, fname2, lname2, age2);
+
     @Autowired
     private UserService userService;
 
@@ -132,7 +133,7 @@ public class UserServiceImplTest {
     @Test
     public void validateUserForeignUserValidPassword() {
         User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
-        assertTrue("validateUserForeignUserValidPassword: Icelandic user should be added to database",userService.registerUser(icelandicUser));
+        assertTrue("validateUserForeignUserValidPassword: Icelandic user should be added to database", userService.registerUser(icelandicUser));
         assertTrue("validateUserForeignUserValidPassword: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
 
         User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
@@ -162,6 +163,13 @@ public class UserServiceImplTest {
         assertTrue("validateUserForeignUserDifferentOrderTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
     }
 
+    /**
+     * This will make sure that empty username and empty password cannot be validated
+     */
+    @Test
+    public void validateUserEmptyString() {
+        assertFalse("validateUserEmptyString: Should fail to validate user with empty strings", userService.validateUser("",""));
+    }
 
     /**
      * This unit test checks to see that a new user can be saved into the database if they do not already exist in the database.
@@ -172,17 +180,112 @@ public class UserServiceImplTest {
         //assertTrueGetUserByUsername
     }
 
-
     /**
-     * This unit test checks to see that a user cannot be saved into the database if they already exist in the database.
+     * This unit test checks and sees that user with bad information can not be registered
      */
     @Test
+    public void registerUserBadInformation() {
+        //Username is bad because it must be at least 6 characters, password is bad because it must be at least 8 characters,
+        //First and Last name are bad because there must be at least 1 character
+        User blankUsername = new User("", "", "", "", age1);
+        assertFalse("registerUserBlankUsernameTest: should fail to register user with bad information", userService.registerUser(blankUsername));
+        assertFalse("registerUserBlankUsernameTest: should fail to validate user with bad information", userService.validateUser("", "1234"));
+    }
+
+    /**
+     * This unit test checks to make sure that a username with six characters can be registered  to the database
+     */
+    @Test
+    public void registerUserSixCharacterUsername() {
+        User sixCharacterUsername = new User("sixStr", password1, fname1, lname1, age1);
+        assertTrue("registerUserSixCharacterUsername: failed to register user with username of six characters", userService.registerUser(sixCharacterUsername));
+        assertTrue("registerUserSixCharacterUsername: failed to validate user with username of six characters", userService.validateUser(sixCharacterUsername.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to make sure that a username with five characters can not be registered  to the database
+     */
+    @Test
+    public void registerUserFiveCharacterUsername() {
+        User fiveCharacterUsername = new User("five", password1, fname1, lname1, age1);
+        assertFalse("registerUserFiveCharacterUsername: failed to register user with username of six characters", userService.registerUser(fiveCharacterUsername));
+        assertFalse("registerUserFiveCharacterUsername: failed to validate user with six username of six characters", userService.validateUser(fiveCharacterUsername.getUsername(), password1));
+    }
+
+    /**
+     * This unit test checks to make sure user with 8 length password can register
+     */
+    @Test
+    public void registerUserEightCharacterUsername() {
+        User eightCharacterPassword = new User(username1, "12345678", fname1, lname1, age1);
+        assertTrue("registerUserEightCharacterUsername: failed to register user with password of eight characters", userService.registerUser(eightCharacterPassword));
+        assertTrue("registerUserEightCharacterUsername: failed to validate user with password of eight characters", userService.validateUser(eightCharacterPassword.getUsername(), "12345678"));
+    }
+
+    /**
+     * This unit test checks to make sure user with 7 length password can not be registered
+     */
+    @Test
+    public void registerUserSevenCharacterUsername() {
+        User sevenCharacterPassword = new User(username1, "1234567", fname1, lname1, age1);
+        assertFalse("registerUserEightCharacterUsername: failed to register user with password of eight characters", userService.registerUser(sevenCharacterPassword));
+        assertFalse("registerUserEightCharacterUsername: failed to validate user with password of eight characters", userService.validateUser(sevenCharacterPassword.getUsername(), "1234567"));
+    }
+
+    /**
+     * This unit test checks and sees that multiples foreign users can register
+     */
+    @Test
+    public void registerMultipleUsersTest() {
+        User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
+        User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
+        User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
+
+        assertTrue("registerMultipleUsersTest: Icelandic user should be added to database",userService.registerUser(icelandicUser));
+        assertTrue("registerMultipleUsersTest: Arabic user should be added to database",userService.registerUser(arabicUser));
+        assertTrue("registerMultipleUsersTest: Mandarin user should be added to database",userService.registerUser(mandarinUser));
+
+        assertEquals("registerUserMultipleUsersTest: Did not retrieve correct User", userService.getUserByUserName(icelandicUser.getUsername()), icelandicUser);
+        assertEquals("registerUserMultipleUsersTest: Did not retrieve correct User", userService.getUserByUserName(arabicUser.getUsername()), arabicUser);
+        assertEquals("registerUserMultipleUsersTest: Did not retrieve correct User", userService.getUserByUserName(mandarinUser.getUsername()), mandarinUser);
+
+        assertTrue("registerUserMultipleUsersTest: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
+        assertTrue("registerUserMultipleUsersTest: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
+        assertTrue("registerUserMultipleUsersTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
+    }
+
+    /**
+     * This test checks to make sure order does not impair registering foreign users
+     */
+    @Test
+    public void registerMultipleUsersDifferentOrderTest() {
+        User icelandicUser = new User(icelandicName, password1, fname1, lname1, age1);
+        User arabicUser = new User(arabicName, password1, fname1, lname1, age1);
+        User mandarinUser = new User(mandarinName, password2, fname1, lname1, age1);
+
+        assertTrue("registerMultipleUsersTest: Icelandic user should be added to database",userService.registerUser(icelandicUser));
+        assertEquals("registerUserMultipleUsersTest: Did not retrieve correct User", userService.getUserByUserName(icelandicUser.getUsername()), icelandicUser);
+        assertTrue("registerUserMultipleUsersTest: should be able to validate the icelandic user: ", userService.validateUser(icelandicName, password1));
+
+        assertTrue("registerMultipleUsersTest: Arabic user should be added to database",userService.registerUser(arabicUser));
+        assertEquals("registerUserMultipleUsersTest: Did not retrieve correct User", userService.getUserByUserName(arabicUser.getUsername()), arabicUser);
+        assertTrue("registerUserMultipleUsersTest: should be able to validate the arabic user: ", userService.validateUser(arabicName, password1));
+
+        assertTrue("registerMultipleUsersTest: Mandarin user should be added to database",userService.registerUser(mandarinUser));
+        assertEquals("registerUserMultipleUsersTest: Did not retrieve correct User", userService.getUserByUserName(mandarinUser.getUsername()), mandarinUser);
+        assertTrue("registerUserMultipleUsersTest: should be able to validate the arabic user: ", userService.validateUser(mandarinName, password2));
+    }
+
+    /**
+    * This unit test checks to see that a user cannot be saved into the database if they already exist in the database.
+    */
+    @Test
     public void registerUserExistingUserTest() {
-        assertTrue("saveUserExistingUserTest: fakeUser1 failed to register the user", userService.registerUser(fakeUser1));
-        //assertTrueGetUserByUsername
-        assertFalse("saveUserExistingUserTest: should fail using a user already in db", userService.registerUser(fakeUser1));
-
-
+        assertTrue("registerUserExistingUserTest: fakeUser1 failed to register the user", userService.registerUser(fakeUser1));
+        assertEquals("registerUserExistingUserTest: fakeUser1 could not be retrieved", userService.getUserByUserName(fakeUser1.getUsername()), fakeUser1);
+        assertFalse("registerUserExistingUserTest: should fail using a user already in db", userService.registerUser(fakeUser1));
+        //make sure user can still be retrieved after trying to register duplicate user
+        assertEquals("registerUserExistingUserTest: fakeUser1 could not be retrieved", userService.getUserByUserName(fakeUser1.getUsername()), fakeUser1);
     }
 
     /**
@@ -190,15 +293,17 @@ public class UserServiceImplTest {
      */
     @Test
     public void registerUserNullTest() {
-        assertFalse("saveUserNullTest: should fail to add a null value", userService.registerUser(null));
+        assertFalse("registerUserNullTest: should fail to add a null value", userService.registerUser(null));
     }
 
     /**
-     * This unit test checks to see that a new User with no values cannot be saved into the database
+     * This unit test checks to see that a new User with blank fields cannot be saved into the database
      */
     @Test
     public void registerUserBlankUserTest() {
-        assertFalse("saveUserNullUserTest: should fail to add a null user", userService.registerUser(new User()));
+        User blankUser = new User();
+        assertFalse("registerUserBlankUserTest: should fail to add a null user", userService.registerUser(blankUser));
+        assertFalse("registerUserBlankUserTest: should fail to validate the blank user", userService.validateUser(blankUser.getUsername(), blankUser.getHashedPassword()));
     }
 
     /**

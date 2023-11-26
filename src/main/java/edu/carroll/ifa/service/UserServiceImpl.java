@@ -78,6 +78,12 @@ public class UserServiceImpl implements UserService {
             logger.debug("saveUser: user gave bad info");
             return false;
         }
+        //check to see what user inserted meets requirements
+        if (user.getUsername().length() < 6 || user.getHashedPassword().length() < 8 || user.getFirstName().length() == 0 ||
+            user.getLastName().length() == 0) {
+            logger.debug("saveUser: user gave bad info");
+            return false;
+        }
 
         logger.debug("saveUser: user '{}' attempted to save their user information", user.getUsername());
         List<User> existingUser = userRepo.findByUsernameIgnoreCase(user.getUsername());
